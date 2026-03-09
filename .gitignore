@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env
+.env.local
+STUDY_GUIDE.md
+*.log
+data/output/
+.langfuse/
+CLAUDE.md

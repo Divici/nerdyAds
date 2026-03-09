@@ -1,0 +1,172 @@
+[
+    {
+      "competitor": "Princeton Review",
+      "primary_text": "Learn from top SAT tutors with 40+ years of experience. Master tough questions and build a game plan so you can reach your highest score!",
+      "headline": "In-Person SAT 1400+ Course",
+      "description": "Score a 1400+ or add 150 points depending on your first score, or you get a refund.",
+      "cta_button": "Get offer",
+      "hook_type": "question",
+      "target_audience": "both",
+      "emotional_angle": "aspiration",
+      "notes": "Hook in creative: 'Prefer in-person SAT prep?'. Strong results framing with score improvement and refund guarantee. Local Princeton enrollment callout and $400 discount code."
+    },
+    {
+      "competitor": "Princeton Review",
+      "primary_text": "Learn from top SAT tutors with 40+ years of experience. Master tough questions and build a game plan so you can reach your highest score!",
+      "headline": "In-Person SAT 1400+ Course",
+      "description": "Score a 1400+ or add 150 points depending on your first score, or you get a refund.",
+      "cta_button": "Get offer",
+      "hook_type": "question",
+      "target_audience": "both",
+      "emotional_angle": "aspiration",
+      "notes": "Hook in creative: 'Feeling ready for the SAT?'. Emphasizes in-person prep and location (Midtown). Uses skyline imagery to create local relevance. Includes $400 discount code."
+    },
+    {
+      "competitor": "Princeton Review",
+      "primary_text": "Learn from top SAT tutors with 40+ years of experience. Master tough questions and build a game plan so you can reach your highest score!",
+      "headline": "In-Person SAT 1400+ Course",
+      "description": "Score a 1400+ or add 150 points depending on your first score, or you get a refund.",
+      "cta_button": "Get offer",
+      "hook_type": "question",
+      "target_audience": "both",
+      "emotional_angle": "aspiration",
+      "notes": "Creative headline: 'Prefer in-person SAT prep?'. Classroom imagery reinforces in-person instruction. Focuses on NYC Midtown enrollment and $400 discount incentive."
+    },
+    {
+      "competitor": "Princeton Review",
+      "primary_text": "Learn from top SAT tutors with 40+ years of experience. Master tough questions and build a game plan so you can reach your highest score!",
+      "headline": "In-Person SAT 1400+ Course",
+      "description": "Score a 1400+ or add 150 points depending on your first score, or you get a refund.",
+      "cta_button": "Get offer",
+      "hook_type": "fear",
+      "target_audience": "student",
+      "emotional_angle": "anxiety",
+      "notes": "Creative hook: 'Skip the solo SAT grind'. Image of stressed student creates anxiety framing. Offers structured in-person prep as the relief. Includes $400 discount code."
+    },
+    {
+      "competitor": "Chegg",
+      "primary_text": "Searching for homework help or prepping for exams can feel like you're lost on a deserted island. Find support with Chegg.",
+      "headline": "In it together",
+      "description": "Sail through the semester",
+      "cta_button": "Sign Up",
+      "hook_type": "story",
+      "target_audience": "student",
+      "emotional_angle": "anxiety",
+      "notes": "Narrative metaphor using isolation ('lost on a deserted island'). Visual reinforces loneliness theme before offering support. Focuses on emotional relatability rather than test score outcomes."
+    },
+
+
+
+
+    
+    {
+      "competitor": "Princeton Review",
+      "primary_text": "Prefer in-person SAT prep? Learn with expert tutors, build a smart test-day strategy, and aim for the score boost you need.",
+      "headline": "In-Person SAT 1400+ Course",
+      "description": "Now enrolling in Midtown. Limited seats available.",
+      "cta_button": "Get offer",
+      "hook_type": "question",
+      "target_audience": "both",
+      "emotional_angle": "aspiration",
+      "notes": "Synthetic mock based on the in-person/location-specific Princeton Review pattern. Keeps the hook short and outcome-focused."
+    },
+    {
+      "competitor": "Princeton Review",
+      "primary_text": "40+ years of SAT expertise. Get a personalized prep plan, master harder questions, and walk into test day with more confidence.",
+      "headline": "Prep With Proven SAT Experts",
+      "description": "Join a 1400+ course and save with code SAT1400.",
+      "cta_button": "Learn More",
+      "hook_type": "stat",
+      "target_audience": "both",
+      "emotional_angle": "social_proof",
+      "notes": "Synthetic mock using authority/social-proof framing from the original ads' '40+ years of experience' line."
+    },
+    {
+      "competitor": "Princeton Review",
+      "primary_text": "Worried your student is running out of time before the SAT? Get structured support, expert guidance, and a prep plan built to raise scores.",
+      "headline": "SAT Prep For Families On A Deadline",
+      "description": "Score a 1400+ or add 150 points, or get a refund.",
+      "cta_button": "Get offer",
+      "hook_type": "fear",
+      "target_audience": "parent",
+      "emotional_angle": "anxiety",
+      "notes": "Synthetic parent-targeted variation. Shifts the emotional framing from student stress to parent concern and time pressure."
+    },
+    {
+      "competitor": "Princeton Review",
+      "primary_text": "Skip the guesswork. Our SAT tutors help you focus on the questions, timing, and strategies that can make the biggest difference.",
+      "headline": "Make Your SAT Study Time Count",
+      "description": "In-person prep now available in select locations.",
+      "cta_button": "Learn More",
+      "hook_type": "urgency",
+      "target_audience": "student",
+      "emotional_angle": "aspiration",
+      "notes": "Synthetic variation focused on efficiency and relief from scattered studying."
+    },
+    {
+      "competitor": "Princeton Review",
+      "primary_text": "Feeling stuck on your SAT prep? Join a classroom course designed to build confidence, sharpen strategy, and help you aim higher.",
+      "headline": "Classroom SAT Prep That Moves Scores",
+      "description": "Save $400 with code SAT1400.",
+      "cta_button": "Get offer",
+      "hook_type": "question",
+      "target_audience": "student",
+      "emotional_angle": "anxiety",
+      "notes": "Synthetic variation combining emotional pain ('stuck') with classroom support and discount incentive."
+    },
+    {
+      "competitor": "Princeton Review",
+      "primary_text": "Students trust our SAT prep for a reason: expert tutors, proven strategies, and score goals that feel realistic—not overwhelming.",
+      "headline": "Trusted SAT Prep, Real Score Goals",
+      "description": "Build a plan that fits your starting score.",
+      "cta_button": "Learn More",
+      "hook_type": "story",
+      "target_audience": "both",
+      "emotional_angle": "social_proof",
+      "notes": "Synthetic trust-based variation. Adds softer reassurance instead of hard urgency."
+    },
+    {
+      "competitor": "Chegg",
+      "primary_text": "Studying alone can make one tough class feel impossible. Get homework help, study support, and exam prep that keeps you moving.",
+      "headline": "Don’t Tackle This Semester Solo",
+      "description": "Support for homework, studying, and exam prep.",
+      "cta_button": "Sign Up",
+      "hook_type": "fear",
+      "target_audience": "student",
+      "emotional_angle": "anxiety",
+      "notes": "Synthetic Chegg-style variation built on the 'lost/alone' emotional pattern in the screenshot."
+    },
+    {
+      "competitor": "Chegg",
+      "primary_text": "From late-night homework questions to exam-week panic, Chegg helps students find answers faster and feel less overwhelmed.",
+      "headline": "Help When School Gets Stressful",
+      "description": "Study smarter this semester.",
+      "cta_button": "Sign Up",
+      "hook_type": "story",
+      "target_audience": "student",
+      "emotional_angle": "anxiety",
+      "notes": "Synthetic narrative variation using a relatable student moment arc: homework -> exam panic -> support."
+    },
+    {
+      "competitor": "Chegg",
+      "primary_text": "Need answers fast? Get support for homework and test prep so you can spend less time stuck and more time finishing strong.",
+      "headline": "Get Unstuck Faster",
+      "description": "Study help built for busy students.",
+      "cta_button": "Sign Up",
+      "hook_type": "urgency",
+      "target_audience": "student",
+      "emotional_angle": "urgency",
+      "notes": "Synthetic urgency-led variation. Stronger direct-response structure than the original metaphor-heavy version."
+    },
+    {
+      "competitor": "Chegg",
+      "primary_text": "When classes pile up, having the right support can change everything. Chegg helps you stay on track through homework, quizzes, and exams.",
+      "headline": "Stay Afloat This Semester",
+      "description": "Get study support that keeps up with you.",
+      "cta_button": "Sign Up",
+      "hook_type": "story",
+      "target_audience": "student",
+      "emotional_angle": "aspiration",
+      "notes": "Synthetic supportive-semester variation. Keeps the emotional framing but shifts slightly from distress to progress."
+    }
+  ]

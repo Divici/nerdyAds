@@ -1,0 +1,30 @@
+{
+  "name": "nerdy-ads",
+  "version": "1.0.0",
+  "description": "Autonomous ad generation engine for Varsity Tutors SAT test prep campaigns",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsx src/main.ts",
+    "test": "vitest run",
+    "test:unit": "vitest run --project unit",
+    "test:integration": "vitest run --project integration",
+    "eval": "vitest run --project evals",
+    "generate": "tsx src/main.ts",
+    "ui": "cd ui && npm run dev"
+  },
+  "keywords": [],
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  },
+  "dependencies": {
+    "@google/genai": "^1.0.0",
+    "dotenv": "^16.4.0",
+    "langfuse": "^3.0.0",
+    "tsx": "^4.0.0",
+    "zod": "^3.24.0"
+  }
+}
