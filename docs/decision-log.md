@@ -475,6 +475,36 @@ This is a living document tracking every major decision, why it was made, what w
 
 ---
 
+### D-024: Researcher Caching — Run Once, Cache by Input Hash
+
+**Date:** 2026-03-09
+**Context:** The Researcher agent analyzes the same 24 competitor ads every pipeline run, calling Gemini Pro each time to extract the same patterns. The input is static — competitor ads only change when we manually add new ones. This wastes a Pro-tier API call (~$0.005) and adds latency on every run for zero new information.
+
+**Decision:** Add hash-based caching to the Researcher:
+1. SHA-256 hash the serialized competitor ads input
+2. Before calling the API, check `data/reference/patterns.json` for a cached result
+3. If the cache exists AND the input hash matches, return the cached patterns (skip the API call entirely)
+4. If the cache is missing or the hash doesn't match (new ads added), call the API and save the result
+5. Caching is opt-in via `cacheDir` constructor option — no caching when omitted (e.g., in tests)
+
+**Why not remove the Researcher entirely:**
+- The Researcher still adds value when new competitor ads are added — it automatically re-analyzes
+- The `ResearcherAgent` class is the right abstraction; the problem was calling it every run, not its existence
+- Phase 7 (calibration) already planned "Run Researcher on competitor ads → save patterns.json" as a one-time step; this makes the one-time behavior automatic
+
+**Alternatives considered:**
+- Manual "run researcher" script separate from the pipeline: works but easy to forget after adding new ads
+- Check file modification time instead of content hash: fragile — touching the file without changing it would miss the cache, and editing whitespace would invalidate it unnecessarily
+- Remove the Researcher agent and hardcode patterns: loses the ability to re-analyze when the corpus grows
+
+**Tradeoffs:**
+- Pro: Saves a Pro API call on every pipeline run after the first (~$0.005/run, adds up at scale)
+- Pro: Automatic invalidation when competitor ads change — no manual "clear cache" step
+- Pro: Backward compatible — no cacheDir = same behavior as before
+- Con: Cached patterns could drift from what a fresh Pro call would produce if the model updates (acceptable — re-run with `--force` or delete the cache file)
+
+---
+
 ## Provisional Decisions
 
 These decisions are explicitly provisional. They were made without first-party Varsity Tutors reference ads (see D-018) and would benefit from recalibration if real performance data becomes available:

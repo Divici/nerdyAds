@@ -7,8 +7,19 @@ vi.mock('../../src/utils/gemini-client.js', () => ({
   callGemini: vi.fn(),
 }));
 
+// Mock fs for caching tests
+vi.mock('node:fs/promises', () => ({
+  readFile: vi.fn(),
+  writeFile: vi.fn(),
+  mkdir: vi.fn(),
+}));
+
 import { callGemini } from '../../src/utils/gemini-client.js';
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
 const mockCallGemini = vi.mocked(callGemini);
+const mockReadFile = vi.mocked(readFile);
+const mockWriteFile = vi.mocked(writeFile);
+const mockMkdir = vi.mocked(mkdir);
 
 const MOCK_COMPETITOR_ADS = [
   {
@@ -140,5 +151,118 @@ describe('ResearcherAgent', () => {
     });
 
     await expect(researcher.analyzePatterns(MOCK_COMPETITOR_ADS)).rejects.toThrow();
+  });
+});
+
+describe('ResearcherAgent caching', () => {
+  let researcher: ResearcherAgent;
+  const CACHE_DIR = 'data/reference';
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    researcher = new ResearcherAgent({ cacheDir: CACHE_DIR });
+  });
+
+  it('returns cached patterns when cache file exists and input hash matches', async () => {
+    const cached = {
+      inputHash: researcher.hashInput(MOCK_COMPETITOR_ADS),
+      pattern: MOCK_PATTERN,
+      metadata: {
+        model: 'gemini-2.0-pro',
+        seed: 42,
+        promptHash: 'cached-hash',
+        tokensIn: 800,
+        tokensOut: 400,
+        costUsd: 0.005,
+        generatedAt: '2025-01-01T00:00:00.000Z',
+      },
+    };
+    mockReadFile.mockResolvedValueOnce(JSON.stringify(cached));
+
+    const result = await researcher.analyzePatterns(MOCK_COMPETITOR_ADS);
+
+    expect(mockCallGemini).not.toHaveBeenCalled();
+    expect(result.pattern).toEqual(MOCK_PATTERN);
+    expect(result.cached).toBe(true);
+  });
+
+  it('calls API when cache file does not exist', async () => {
+    mockReadFile.mockRejectedValueOnce(new Error('ENOENT'));
+    mockCallGemini.mockResolvedValueOnce(makeMockPatternResponse(MOCK_PATTERN));
+    mockMkdir.mockResolvedValueOnce(undefined);
+    mockWriteFile.mockResolvedValueOnce(undefined);
+
+    const result = await researcher.analyzePatterns(MOCK_COMPETITOR_ADS);
+
+    expect(mockCallGemini).toHaveBeenCalledOnce();
+    expect(result.pattern).toEqual(MOCK_PATTERN);
+    expect(result.cached).toBe(false);
+  });
+
+  it('calls API when input hash does not match cached hash (stale cache)', async () => {
+    const cached = {
+      inputHash: 'old-stale-hash-that-does-not-match',
+      pattern: MOCK_PATTERN,
+      metadata: {
+        model: 'gemini-2.0-pro',
+        seed: 42,
+        promptHash: 'cached-hash',
+        tokensIn: 800,
+        tokensOut: 400,
+        costUsd: 0.005,
+        generatedAt: '2025-01-01T00:00:00.000Z',
+      },
+    };
+    mockReadFile.mockResolvedValueOnce(JSON.stringify(cached));
+    mockCallGemini.mockResolvedValueOnce(makeMockPatternResponse(MOCK_PATTERN));
+    mockMkdir.mockResolvedValueOnce(undefined);
+    mockWriteFile.mockResolvedValueOnce(undefined);
+
+    const result = await researcher.analyzePatterns(MOCK_COMPETITOR_ADS);
+
+    expect(mockCallGemini).toHaveBeenCalledOnce();
+    expect(result.cached).toBe(false);
+  });
+
+  it('saves result to cache after a fresh API call', async () => {
+    mockReadFile.mockRejectedValueOnce(new Error('ENOENT'));
+    mockCallGemini.mockResolvedValueOnce(makeMockPatternResponse(MOCK_PATTERN));
+    mockMkdir.mockResolvedValueOnce(undefined);
+    mockWriteFile.mockResolvedValueOnce(undefined);
+
+    await researcher.analyzePatterns(MOCK_COMPETITOR_ADS);
+
+    expect(mockWriteFile).toHaveBeenCalledOnce();
+    const [filePath, content] = mockWriteFile.mock.calls[0] as [string, string];
+    expect(filePath).toContain('patterns.json');
+    const written = JSON.parse(content);
+    expect(written.inputHash).toBe(researcher.hashInput(MOCK_COMPETITOR_ADS));
+    expect(written.pattern).toEqual(MOCK_PATTERN);
+  });
+
+  it('hashInput is deterministic for the same input', () => {
+    const hash1 = researcher.hashInput(MOCK_COMPETITOR_ADS);
+    const hash2 = researcher.hashInput(MOCK_COMPETITOR_ADS);
+    expect(hash1).toBe(hash2);
+    expect(hash1.length).toBe(64); // SHA-256 hex
+  });
+
+  it('hashInput changes when input ads change', () => {
+    const hash1 = researcher.hashInput(MOCK_COMPETITOR_ADS);
+    const differentAds = [{ ...MOCK_COMPETITOR_ADS[0], primary_text: 'Different text' }];
+    const hash2 = researcher.hashInput(differentAds);
+    expect(hash1).not.toBe(hash2);
+  });
+
+  it('skips caching when no cacheDir is configured', async () => {
+    const noCacheResearcher = new ResearcherAgent();
+    mockCallGemini.mockResolvedValueOnce(makeMockPatternResponse(MOCK_PATTERN));
+
+    const result = await noCacheResearcher.analyzePatterns(MOCK_COMPETITOR_ADS);
+
+    expect(mockReadFile).not.toHaveBeenCalled();
+    expect(mockWriteFile).not.toHaveBeenCalled();
+    expect(result.pattern).toEqual(MOCK_PATTERN);
+    expect(result.cached).toBe(false);
   });
 });
