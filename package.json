@@ -14,6 +14,7 @@
     "researcher": "tsx src/scripts/run-researcher.ts",
     "calibrate": "tsx src/scripts/run-calibration.ts",
     "pipeline": "tsx src/scripts/run-pipeline.ts",
+    "view-run": "tsx src/scripts/view-run.ts",
     "ui": "cd ui && npm run dev"
   },
   "keywords": [],
