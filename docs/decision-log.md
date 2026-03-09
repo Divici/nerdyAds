@@ -652,3 +652,48 @@ These decisions are explicitly provisional. They were made without first-party V
 - **D-019: Stress test proves editor value.** The iterate-improve loop is not just scaffolding — it demonstrably raises ad quality by ~0.8 points on average. The system architecture (evaluator-led, max 3 cycles) is validated.
 - **D-020: Strict evaluator should be the default for production runs.** The lenient evaluator produces 100% acceptance which isn't useful. The strict addendum produces realistic score distributions and forces meaningful iteration.
 - **D-021: CTA improvement is the highest-leverage editor optimization.** 67% of initial weaknesses are CTA-related. A CTA-specific editor prompt variant could improve efficiency.
+
+---
+
+## Phase 8: Full-Scale Generation (10 briefs, threshold 8.0)
+
+**Date:** 2026-03-09
+**Run ID:** `338c97a2-bf75-44fd-b810-f8b9bbf58709`
+
+### Configuration
+- 10 briefs × 5 ads each = 50 ads
+- Threshold: 8.0 (raised from default 7.0)
+- Patterns: enabled (cached from Phase 7 researcher run)
+
+### Results
+- **50/50 accepted (100%)** — acceptance rate unchanged even at 8.0 threshold
+- **Average score: 8.88** (up from 8.59 at 7.0 threshold in Phase 7)
+- **Total cost: $0.19** (~$0.004 per accepted ad)
+- **Tokens: 66K in, 31K out**
+- **Editor activity: 8/50 ads needed editing (16%)** — up from 1/15 (7%) at 7.0 threshold
+  - 7/8 targeted CTA (still the consistent weak dimension)
+  - 1/8 targeted brand_voice
+  - 2 ads needed 2 editor cycles; the rest needed 1
+  - All 8 improved and were accepted
+
+### Per-Brief Breakdown
+| Brief | Accepted | Avg Score | Cost |
+|-------|----------|-----------|------|
+| brief-001 (student/conversion/aspiration) | 5/5 | 8.62 | $0.016 |
+| brief-002 (parent/conversion/anxiety) | 5/5 | 9.04 | $0.017 |
+| brief-003 (student/awareness/urgency) | 5/5 | 8.92 | $0.019 |
+| brief-004 (parent/awareness/social_proof) | 5/5 | 9.07 | $0.019 |
+| brief-005 (both/conversion/aspiration) | 5/5 | 8.76 | $0.023 |
+| brief-006 (student/engagement/relief) | 5/5 | 9.20 | $0.017 |
+| brief-007 (parent/conversion/aspiration) | 5/5 | 8.71 | $0.024 |
+| brief-008 (both/awareness/anxiety) | 5/5 | 8.58 | $0.016 |
+| brief-009 (student/conversion/social_proof) | 5/5 | 9.04 | $0.016 |
+| brief-010 (parent/engagement/urgency) | 5/5 | 8.87 | $0.029 |
+
+### Observations
+1. **Writer quality is consistently high**: Even at 8.0, 84% of ads pass on first evaluation. The Gemini 2.5 Flash writer with competitor patterns produces strong baseline copy.
+2. **CTA remains the #1 weak dimension**: 7/8 editor interventions targeted CTA. This confirms D-021 from the stress test.
+3. **Parent/social_proof briefs score highest** (brief-004: 9.07). Concrete proof points (200+ point improvements, thousands of families) give the evaluator more to work with.
+4. **Engagement briefs are strong** (brief-006: 9.20). Low-pressure CTAs like "take a free practice test" score well.
+5. **Cost scales linearly**: 50 ads at $0.19 = ~$0.004/ad. Editor cycles add ~50% more cost per edited ad.
+6. **100% acceptance rate persists**: Even at 8.0 threshold, the system accepts everything. To truly exercise the editor, threshold 9.0+ is needed (as demonstrated in the stress test).
