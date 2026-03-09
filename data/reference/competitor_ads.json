@@ -54,11 +54,88 @@
       "emotional_angle": "anxiety",
       "notes": "Narrative metaphor using isolation ('lost on a deserted island'). Visual reinforces loneliness theme before offering support. Focuses on emotional relatability rather than test score outcomes."
     },
+    {
+        "competitor": "Kaplan College Prep",
+        "primary_text": "4 points can be all that separate a good ACT® score from a great one. Trust our prep to get you a score you can be proud of.",
+        "headline": "The Realistic ACT Practice You Need",
+        "description": "Find your prep today.",
+        "cta_button": "Learn More",
+        "hook_type": "stat",
+        "target_audience": "student",
+        "emotional_angle": "aspiration",
+        "notes": "Uses a concrete score-gap hook ('4 points') to make the improvement feel attainable. Creative text reinforces the message with 'Imagine Adding 4 Points to Your ACT® Score.' Video format."
+    },
+    {
+        "competitor": "Kaplan College Prep",
+        "primary_text": "With Kaplan, the secrets to getting into your top schools are just a click away.",
+        "headline": "Introducing Kaplan College Advantage",
+        "description": "All-in-one support",
+        "cta_button": "Learn More",
+        "hook_type": "question",
+        "target_audience": "both",
+        "emotional_angle": "aspiration",
+        "notes": "Creative hook: 'What If You Had the Advice of an Admissions Insider, Any Time?' Focuses on college admissions support rather than test scores alone. Video format with remote advising visual."
+    },
+    {
+        "competitor": "Kaplan College Prep",
+        "primary_text": "Only Kaplan partners directly with the official ACT® test makers, so you can be sure you're getting the best in prep.",
+        "headline": "See Why ACT Students Choose Kaplan",
+        "description": "Real practice. Real results.",
+        "cta_button": "Learn More",
+        "hook_type": "story",
+        "target_audience": "student",
+        "emotional_angle": "social_proof",
+        "notes": "Leans heavily on authority and credibility. Creative centers a testimonial from 'Savannah' with a 5-star review and date, adding social proof. Video format."
+    },
+    {
+        "competitor": "Kaplan College Prep",
+        "primary_text": "Test prep, advising, and support for every year of high school—all in one package, at a price that works for you. Welcome to where high schoolers become college students.",
+        "headline": "A Prep Package That Fits Your Budget",
+        "description": "Invest in total peace of mind.",
+        "cta_button": "Learn More",
+        "hook_type": "story",
+        "target_audience": "parent",
+        "emotional_angle": "aspiration",
+        "notes": "Parent-focused bundle positioning. Creative text: 'Your Teen's Path to College, Completely Covered.' Strong peace-of-mind and affordability framing."
+    },
+    {
+        "competitor": "Kaplan College Prep",
+        "primary_text": "\"Their SAT curriculum is about the best out there.\" - Test Prep Insight",
+        "headline": "Let Us Show You What Sets Kaplan Apart",
+        "description": "Find your course.",
+        "cta_button": "Learn More",
+        "hook_type": "stat",
+        "target_audience": "both",
+        "emotional_angle": "social_proof",
+        "notes": "Creative highlights '#1 in SAT® Prep' and 'Editor's Choice - Test Prep Insight.' Strong third-party endorsement and ranking-based social proof."
+    },
+    {
+        "competitor": "Kaplan College Prep",
+        "primary_text": "At Kaplan, you're not just preparing—you're training with the people who know the test best.",
+        "headline": "The Enhanced ACT Exam Made Comfortable",
+        "description": "Start your prep today.",
+        "cta_button": "Shop Now",
+        "hook_type": "stat",
+        "target_audience": "student",
+        "emotional_angle": "social_proof",
+        "notes": "Creative text: 'Choose the Only Prep Partner to the ACT Test Makers.' Uses exclusivity and authority rather than emotion-first copy. Video format."
+    },
+    {
+        "competitor": "Kaplan College Prep",
+        "primary_text": "So many parents entrust their kid's digital SAT® prep to Kaplan—their SAT curriculum is about the best out there. -Test Prep Insight",
+        "headline": "See Why Parents Choose Kaplan",
+        "description": "Backed by real results.",
+        "cta_button": "Learn More",
+        "hook_type": "stat",
+        "target_audience": "parent",
+        "emotional_angle": "social_proof",
+        "notes": "Parent-targeted trust ad. Creative says 'Top-Rated by Experts. Trusted by Parents.' Uses expert validation plus parent reassurance."
+    },
 
 
 
 
-    
+
     {
       "competitor": "Princeton Review",
       "primary_text": "Prefer in-person SAT prep? Learn with expert tutors, build a smart test-day strategy, and aim for the score boost you need.",
