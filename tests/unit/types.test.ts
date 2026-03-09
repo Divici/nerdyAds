@@ -1,4 +1,7 @@
 import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'fs';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import {
   AdSchema,
   AdMetadataSchema,
@@ -9,6 +12,9 @@ import {
   AdWithHistorySchema,
   CompetitorPatternSchema,
 } from '@types/index.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 describe('Ad schema', () => {
   const validAd = {
@@ -235,5 +241,39 @@ describe('CompetitorPattern schema', () => {
       source: 'competitor_ads.json',
     });
     expect(result.success).toBe(true);
+  });
+});
+
+describe('briefs.json', () => {
+  const briefs = JSON.parse(readFileSync(resolve(__dirname, '../../data/briefs.json'), 'utf-8'));
+
+  it('contains exactly 10 briefs', () => {
+    expect(briefs).toHaveLength(10);
+  });
+
+  it('every brief passes BriefSchema validation', () => {
+    for (const brief of briefs) {
+      const result = BriefSchema.safeParse(brief);
+      expect(result.success, `Brief ${brief.id} failed: ${JSON.stringify(result.error?.issues)}`).toBe(true);
+    }
+  });
+
+  it('covers all three audience types', () => {
+    const audiences = new Set(briefs.map((b: { targetAudience: string }) => b.targetAudience));
+    expect(audiences).toContain('student');
+    expect(audiences).toContain('parent');
+    expect(audiences).toContain('both');
+  });
+
+  it('covers all three campaign goals', () => {
+    const goals = new Set(briefs.map((b: { campaignGoal: string }) => b.campaignGoal));
+    expect(goals).toContain('awareness');
+    expect(goals).toContain('conversion');
+    expect(goals).toContain('engagement');
+  });
+
+  it('has unique IDs', () => {
+    const ids = briefs.map((b: { id: string }) => b.id);
+    expect(new Set(ids).size).toBe(10);
   });
 });

@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { callGemini } from '../utils/gemini-client.js';
 import { EDITOR_SYSTEM_PROMPT, buildEditorUserPrompt } from '../config/prompts.js';
 import type { Ad } from '../types/ad.js';
+import type { Brief } from '../types/brief.js';
 import type { Evaluation } from '../types/evaluation.js';
 import { identifyWeakest } from '../evaluate/scoring.js';
 import { logger } from '../utils/logger.js';
@@ -22,9 +23,9 @@ export class EditorAgent {
    * Improve an ad by targeting its weakest dimension.
    * Preserves ad ID and briefId, increments version.
    */
-  async improve(ad: Ad, evaluation: Evaluation): Promise<Ad> {
+  async improve(ad: Ad, evaluation: Evaluation, brief?: Brief): Promise<Ad> {
     const weakest = identifyWeakest(evaluation.scores);
-    const userPrompt = buildEditorUserPrompt(ad, evaluation, weakest);
+    const userPrompt = buildEditorUserPrompt(ad, evaluation, weakest, brief);
 
     logger.debug('Improving ad', {
       adId: ad.id,

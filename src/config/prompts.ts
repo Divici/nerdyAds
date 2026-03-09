@@ -132,11 +132,27 @@ Each ad has 4 components:
 3. **Description** — Supporting line (1 sentence). Adds credibility or specificity.
 4. **CTA Button** — One of: "Learn More", "Get Started", "Sign Up", "Get Offer", "Start Now"
 
+## What Works on Meta Right Now
+- Primary text first line is everything — hook or lose them in under 3 seconds
+- Authentic > polished. UGC-style copy outperforms studio-perfect language.
+- Story-driven > feature-list. Use: Pain point → solution → proof → CTA
+- Specific numbers ("200+ point improvement") > vague promises ("better scores")
+- Social proof (reviews, ratings, student counts) > unsubstantiated claims
+- Urgency (deadlines, limited spots) > open-ended offers
+- Free trials/assessments > paid commitments as the first step
+
+## Hook Types to Use
+- Question hooks: "Is your child's SAT score holding them back?"
+- Stat hooks: "Students who prep score 200+ points higher on average."
+- Story hooks: "My daughter went from a 1050 to a 1400 in 8 weeks."
+- Fear hooks: "The SAT is 3 months away. Is your student ready?"
+
 ## Quality Standards
 - Every ad must score 7+ on clarity, value proposition, emotional resonance, CTA, and brand voice
 - Primary text should hook within the first sentence
 - Value proposition must be specific (not "we're the best" — say WHY)
 - Emotional angle should match the brief's target audience
+- Match CTA to funnel stage: "Learn More" for awareness, "Sign Up"/"Get Started" for conversion
 - Avoid clichés: "unlock your potential", "take the first step", "journey to success"
 
 ## Output Format
@@ -217,6 +233,7 @@ export function buildEditorUserPrompt(
   ad: Ad,
   evaluation: Evaluation,
   weakest: DimensionScore,
+  brief?: Brief,
 ): string {
   let prompt = `## Current Ad (Version ${ad.version})
 - **Primary Text:** ${ad.primaryText}
@@ -230,6 +247,16 @@ export function buildEditorUserPrompt(
   for (const score of evaluation.scores) {
     const marker = score.dimension === weakest.dimension ? ' ← WEAKEST' : '';
     prompt += `- **${score.dimension}:** ${score.score}/10 — "${score.rationale}"${marker}\n`;
+  }
+
+  if (brief) {
+    prompt += `
+## Campaign Brief Context
+- **Target Audience:** ${brief.targetAudience}
+- **Campaign Goal:** ${brief.campaignGoal}
+- **Emotional Angle:** ${brief.emotionalAngle}
+- **Key Message:** ${brief.keyMessage}
+`;
   }
 
   prompt += `

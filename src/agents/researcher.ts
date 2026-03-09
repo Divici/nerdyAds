@@ -1,21 +1,12 @@
 import { z } from 'zod';
 import { callGemini } from '../utils/gemini-client.js';
-import { RESEARCHER_SYSTEM_PROMPT, buildResearcherUserPrompt } from '../config/prompts.js';
+import { RESEARCHER_SYSTEM_PROMPT, buildResearcherUserPrompt, type CompetitorAdInput } from '../config/prompts.js';
 import { CompetitorPatternSchema, type CompetitorPattern } from '../types/patterns.js';
 import type { AdMetadata } from '../types/ad.js';
 import { logger } from '../utils/logger.js';
 
-export interface CompetitorAd {
-  competitor: string;
-  primary_text: string;
-  headline: string;
-  description: string;
-  cta_button: string;
-  hook_type?: string;
-  target_audience?: string;
-  emotional_angle?: string;
-  notes?: string;
-}
+/** Re-export for convenience so callers can import from agents. */
+export type { CompetitorAdInput as CompetitorAd } from '../config/prompts.js';
 
 export interface ResearcherResult {
   pattern: CompetitorPattern;
@@ -27,7 +18,7 @@ export class ResearcherAgent {
    * Analyze competitor ads to extract patterns for the writer agent.
    * Uses Gemini Pro for deeper analysis.
    */
-  async analyzePatterns(competitorAds: CompetitorAd[]): Promise<ResearcherResult> {
+  async analyzePatterns(competitorAds: CompetitorAdInput[]): Promise<ResearcherResult> {
     const userPrompt = buildResearcherUserPrompt(competitorAds);
 
     logger.debug('Analyzing competitor patterns', { adCount: competitorAds.length });

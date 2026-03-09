@@ -178,4 +178,17 @@ describe('WriterAgent', () => {
     const uniqueIds = new Set(ids);
     expect(uniqueIds.size).toBe(5);
   });
+
+  it('splits cost evenly across ads in a batch', async () => {
+    mockCallGemini.mockResolvedValueOnce(makeMockAdResponse(MOCK_ADS_RAW));
+
+    const ads = await writer.generateBatch(MOCK_BRIEF, 2);
+
+    // Original call: tokensIn=600, tokensOut=500, costUsd=0.001
+    // Split across 2 ads: 300, 250, 0.0005
+    expect(ads[0].metadata.tokensIn).toBe(300);
+    expect(ads[0].metadata.tokensOut).toBe(250);
+    expect(ads[0].metadata.costUsd).toBeCloseTo(0.0005, 6);
+    expect(ads[1].metadata.costUsd).toBeCloseTo(0.0005, 6);
+  });
 });

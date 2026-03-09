@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { EditorAgent } from '../../src/agents/editor.js';
 import type { Ad } from '../../src/types/ad.js';
+import type { Brief } from '../../src/types/brief.js';
 import type { Evaluation, DimensionScore } from '../../src/types/evaluation.js';
 
 // Mock the gemini client
@@ -194,5 +195,25 @@ describe('EditorAgent', () => {
     expect(userPrompt).toContain('value_proposition');
     expect(userPrompt).toContain('cta');
     expect(userPrompt).toContain('brand_voice');
+  });
+
+  it('includes brief context in prompt when provided', async () => {
+    mockCallGemini.mockResolvedValueOnce(makeMockEditResponse(IMPROVED_AD_RAW));
+
+    const brief: Brief = {
+      id: 'brief-001',
+      targetAudience: 'parent',
+      campaignGoal: 'conversion',
+      emotionalAngle: 'anxiety',
+      keyMessage: 'SAT prep without the family stress',
+    };
+
+    await editor.improve(MOCK_AD, MOCK_EVALUATION, brief);
+
+    const [, , userPrompt] = mockCallGemini.mock.calls[0];
+    expect(userPrompt).toContain('parent');
+    expect(userPrompt).toContain('conversion');
+    expect(userPrompt).toContain('anxiety');
+    expect(userPrompt).toContain('SAT prep without the family stress');
   });
 });

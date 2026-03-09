@@ -66,15 +66,16 @@ export class WriterAgent {
       generated: parsed.ads.length,
     });
 
+    const adCount = parsed.ads.length;
     return parsed.ads.map((ad) => ({
       ...ad,
       _metadata: {
         model: result.model,
         seed: result.seed,
         promptHash: result.promptHash,
-        tokensIn: result.tokensIn,
-        tokensOut: result.tokensOut,
-        costUsd: result.costUsd,
+        tokensIn: Math.round(result.tokensIn / adCount),
+        tokensOut: Math.round(result.tokensOut / adCount),
+        costUsd: result.costUsd / adCount,
         generatedAt: result.generatedAt,
       },
     }));
