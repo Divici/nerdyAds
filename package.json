@@ -15,6 +15,7 @@
     "calibrate": "tsx src/scripts/run-calibration.ts",
     "pipeline": "tsx src/scripts/run-pipeline.ts",
     "view-run": "tsx src/scripts/view-run.ts",
+    "stress-test": "tsx src/scripts/stress-test.ts",
     "ui": "cd ui && npm run dev"
   },
   "keywords": [],

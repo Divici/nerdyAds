@@ -1,0 +1,70 @@
+[
+  {
+    "id": "adv-001",
+    "targetAudience": "student",
+    "campaignGoal": "conversion",
+    "emotionalAngle": "humor",
+    "keyMessage": "SAT prep doesn't have to feel like punishment — Varsity Tutors makes studying actually fun with gamified sessions and chill expert tutors",
+    "constraints": [
+      "Must use a humorous/lighthearted tone throughout",
+      "Cannot use fear, anxiety, or urgency as motivators",
+      "Must appeal to Gen Z sensibility without being cringe",
+      "Include a specific gamification feature mention"
+    ]
+  },
+  {
+    "id": "adv-002",
+    "targetAudience": "parent",
+    "campaignGoal": "conversion",
+    "emotionalAngle": "guilt",
+    "keyMessage": "Your child's SAT score could determine their college future — are you doing enough to help them prepare?",
+    "constraints": [
+      "Must evoke parental responsibility without being accusatory",
+      "Tone must remain supportive and empathetic, not manipulative",
+      "Cannot use phrases like 'don't miss out' or 'limited time'",
+      "Must transition from guilt to empowerment within the ad"
+    ]
+  },
+  {
+    "id": "adv-003",
+    "targetAudience": "both",
+    "campaignGoal": "awareness",
+    "emotionalAngle": "skepticism",
+    "keyMessage": "Most SAT prep courses overpromise and underdeliver — Varsity Tutors is different because we guarantee matched expert tutors and track every point of improvement",
+    "constraints": [
+      "Must acknowledge that the audience is skeptical of test prep marketing",
+      "Cannot make unsubstantiated score improvement claims",
+      "Must include a specific differentiator that competitors lack",
+      "Tone must be honest and transparent, not salesy",
+      "Headline must be under 6 words"
+    ]
+  },
+  {
+    "id": "adv-004",
+    "targetAudience": "student",
+    "campaignGoal": "engagement",
+    "emotionalAngle": "defiance",
+    "keyMessage": "You don't need to be a 'test person' to crush the SAT — Varsity Tutors helps you beat the system with strategies that work for YOUR brain",
+    "constraints": [
+      "Must feel rebellious/empowering, not corporate",
+      "Cannot use standard test prep language (journey, unlock potential, achieve your dreams)",
+      "Primary text must be under 100 characters",
+      "CTA must be 'Get Started' specifically",
+      "Must mention personalized learning approach"
+    ]
+  },
+  {
+    "id": "adv-005",
+    "targetAudience": "parent",
+    "campaignGoal": "conversion",
+    "emotionalAngle": "comparison",
+    "keyMessage": "While other families are scrambling for SAT prep, Varsity Tutors families already have a plan — personalized 1-on-1 tutoring that starts working from day one",
+    "constraints": [
+      "Must create FOMO through social comparison without naming competitors",
+      "Must mention a specific timeline (weeks/months to improvement)",
+      "Cannot use exclamation marks",
+      "Must include the word 'personalized' exactly once",
+      "Description must reference a money-back or satisfaction guarantee"
+    ]
+  }
+]
