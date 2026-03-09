@@ -1,0 +1,74 @@
+[
+  {
+    "id": "cal-weak-001",
+    "briefId": "calibration",
+    "primaryText": "Get better SAT scores with our tutoring service. We have tutors who can help you improve. Our program is designed to help students do well on the test.",
+    "headline": "SAT Tutoring Available",
+    "description": "We offer tutoring for the SAT. Contact us today.",
+    "ctaButton": "Learn More",
+    "version": 0,
+    "metadata": {
+      "model": "calibration",
+      "seed": 0,
+      "promptHash": "calibration-weak-001",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "costUsd": 0,
+      "generatedAt": "2026-03-09T00:00:00Z"
+    }
+  },
+  {
+    "id": "cal-weak-002",
+    "briefId": "calibration",
+    "primaryText": "Unlock your potential and take the first step on your journey to SAT success! Our world-class tutors will transform your test-taking experience and empower you to reach for the stars. Don't wait — the future is calling!",
+    "headline": "Unlock Your SAT Potential Today",
+    "description": "Start your journey to success with our amazing tutoring platform.",
+    "ctaButton": "Learn More",
+    "version": 0,
+    "metadata": {
+      "model": "calibration",
+      "seed": 0,
+      "promptHash": "calibration-weak-002",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "costUsd": 0,
+      "generatedAt": "2026-03-09T00:00:00Z"
+    }
+  },
+  {
+    "id": "cal-weak-003",
+    "briefId": "calibration",
+    "primaryText": "SAT prep. Tutors. Online. Get help now. Improve your score. College admissions. Test prep made easy.",
+    "headline": "SAT Help",
+    "description": "Tutoring services for standardized tests.",
+    "ctaButton": "Learn More",
+    "version": 0,
+    "metadata": {
+      "model": "calibration",
+      "seed": 0,
+      "promptHash": "calibration-weak-003",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "costUsd": 0,
+      "generatedAt": "2026-03-09T00:00:00Z"
+    }
+  },
+  {
+    "id": "cal-weak-004",
+    "briefId": "calibration",
+    "primaryText": "Are you ready to absolutely crush the SAT?? Our insanely good tutors will BLOW YOUR MIND with next-level strategies that the test-makers don't want you to know!! Seriously, this is the real deal folks 🔥🔥🔥",
+    "headline": "CRUSH THE SAT!! 🔥",
+    "description": "Mind-blowing SAT secrets that will change everything!!",
+    "ctaButton": "Get Offer",
+    "version": 0,
+    "metadata": {
+      "model": "calibration",
+      "seed": 0,
+      "promptHash": "calibration-weak-004",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "costUsd": 0,
+      "generatedAt": "2026-03-09T00:00:00Z"
+    }
+  }
+]

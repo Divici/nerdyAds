@@ -1,0 +1,74 @@
+[
+  {
+    "id": "cal-borderline-001",
+    "briefId": "calibration",
+    "primaryText": "SAT scores matter more than ever for college admissions. Varsity Tutors connects students with experienced SAT tutors who provide personalized study plans. Sessions are available online or in person, so you can prep on your schedule.",
+    "headline": "Personalized SAT Tutoring",
+    "description": "Online and in-person SAT prep with experienced tutors.",
+    "ctaButton": "Learn More",
+    "version": 0,
+    "metadata": {
+      "model": "calibration",
+      "seed": 0,
+      "promptHash": "calibration-borderline-001",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "costUsd": 0,
+      "generatedAt": "2026-03-09T00:00:00Z"
+    }
+  },
+  {
+    "id": "cal-borderline-002",
+    "briefId": "calibration",
+    "primaryText": "Your student deserves a tutor who gets them. Varsity Tutors matches students with SAT experts who understand different learning styles. Whether your child is a visual learner or needs hands-on practice, we have the right fit.",
+    "headline": "Find the Right SAT Tutor",
+    "description": "Expert matching based on learning style. Flexible scheduling options.",
+    "ctaButton": "Get Started",
+    "version": 0,
+    "metadata": {
+      "model": "calibration",
+      "seed": 0,
+      "promptHash": "calibration-borderline-002",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "costUsd": 0,
+      "generatedAt": "2026-03-09T00:00:00Z"
+    }
+  },
+  {
+    "id": "cal-borderline-003",
+    "briefId": "calibration",
+    "primaryText": "Is the SAT stressing your family out? Varsity Tutors can help. Our tutors work with students to build a study plan that fits their timeline and goals. We've helped thousands of families navigate SAT prep without the overwhelm.",
+    "headline": "SAT Prep Without the Stress",
+    "description": "Thousands of families trust Varsity Tutors for SAT preparation.",
+    "ctaButton": "Learn More",
+    "version": 0,
+    "metadata": {
+      "model": "calibration",
+      "seed": 0,
+      "promptHash": "calibration-borderline-003",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "costUsd": 0,
+      "generatedAt": "2026-03-09T00:00:00Z"
+    }
+  },
+  {
+    "id": "cal-borderline-004",
+    "briefId": "calibration",
+    "primaryText": "Looking for SAT help? Varsity Tutors has top-rated tutors ready to work with your student. Our platform makes it easy to schedule sessions and track progress. Students who use our service see real score improvements.",
+    "headline": "Top-Rated SAT Tutors Ready Now",
+    "description": "Easy scheduling, progress tracking, and proven score improvements.",
+    "ctaButton": "Sign Up",
+    "version": 0,
+    "metadata": {
+      "model": "calibration",
+      "seed": 0,
+      "promptHash": "calibration-borderline-004",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "costUsd": 0,
+      "generatedAt": "2026-03-09T00:00:00Z"
+    }
+  }
+]

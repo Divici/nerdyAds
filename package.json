@@ -11,6 +11,9 @@
     "test:integration": "vitest run --project integration",
     "eval": "vitest run --project evals",
     "generate": "tsx src/main.ts",
+    "researcher": "tsx src/scripts/run-researcher.ts",
+    "calibrate": "tsx src/scripts/run-calibration.ts",
+    "pipeline": "tsx src/scripts/run-pipeline.ts",
     "ui": "cd ui && npm run dev"
   },
   "keywords": [],

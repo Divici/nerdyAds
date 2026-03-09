@@ -83,7 +83,15 @@ export async function callGemini(
       },
     });
 
-    const text = response.text ?? '';
+    // response.text can be undefined on thinking models when MAX_TOKENS is hit
+    // or when the response only contains thinking tokens. Fall back to extracting from candidates.
+    let text = response.text ?? '';
+    if (!text && response.candidates?.[0]?.content?.parts) {
+      text = response.candidates[0].content.parts
+        .filter((p: { text?: string }) => p.text)
+        .map((p: { text?: string }) => p.text)
+        .join('');
+    }
     const tokensIn = response.usageMetadata?.promptTokenCount ?? 0;
     const tokensOut = response.usageMetadata?.candidatesTokenCount ?? 0;
     const costUsd = computeCost(role, tokensIn, tokensOut);

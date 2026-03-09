@@ -7,14 +7,14 @@ export interface ModelConfig {
 /** Model configurations for generation and evaluation. */
 export const MODELS = {
   flash: {
-    modelId: 'gemini-2.0-flash',
+    modelId: 'gemini-2.5-flash',
     temperature: 0.8,
-    maxOutputTokens: 2048,
+    maxOutputTokens: 8192,
   },
   pro: {
-    modelId: 'gemini-2.0-pro',
+    modelId: 'gemini-2.5-pro',
     temperature: 0.3,
-    maxOutputTokens: 4096,
+    maxOutputTokens: 16384,
   },
 } as const satisfies Record<string, ModelConfig>;
 

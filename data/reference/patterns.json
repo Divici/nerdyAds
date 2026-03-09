@@ -1,0 +1,50 @@
+{
+  "inputHash": "5e26a21b9f67acdc0daa53c1167380534d06dad57bc8b78ba9c398b94461190f",
+  "pattern": {
+    "hookTypes": [
+      "Question",
+      "Stat",
+      "Fear",
+      "Story"
+    ],
+    "emotionalAngles": [
+      "Aspiration",
+      "Anxiety",
+      "Social Proof",
+      "Urgency",
+      "Relief"
+    ],
+    "ctaStyles": [
+      "Direct",
+      "Soft"
+    ],
+    "commonPhrases": [
+      "reach your highest score",
+      "40+ years of experience",
+      "Score a 1400+ or...",
+      "or you get a refund",
+      "expert tutors",
+      "proven strategies",
+      "Trusted by Parents",
+      "Feeling stuck",
+      "walk into test day with more confidence",
+      "skip the guesswork"
+    ],
+    "structuralPatterns": [
+      "Problem -> Solution -> Benefit",
+      "Authority -> Benefit -> CTA",
+      "Question -> Benefit -> Guarantee/Offer",
+      "Hook -> Benefit -> Proof -> CTA"
+    ],
+    "source": "competitor_analysis"
+  },
+  "metadata": {
+    "model": "gemini-2.5-pro",
+    "seed": 42,
+    "promptHash": "00a02f223904e80e00f2c30f6f077f404627028ec522eefef4a1b2184b0a420c",
+    "tokensIn": 3204,
+    "tokensOut": 248,
+    "costUsd": 0.0052450000000000005,
+    "generatedAt": "2026-03-09T21:02:08.041Z"
+  }
+}

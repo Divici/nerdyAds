@@ -1,0 +1,74 @@
+[
+  {
+    "id": "cal-strong-001",
+    "briefId": "calibration",
+    "primaryText": "My daughter was averaging a 1080 on practice tests. After 6 weeks with her Varsity Tutors SAT coach, she scored a 1340 on test day — a 260-point jump. The 1-on-1 sessions made all the difference because her tutor focused only on the areas where she was losing points.",
+    "headline": "260-Point SAT Improvement in 6 Weeks",
+    "description": "Personalized 1-on-1 SAT tutoring matched to your child's exact weak spots. 40,000+ students tutored.",
+    "ctaButton": "Get Started",
+    "version": 0,
+    "metadata": {
+      "model": "calibration",
+      "seed": 0,
+      "promptHash": "calibration-strong-001",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "costUsd": 0,
+      "generatedAt": "2026-03-09T00:00:00Z"
+    }
+  },
+  {
+    "id": "cal-strong-002",
+    "briefId": "calibration",
+    "primaryText": "The SAT is 47 days away. That's enough time to add 150+ points — if you study the right way. Varsity Tutors matches your student with an expert tutor who builds a custom study plan around the exact question types they struggle with. No generic prep books. No wasted hours.",
+    "headline": "Custom SAT Plan. 150+ Points.",
+    "description": "Expert tutors who focus on what matters most for your student's score. Free consultation available.",
+    "ctaButton": "Learn More",
+    "version": 0,
+    "metadata": {
+      "model": "calibration",
+      "seed": 0,
+      "promptHash": "calibration-strong-002",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "costUsd": 0,
+      "generatedAt": "2026-03-09T00:00:00Z"
+    }
+  },
+  {
+    "id": "cal-strong-003",
+    "briefId": "calibration",
+    "primaryText": "Most SAT prep treats every student the same. But your child isn't every student. Varsity Tutors pairs them with a top-scoring tutor who adapts to their learning style, targets their weakest sections, and builds real confidence — not just test tricks. 93% of families recommend us.",
+    "headline": "SAT Prep Built Around Your Student",
+    "description": "1-on-1 tutoring with top-scoring SAT experts. 93% recommendation rate from families.",
+    "ctaButton": "Sign Up",
+    "version": 0,
+    "metadata": {
+      "model": "calibration",
+      "seed": 0,
+      "promptHash": "calibration-strong-003",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "costUsd": 0,
+      "generatedAt": "2026-03-09T00:00:00Z"
+    }
+  },
+  {
+    "id": "cal-strong-004",
+    "briefId": "calibration",
+    "primaryText": "Worried the SAT will hold your child back from their dream school? You're not alone — 72% of parents say standardized tests are their biggest college admissions concern. Varsity Tutors gives your student a dedicated SAT coach who turns anxiety into a game plan with weekly progress tracking.",
+    "headline": "Turn SAT Stress Into a Score You're Proud Of",
+    "description": "Dedicated SAT coaches with proven score improvement. See your student's progress every week.",
+    "ctaButton": "Get Started",
+    "version": 0,
+    "metadata": {
+      "model": "calibration",
+      "seed": 0,
+      "promptHash": "calibration-strong-004",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "costUsd": 0,
+      "generatedAt": "2026-03-09T00:00:00Z"
+    }
+  }
+]
