@@ -1,3 +1,2 @@
-// Barrel exports — uncomment as metrics are implemented (Phase 6)
-// export * from './tracker.js';
-// export * from './cost.js';
+export { MetricsTracker, type AdRecord } from './tracker.js';
+export { calculateCost, aggregateCosts, type ModelTier } from './cost.js';
