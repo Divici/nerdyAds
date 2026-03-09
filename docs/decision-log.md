@@ -614,3 +614,41 @@ These decisions are explicitly provisional. They were made without first-party V
 **Conclusion:** The Gemini 2.5 Flash writer is strong enough to produce high-quality SAT test prep ad copy without competitor pattern guidance. Patterns remain useful as context enrichment but are not load-bearing for quality. The editor pipeline works correctly but rarely triggers because the writer's baseline quality exceeds thresholds.
 
 **Implication for Phase 8:** Proceed with patterns enabled (they don't hurt and add variety) but don't rely on them as a quality mechanism. Consider raising threshold to 9.0+ in a future experiment to actually exercise the editor loop.
+
+---
+
+## Stress Test: Adversarial Briefs + Strict Evaluator
+
+**Date:** 2026-03-09
+**Context:** Previous runs showed 100% acceptance with zero editor work. Needed to prove the editor loop adds value and the system can handle difficult briefs.
+
+### What Changed
+1. **Adversarial briefs** (`data/adversarial-briefs.json`): 5 briefs designed to be hard — humor tone, guilt-to-empowerment transitions, skepticism framing, 100-char primary text limits, defiant tone, FOMO without naming competitors, no exclamation marks, mandatory specific word counts.
+2. **Strict evaluator** (`src/scripts/stress-test.ts`): Augmented evaluator prompt with penalties for generic copy, constraint violations, clichés, weak CTAs, and inflated scores. Explicitly instructs that most ads should score 6-8 and 9+ should be rare.
+3. **Threshold 9.0**: Forces the editor to work on nearly every ad.
+
+### Results (21 ads: 5 adversarial briefs + 2 normal, 3 ads each)
+- **Acceptance rate: 42.9%** (9/21) — down from 100%
+- **Ads needing editing: 21/21** (100%) — zero passed first eval
+- **Ads that improved: 20/21** (95%) — editor loop proven
+- **Average improvement: +0.81 points** per ad
+- **Ads accepted first try: 0/21** — strict evaluator works
+- **Cost: $0.27** (vs $0.03-0.05 for easy runs)
+
+### Growth Trajectories (examples)
+- `7.3 → 8.7 → 8.3 → 9.0` (+1.65) — adv-005, comparison brief
+- `7.7 → 9.2` (+1.50) — adv-004, defiance brief, accepted after 1 cycle
+- `8.2 → 7.5 → 7.2 → 9.1` (+0.85) — adv-004, dipped then recovered
+- `8.3 → 8.4 → 8.4 → 7.5` (-0.85) — brief-001, regressed (editor over-corrected)
+
+### Key Findings
+1. **CTA is the #1 bottleneck**: 14/21 ads had CTA as weakest dimension. Strict evaluator caps generic "Learn More" at 6.
+2. **Editor regressions are real**: ~5% of ads got worse after editing, usually when the editor adds specificity to one dimension but introduces awkwardness in another.
+3. **Hardest brief type**: Guilt-to-empowerment (adv-002) — 0/3 accepted. The emotional pivot within a short ad is genuinely hard.
+4. **Easiest hard brief**: Skepticism (adv-003) — 3/3 accepted. Honest, transparent copy actually scores well.
+5. **Normal briefs are harder under strict eval**: brief-001 went 0/3 accepted — the generic aspiration copy gets penalized for being swappable to any brand.
+
+### Decisions
+- **D-019: Stress test proves editor value.** The iterate-improve loop is not just scaffolding — it demonstrably raises ad quality by ~0.8 points on average. The system architecture (evaluator-led, max 3 cycles) is validated.
+- **D-020: Strict evaluator should be the default for production runs.** The lenient evaluator produces 100% acceptance which isn't useful. The strict addendum produces realistic score distributions and forces meaningful iteration.
+- **D-021: CTA improvement is the highest-leverage editor optimization.** 67% of initial weaknesses are CTA-related. A CTA-specific editor prompt variant could improve efficiency.
