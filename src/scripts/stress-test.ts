@@ -204,8 +204,8 @@ async function main() {
       generateBatch: (b, count, p) => writer.generateBatch(b, count, p),
       evaluate: (ad, b) => strictEvaluator.evaluate(ad, b),
       improve: (ad, evaluation, b) => editor.improve(ad, evaluation, b),
-      checkThreshold: (score) => {
-        const passes = ratchet.check(score);
+      checkThreshold: (score, dimensionScores) => {
+        const passes = ratchet.check(score, dimensionScores);
         if (passes) ratchet.record(score);
         return passes;
       },

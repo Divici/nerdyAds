@@ -42,8 +42,8 @@ export async function processBrief(
     generateBatch: (b, count, patterns) => writer.generateBatch(b, count, patterns),
     evaluate: (ad, b) => evaluator.evaluate(ad, b),
     improve: (ad, evaluation, b) => editor.improve(ad, evaluation, b),
-    checkThreshold: (score) => {
-      const passes = ratchet.check(score);
+    checkThreshold: (score, dimensionScores) => {
+      const passes = ratchet.check(score, dimensionScores);
       if (passes) ratchet.record(score);
       return passes;
     },

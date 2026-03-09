@@ -2,7 +2,7 @@ import type { Ad } from '../types/ad.js';
 import type { Brief } from '../types/brief.js';
 import type { AdWithHistory } from '../types/pipeline.js';
 import type { CompetitorPattern } from '../types/patterns.js';
-import type { Evaluation } from '../types/evaluation.js';
+import type { Evaluation, DimensionScore } from '../types/evaluation.js';
 import { iterateAd, type IterationDeps } from './iteration-loop.js';
 import { logger } from '../utils/logger.js';
 
@@ -10,7 +10,7 @@ export interface BatchRunnerDeps {
   generateBatch: (brief: Brief, count: number, patterns?: CompetitorPattern) => Promise<Ad[]>;
   evaluate: (ad: Ad, brief?: Brief) => Promise<Evaluation>;
   improve: (ad: Ad, evaluation: Evaluation, brief?: Brief) => Promise<Ad>;
-  checkThreshold: (score: number) => boolean;
+  checkThreshold: (score: number, dimensionScores?: DimensionScore[]) => boolean;
   maxCycles: number;
 }
 

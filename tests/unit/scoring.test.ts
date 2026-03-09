@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { computeWeightedScore, computeConfidence, identifyWeakest } from '../../src/evaluate/scoring.js';
+import { computeWeightedScore, computeConfidence, identifyWeakest, allDimensionsAboveFloor } from '../../src/evaluate/scoring.js';
 import type { DimensionScore } from '../../src/types/evaluation.js';
 
 function makeScores(overrides: Partial<Record<string, { score: number; confidence: number }>> = {}): DimensionScore[] {
@@ -123,6 +123,43 @@ describe('computeConfidence', () => {
       brand_voice: { score: 7, confidence: 4 },
     });
     expect(computeConfidence(scores)).toBe('medium');
+  });
+});
+
+describe('allDimensionsAboveFloor', () => {
+  it('returns true when all dimensions are at or above the floor', () => {
+    const scores = makeScores(); // all 7s
+    expect(allDimensionsAboveFloor(scores)).toBe(true);
+  });
+
+  it('returns false when any dimension is below the floor', () => {
+    const scores = makeScores({
+      cta: { score: 4, confidence: 7 },
+    });
+    expect(allDimensionsAboveFloor(scores)).toBe(false);
+  });
+
+  it('returns true when a dimension is exactly at the floor (5)', () => {
+    const scores = makeScores({
+      brand_voice: { score: 5, confidence: 7 },
+    });
+    expect(allDimensionsAboveFloor(scores)).toBe(true);
+  });
+
+  it('returns false when multiple dimensions are below the floor', () => {
+    const scores = makeScores({
+      cta: { score: 3, confidence: 7 },
+      brand_voice: { score: 2, confidence: 7 },
+    });
+    expect(allDimensionsAboveFloor(scores)).toBe(false);
+  });
+
+  it('accepts custom floor value', () => {
+    const scores = makeScores({
+      cta: { score: 6, confidence: 7 },
+    });
+    expect(allDimensionsAboveFloor(scores, 7)).toBe(false);
+    expect(allDimensionsAboveFloor(scores, 6)).toBe(true);
   });
 });
 

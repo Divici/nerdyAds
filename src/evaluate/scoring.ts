@@ -1,5 +1,6 @@
 import type { DimensionScore, DimensionName, ConfidenceLevel } from '../types/evaluation.js';
 import { DIMENSION_WEIGHTS } from '../config/weights.js';
+import { MIN_DIMENSION_SCORE } from '../config/thresholds.js';
 
 /**
  * Compute weighted score from 5 dimension scores using DIMENSION_WEIGHTS.
@@ -22,6 +23,18 @@ export function computeConfidence(scores: DimensionScore[]): ConfidenceLevel {
   if (avg >= 7) return 'high';
   if (avg >= 4) return 'medium';
   return 'low';
+}
+
+/**
+ * Check that every dimension score meets a minimum floor.
+ * Default floor is MIN_DIMENSION_SCORE (5). An ad with any dimension
+ * below the floor should not be accepted regardless of weighted average.
+ */
+export function allDimensionsAboveFloor(
+  scores: DimensionScore[],
+  floor: number = MIN_DIMENSION_SCORE,
+): boolean {
+  return scores.every((s) => s.score >= floor);
 }
 
 /**

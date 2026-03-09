@@ -1,5 +1,5 @@
 import type { Ad } from '../types/ad.js';
-import type { Evaluation } from '../types/evaluation.js';
+import type { Evaluation, DimensionScore } from '../types/evaluation.js';
 import type { Brief } from '../types/brief.js';
 import type { AdWithHistory } from '../types/pipeline.js';
 import { logger } from '../utils/logger.js';
@@ -8,7 +8,7 @@ import { logger } from '../utils/logger.js';
 export interface IterationDeps {
   evaluate: (ad: Ad, brief?: Brief) => Promise<Evaluation>;
   improve: (ad: Ad, evaluation: Evaluation, brief?: Brief) => Promise<Ad>;
-  checkThreshold: (score: number) => boolean;
+  checkThreshold: (score: number, dimensionScores?: DimensionScore[]) => boolean;
   maxCycles: number;
 }
 
@@ -29,7 +29,7 @@ export async function iterateAd(
   const firstEval = await deps.evaluate(currentAd, brief);
   evaluations.push(firstEval);
 
-  if (deps.checkThreshold(firstEval.weightedScore)) {
+  if (deps.checkThreshold(firstEval.weightedScore, firstEval.scores)) {
     logger.info('Ad accepted on first evaluation', {
       adId: currentAd.id,
       score: firstEval.weightedScore,
@@ -46,7 +46,7 @@ export async function iterateAd(
     const evaluation = await deps.evaluate(currentAd, brief);
     evaluations.push(evaluation);
 
-    if (deps.checkThreshold(evaluation.weightedScore)) {
+    if (deps.checkThreshold(evaluation.weightedScore, evaluation.scores)) {
       logger.info('Ad accepted after improvement', {
         adId: currentAd.id,
         score: evaluation.weightedScore,

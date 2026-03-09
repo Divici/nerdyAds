@@ -1,5 +1,23 @@
 import { describe, it, expect } from 'vitest';
 import { meetsThreshold, QualityRatchet } from '../../src/evaluate/threshold.js';
+import type { DimensionScore } from '../../src/types/evaluation.js';
+
+function makeScores(overrides: Partial<Record<string, number>> = {}): DimensionScore[] {
+  const defaults: Record<string, number> = {
+    clarity: 7,
+    value_proposition: 7,
+    emotional_resonance: 7,
+    cta: 7,
+    brand_voice: 7,
+  };
+  const merged = { ...defaults, ...overrides };
+  return Object.entries(merged).map(([dimension, score]) => ({
+    dimension: dimension as DimensionScore['dimension'],
+    score,
+    rationale: `Rationale for ${dimension}`,
+    confidence: 8,
+  }));
+}
 
 describe('meetsThreshold', () => {
   it('accepts score at exactly 7.0 with no running average', () => {
@@ -77,5 +95,31 @@ describe('QualityRatchet', () => {
     expect(ratchet.getAverage()).toBeUndefined();
     ratchet.record(8.0);
     expect(ratchet.getAverage()).toBeCloseTo(8.0, 2);
+  });
+
+  it('rejects ad when weighted score passes but a dimension is below floor', () => {
+    const ratchet = new QualityRatchet();
+    // Weighted score of 7.7 passes the 7.0 threshold,
+    // but brand_voice=2 is below the dimension floor of 5
+    const scores = makeScores({
+      clarity: 10,
+      value_proposition: 10,
+      emotional_resonance: 10,
+      cta: 10,
+      brand_voice: 2,
+    });
+    // Weighted: (10*25 + 10*25 + 10*20 + 10*15 + 2*15) / 100 = 8.8
+    expect(ratchet.check(8.8, scores)).toBe(false);
+  });
+
+  it('accepts ad when weighted score passes and all dimensions are above floor', () => {
+    const ratchet = new QualityRatchet();
+    const scores = makeScores({ cta: 6 });
+    expect(ratchet.check(7.0, scores)).toBe(true);
+  });
+
+  it('accepts ad when no dimension scores provided (backward compat)', () => {
+    const ratchet = new QualityRatchet();
+    expect(ratchet.check(7.0)).toBe(true);
   });
 });

@@ -1,4 +1,6 @@
 import { QUALITY_THRESHOLD, RATCHET_BUFFER } from '../config/thresholds.js';
+import type { DimensionScore } from '../types/evaluation.js';
+import { allDimensionsAboveFloor } from './scoring.js';
 
 /**
  * Check if a weighted score meets the acceptance threshold.
@@ -37,9 +39,14 @@ export class QualityRatchet {
     return Math.max(this.baseThreshold, avg - RATCHET_BUFFER);
   }
 
-  /** Check if a score meets the current dynamic threshold. */
-  check(score: number): boolean {
-    return score >= this.getThreshold();
+  /**
+   * Check if a score meets the current dynamic threshold AND
+   * all individual dimensions are above the minimum floor.
+   */
+  check(score: number, dimensionScores?: DimensionScore[]): boolean {
+    if (score < this.getThreshold()) return false;
+    if (dimensionScores && !allDimensionsAboveFloor(dimensionScores)) return false;
+    return true;
   }
 
   /** Get the running average, or undefined if no scores recorded. */

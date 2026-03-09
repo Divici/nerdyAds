@@ -7,6 +7,9 @@ export const MAX_CYCLES = 3;
 /** Buffer below running average for quality ratchet. */
 export const RATCHET_BUFFER = 0.5;
 
+/** Minimum score any single dimension must meet for acceptance. */
+export const MIN_DIMENSION_SCORE = 5;
+
 /** Minimum possible score per dimension. */
 export const MIN_SCORE = 1;
 
