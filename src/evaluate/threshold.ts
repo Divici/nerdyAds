@@ -19,6 +19,11 @@ export function meetsThreshold(weightedScore: number, runningAvg?: number): bool
  */
 export class QualityRatchet {
   private scores: number[] = [];
+  private baseThreshold: number;
+
+  constructor(baseThreshold?: number) {
+    this.baseThreshold = baseThreshold ?? QUALITY_THRESHOLD;
+  }
 
   /** Record an accepted ad's weighted score. */
   record(score: number): void {
@@ -28,8 +33,8 @@ export class QualityRatchet {
   /** Get the current dynamic threshold. */
   getThreshold(): number {
     const avg = this.getAverage();
-    if (avg === undefined) return QUALITY_THRESHOLD;
-    return Math.max(QUALITY_THRESHOLD, avg - RATCHET_BUFFER);
+    if (avg === undefined) return this.baseThreshold;
+    return Math.max(this.baseThreshold, avg - RATCHET_BUFFER);
   }
 
   /** Check if a score meets the current dynamic threshold. */

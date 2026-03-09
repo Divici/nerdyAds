@@ -11,7 +11,7 @@ import type { Brief } from '../types/brief.js';
 import type { CompetitorPattern } from '../types/patterns.js';
 import { processAllBriefs } from '../pipeline/orchestrator.js';
 
-function parseArg(name: string, defaultVal: number): number {
+function parseArgInt(name: string, defaultVal: number): number {
   const arg = process.argv.find((a) => a.startsWith(`--${name}=`));
   if (arg) {
     const val = parseInt(arg.split('=')[1], 10);
@@ -20,12 +20,22 @@ function parseArg(name: string, defaultVal: number): number {
   return defaultVal;
 }
 
-async function main() {
-  const briefCount = parseArg('briefs', 3);
-  const adsPerBrief = parseArg('ads', 5);
+function parseArgFloat(name: string): number | undefined {
+  const arg = process.argv.find((a) => a.startsWith(`--${name}=`));
+  if (arg) {
+    const val = parseFloat(arg.split('=')[1]);
+    return isNaN(val) ? undefined : val;
+  }
+  return undefined;
+}
 
-  console.log('=== nerdyAds Pipeline — First Run ===\n');
-  console.log(`Briefs: ${briefCount}, Ads per brief: ${adsPerBrief}\n`);
+async function main() {
+  const briefCount = parseArgInt('briefs', 3);
+  const adsPerBrief = parseArgInt('ads', 5);
+  const threshold = parseArgFloat('threshold');
+
+  console.log('=== nerdyAds Pipeline ===\n');
+  console.log(`Briefs: ${briefCount}, Ads per brief: ${adsPerBrief}, Threshold: ${threshold ?? '7.0 (default)'}\n`);
 
   // Load briefs
   const rawBriefs = await readFile(path.resolve('data/briefs.json'), 'utf8');
@@ -49,6 +59,7 @@ async function main() {
     adsPerBrief,
     patterns,
     outputDir: 'data/output',
+    threshold,
   });
 
   // Results

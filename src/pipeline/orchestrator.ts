@@ -22,6 +22,8 @@ export interface OrchestratorOptions {
   outputDir?: string;
   /** Override default run ID (useful for reproducibility). */
   runId?: string;
+  /** Override base quality threshold (default: 7.0 from config). */
+  threshold?: number;
 }
 
 /**
@@ -34,7 +36,7 @@ export async function processBrief(
   const writer = new WriterAgent();
   const evaluator = new EvaluatorAgent();
   const editor = new EditorAgent();
-  const ratchet = new QualityRatchet();
+  const ratchet = new QualityRatchet(options.threshold);
 
   const result = await runBatch(brief, options.adsPerBrief ?? 5, {
     generateBatch: (b, count, patterns) => writer.generateBatch(b, count, patterns),
@@ -65,7 +67,7 @@ export async function processAllBriefs(
   const writer = new WriterAgent();
   const evaluator = new EvaluatorAgent();
   const editor = new EditorAgent();
-  const ratchet = new QualityRatchet();
+  const ratchet = new QualityRatchet(options.threshold);
   const tracker = new MetricsTracker();
 
   logger.info('Pipeline starting', { runId, briefCount: briefs.length });
