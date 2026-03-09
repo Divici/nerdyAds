@@ -63,6 +63,13 @@ Respond with ONLY valid JSON matching this exact schema:
   ]
 }`;
 
+export interface CalibrationAnchor {
+  label: 'strong' | 'weak' | 'borderline';
+  primaryText: string;
+  headline: string;
+  expectedScoreRange: string;
+}
+
 export function buildEvaluatorUserPrompt(ad: {
   primaryText: string;
   headline: string;
@@ -73,8 +80,19 @@ export function buildEvaluatorUserPrompt(ad: {
   campaignGoal: string;
   emotionalAngle: string;
   keyMessage: string;
-}): string {
-  let prompt = `## Ad to Evaluate
+}, calibrationAnchors?: CalibrationAnchor[]): string {
+  let prompt = '';
+
+  if (calibrationAnchors && calibrationAnchors.length > 0) {
+    prompt += `## Calibration Reference\nUse these examples to anchor your scoring:\n\n`;
+    for (const anchor of calibrationAnchors) {
+      prompt += `### ${anchor.label.toUpperCase()} example (expected: ${anchor.expectedScoreRange})\n`;
+      prompt += `- Primary Text: "${anchor.primaryText}"\n`;
+      prompt += `- Headline: "${anchor.headline}"\n\n`;
+    }
+  }
+
+  prompt += `## Ad to Evaluate
 
 **Primary Text:** ${ad.primaryText}
 **Headline:** ${ad.headline}

@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { EvaluatorAgent } from '../../src/agents/evaluator.js';
 import type { Ad } from '../../src/types/ad.js';
 import type { Brief } from '../../src/types/brief.js';
+import type { CalibrationAnchor } from '../../src/config/prompts.js';
 
 // Mock the gemini client
 vi.mock('../../src/utils/gemini-client.js', () => ({
@@ -173,5 +174,33 @@ describe('EvaluatorAgent', () => {
     mockCallGemini.mockResolvedValueOnce(makeMockGeminiResponse(incompleteScores));
 
     await expect(evaluator.evaluate(MOCK_AD)).rejects.toThrow();
+  });
+
+  it('includes calibration anchors in prompt when provided', async () => {
+    mockCallGemini.mockResolvedValueOnce(makeMockGeminiResponse(GOOD_SCORES));
+
+    const anchors: CalibrationAnchor[] = [
+      {
+        label: 'strong',
+        primaryText: 'A strong example ad text.',
+        headline: 'Strong Headline',
+        expectedScoreRange: '8-9',
+      },
+      {
+        label: 'weak',
+        primaryText: 'A weak example ad text.',
+        headline: 'Weak Headline',
+        expectedScoreRange: '3-4',
+      },
+    ];
+
+    await evaluator.evaluate(MOCK_AD, undefined, anchors);
+
+    const [, , userPrompt] = mockCallGemini.mock.calls[0];
+    expect(userPrompt).toContain('Calibration Reference');
+    expect(userPrompt).toContain('STRONG example');
+    expect(userPrompt).toContain('WEAK example');
+    expect(userPrompt).toContain('A strong example ad text.');
+    expect(userPrompt).toContain('8-9');
   });
 });
