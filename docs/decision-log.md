@@ -597,3 +597,20 @@ These decisions are explicitly provisional. They were made without first-party V
 - **Thinking token overhead**: Gemini 2.5 models consume thinking tokens that don't appear in the output but count toward costs and latency. Budget $0.005-0.01 per evaluation.
 - **Rate limiting conservative**: 100ms min delay + 5 concurrent is well within Gemini API limits. Could increase concurrency for faster runs.
 - **Dimension coupling during editing**: When the editor improves emotional_resonance, other dimensions can shift slightly. Not observed as a regression issue yet.
+
+---
+
+## Post-Phase 7: No-Patterns Experiment
+
+**Date:** 2026-03-09
+**Context:** Added `--no-patterns` flag to test whether competitor patterns actually improve ad quality. Ran with threshold=8.0 (higher than default 7.0) and no patterns on 2 briefs to stress-test the editor.
+
+**Results:**
+- No-patterns run: 10/10 accepted (100%), avg score 8.78, cost $0.03
+- With-patterns (Phase 7): 15/15 accepted (100%), avg score 8.59, cost $0.05
+- Editor got zero work in both runs — all ads passed on first evaluation
+- Removing patterns did NOT degrade quality; scores were actually slightly higher (likely noise)
+
+**Conclusion:** The Gemini 2.5 Flash writer is strong enough to produce high-quality SAT test prep ad copy without competitor pattern guidance. Patterns remain useful as context enrichment but are not load-bearing for quality. The editor pipeline works correctly but rarely triggers because the writer's baseline quality exceeds thresholds.
+
+**Implication for Phase 8:** Proceed with patterns enabled (they don't hurt and add variety) but don't rely on them as a quality mechanism. Consider raising threshold to 9.0+ in a future experiment to actually exercise the editor loop.

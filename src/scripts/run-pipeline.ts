@@ -2,7 +2,7 @@
  * Phase 7: Run the full pipeline on a subset of briefs (first run).
  * Defaults to the first 3 briefs. Override with --briefs=5 for more.
  *
- * Usage: npx tsx src/scripts/run-pipeline.ts [--briefs=N] [--ads=N]
+ * Usage: npx tsx src/scripts/run-pipeline.ts [--briefs=N] [--ads=N] [--threshold=N] [--no-patterns]
  */
 import 'dotenv/config';
 import { readFile } from 'node:fs/promises';
@@ -29,13 +29,18 @@ function parseArgFloat(name: string): number | undefined {
   return undefined;
 }
 
+function hasFlag(name: string): boolean {
+  return process.argv.includes(`--${name}`);
+}
+
 async function main() {
   const briefCount = parseArgInt('briefs', 3);
   const adsPerBrief = parseArgInt('ads', 5);
   const threshold = parseArgFloat('threshold');
+  const noPatterns = hasFlag('no-patterns');
 
   console.log('=== nerdyAds Pipeline ===\n');
-  console.log(`Briefs: ${briefCount}, Ads per brief: ${adsPerBrief}, Threshold: ${threshold ?? '7.0 (default)'}\n`);
+  console.log(`Briefs: ${briefCount}, Ads per brief: ${adsPerBrief}, Threshold: ${threshold ?? '7.0 (default)'}, Patterns: ${noPatterns ? 'DISABLED' : 'enabled'}\n`);
 
   // Load briefs
   const rawBriefs = await readFile(path.resolve('data/briefs.json'), 'utf8');
@@ -43,15 +48,19 @@ async function main() {
   const briefs = allBriefs.slice(0, briefCount);
   console.log(`Using briefs: ${briefs.map((b) => b.id).join(', ')}\n`);
 
-  // Load patterns (if available)
+  // Load patterns (if available and not disabled)
   let patterns: CompetitorPattern | undefined;
-  try {
-    const rawPatterns = await readFile(path.resolve('data/reference/patterns.json'), 'utf8');
-    const cached = JSON.parse(rawPatterns);
-    patterns = cached.pattern ?? cached;
-    console.log('Loaded competitor patterns from cache\n');
-  } catch {
-    console.log('No cached patterns found — running without competitor insights\n');
+  if (noPatterns) {
+    console.log('Patterns DISABLED via --no-patterns flag\n');
+  } else {
+    try {
+      const rawPatterns = await readFile(path.resolve('data/reference/patterns.json'), 'utf8');
+      const cached = JSON.parse(rawPatterns);
+      patterns = cached.pattern ?? cached;
+      console.log('Loaded competitor patterns from cache\n');
+    } catch {
+      console.log('No cached patterns found — running without competitor insights\n');
+    }
   }
 
   // Run pipeline
@@ -74,7 +83,7 @@ async function main() {
 
   // Per-brief breakdown
   console.log('\n--- Per-Brief Breakdown ---');
-  for (const briefResult of result.briefs) {
+  for (const briefResult of result.briefs ?? []) {
     const accepted = briefResult.ads?.filter((a) => a.accepted).length ?? 0;
     const total = briefResult.ads?.length ?? 0;
     const avgScore = briefResult.metrics?.averageScore ?? 0;
