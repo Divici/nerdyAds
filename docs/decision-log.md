@@ -103,7 +103,7 @@ This is a living document tracking every major decision, why it was made, what w
 
 **Tradeoffs:**
 - Pro: Each role gets exactly what it needs, nothing more — controls cost
-- Pro: Easy to recalibrate — swap few-shot examples when reference ads arrive
+- Pro: Easy to recalibrate — swap few-shot examples if real reference ads become available (see D-018)
 - Pro: Defensible answer to the brief's ambiguous question
 - Con: More prompt templates to design and maintain
 - Con: Requires thinking carefully about what information helps each role
@@ -200,7 +200,7 @@ This is a living document tracking every major decision, why it was made, what w
 - Pro: ~30 minutes to implement, directly earns bonus points
 - Pro: Easy to explain: "the system raises its own standards as it proves it can do better"
 - Con: Early high-scoring ads can push the ratchet up faster than sustainable
-- Con: Reset needed when reference ads arrive and thresholds are recalibrated
+- Con: Threshold baseline is self-referential without first-party performance data (see D-018)
 
 ---
 
@@ -241,7 +241,7 @@ This is a living document tracking every major decision, why it was made, what w
 **Tradeoffs:**
 - Pro: Best ROI for time — automated analysis without fragile scraping
 - Pro: Extracted patterns become few-shot context for the Writer agent
-- Pro: When Varsity reference ads arrive, same extraction pipeline runs on them for comparison
+- Pro: Same extraction pipeline can run on Varsity Tutors ads if they become available (see D-018)
 - Con: Still requires ~1 hour of manual ad collection
 
 **Why not full scraping:** "I automated pattern extraction, not data collection, because the Meta Ad Library has no public API and scraping it would be fragile and low-ROI for a 2-day build."
@@ -267,7 +267,7 @@ This is a living document tracking every major decision, why it was made, what w
 
 ---
 
-### D-013: Dimension Weights — Provisional Until Reference Ads Arrive
+### D-013: Dimension Weights — Provisional (No First-Party Data)
 
 **Date:** 2026-03-08
 **Context:** The brief lists dimension weighting as an intentionally ambiguous decision. Weights should reflect what matters most for SAT prep ads on Meta.
@@ -281,7 +281,7 @@ This is a living document tracking every major decision, why it was made, what w
 
 **Rationale:** For scroll-stopping paid social ads, immediate comprehension (clarity) and compelling benefit (value prop) are the first gates. Emotional connection drives action. CTA and brand voice are important but secondary — a clear, emotionally resonant ad with a decent CTA outperforms a generic ad with a perfect button label.
 
-**These weights will be updated** when first-party Varsity Tutors reference ads arrive and we can calibrate against real performance data.
+**These weights are provisional** — no first-party Varsity Tutors reference ads or performance data were provided (see D-018). Weights are based on general paid social best practices for SAT prep ads, not validated against real conversion data.
 
 ---
 
@@ -360,9 +360,40 @@ This is a living document tracking every major decision, why it was made, what w
 
 ---
 
-## Provisional Decisions (To Be Updated)
+### D-018: No First-Party Reference Ads — Self-Constructed Calibration
 
-These decisions are explicitly provisional and will be revisited when first-party Varsity Tutors reference ads arrive:
+**Date:** 2026-03-09
+**Context:** The brief originally stated that real Varsity Tutors ads and performance data would be provided via the Gauntlet/Nerdy Slack channel. This did not happen. No first-party reference ads, performance metrics, or brand guidelines were ever provided.
+
+**Decision:** Proceed with entirely self-constructed calibration:
+1. **Competitor ads** from Meta Ad Library (Princeton Review, Chegg, expanding to Kaplan + Khan Academy) as the primary reference material
+2. **Synthetic calibration set** (strong/weak/borderline Varsity-style ads) labeled by our own judgment
+3. **Brand voice** inferred from Varsity Tutors' public website and marketing, not from internal creative guidelines
+4. System designed with recalibration hooks so real data can be plugged in later if it becomes available
+
+**Impact on the system:**
+- Evaluator brand voice scoring is the weakest dimension — no ground truth for what "sounds like Varsity Tutors"
+- Calibration tiers (strong/weak/borderline) are our judgment calls, not validated against real performance data
+- Quality ratchet baseline is self-referential (improves relative to itself, not against a known-good benchmark)
+- Dimension weights (D-013) remain provisional — we can't verify that our weighting matches what actually converts
+
+**What we're doing to mitigate:**
+- Heavy use of competitor ads to ground the evaluator in real market patterns
+- Expanding competitor coverage beyond Princeton Review + Chegg (adding Kaplan + Khan Academy)
+- Documenting this constraint honestly in limitations.md
+- Designing all calibration as swappable — if real data arrives, it plugs into existing interfaces
+
+**Tradeoffs:**
+- Pro: Unblocked — we can build and ship without waiting for data that may never come
+- Pro: Forces rigorous self-assessment (we can't hide behind "calibrated against real data")
+- Con: Brand voice evaluation is essentially guesswork
+- Con: No way to validate that our "strong" calibration examples would actually perform well as real ads
+
+---
+
+## Provisional Decisions
+
+These decisions are explicitly provisional. They were made without first-party Varsity Tutors reference ads (see D-018) and would benefit from recalibration if real performance data becomes available:
 
 - Dimension weights (D-013)
 - Publishability threshold strictness (currently 7.0)

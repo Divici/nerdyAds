@@ -72,10 +72,13 @@
 
 ### Phase 7: First Run + Calibration (3.5h)
 - Run Researcher on competitor ads → save patterns.json
-- Create calibration examples (strong/weak/borderline in data/calibration/)
-- Run evaluator on calibration set — verify ranking
+- Expand competitor ads to include Kaplan + Khan Academy (currently only Princeton Review + Chegg)
+- Create calibration examples entirely self-constructed: synthetic strong/weak/borderline ads in data/calibration/
+- Calibration is based on our own judgment — no first-party Varsity Tutors reference ads available
+- Run evaluator on calibration set — verify ranking (strong > borderline > weak)
 - Run full pipeline on 2-3 briefs
 - Tune prompts based on output quality
+- Create D-018 decision log entry documenting the no-reference-ads constraint and its impact
 - Update decision-log.md with observations
 
 ---
@@ -85,6 +88,7 @@
 ### Phase 8: Full-Scale Generation (3h)
 - Run processAllBriefs on all 10 briefs (target: 50-80 initial generations)
 - Monitor acceptance rate, adjust if < 60%
+- Validate quality against our synthetic calibration dataset (no first-party reference ads)
 - Snapshot all results to data/output/{runId}/
 - Compute final metrics
 
