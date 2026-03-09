@@ -391,6 +391,90 @@ This is a living document tracking every major decision, why it was made, what w
 
 ---
 
+## Phase 5 Decisions
+
+### D-019: Agent Model Assignment — Writer/Editor on Flash, Researcher on Pro
+
+**Date:** 2026-03-09
+**Context:** Phase 5 builds three new agents. Each needs a model assignment that balances cost and capability.
+
+**Decision:**
+- **Writer** → Gemini Flash (cheap, creative exploration — we want lots of variants)
+- **Editor** → Gemini Flash (targeted improvements on existing copy, doesn't need deep reasoning)
+- **Researcher** → Gemini Pro (deeper analysis of competitor patterns, runs once per pipeline execution)
+
+**Rationale:** The Researcher runs once to extract patterns from 24 competitor ads — paying Pro rates for one call is fine. Writer and Editor run many times per pipeline (5-8 ads × up to 3 cycles each = 15-24 calls), so Flash keeps costs down. This extends the same philosophy as D-003 (Flash for generation, Pro for evaluation).
+
+**Tradeoffs:**
+- Pro: Researcher on Pro produces higher-quality pattern extraction from competitor ads
+- Pro: Writer/Editor on Flash keeps per-ad costs low during the generate-evaluate-improve loop
+- Con: Flash editor may make weaker improvements than Pro would — worth monitoring during calibration
+
+---
+
+### D-020: Editor Receives All Scores + Brief Context (Not Just Weakest Dimension)
+
+**Date:** 2026-03-09
+**Context:** The editor needs to improve a weak dimension without regressing strong ones. It also needs to know the campaign context to keep improvements audience-appropriate.
+
+**Decision:** The editor prompt includes:
+1. The full ad text
+2. ALL 5 dimension scores with rationales (not just the weakest)
+3. The weakest dimension highlighted with `← WEAKEST` marker
+4. The original brief (target audience, campaign goal, emotional angle, key message)
+
+**Alternatives considered:**
+- Only weakest dimension: simpler prompt but editor has no context for what NOT to break
+- No brief context: editor might add parent-focused emotional language to a student-targeted ad
+
+**Why this matters:** The brief's evaluation criteria asks "how do you prevent the feedback loop from optimizing one dimension at the expense of others?" This is our answer — the editor sees everything.
+
+---
+
+### D-021: Batch Cost Splitting — Per-Ad Attribution
+
+**Date:** 2026-03-09
+**Context:** When the writer generates 5 ads in a single API call, the token cost should be attributed accurately to each ad for performance-per-token tracking.
+
+**Decision:** Split tokensIn, tokensOut, and costUsd evenly across the number of ads produced in a batch call. Each ad reports its share of the total cost.
+
+**Why:** The brief's north star metric is "performance per token." If we attribute the full call cost to every ad, we inflate the cost of batch generation by 5x, which would make batching look worse than sequential generation when it's actually more efficient. Accurate attribution matters for honest metrics.
+
+---
+
+### D-022: Writer Prompt — Meta-Specific Patterns Baked In
+
+**Date:** 2026-03-09
+**Context:** The writer system prompt needs to produce ads that follow proven Meta ad patterns. The Researcher agent can supply competitor patterns, but the writer should know Meta fundamentals even when no researcher output is available.
+
+**Decision:** Added two sections to the writer system prompt:
+1. **"What Works on Meta Right Now"** — authentic > polished, story-driven > feature-list, specific numbers > vague promises, social proof > claims, urgency > open-ended, free trials > paid first step
+2. **"Hook Types to Use"** — question/stat/story/fear hook examples from the brief's starter kit
+3. **CTA-to-funnel matching** — "Learn More" for awareness, "Sign Up"/"Get Started" for conversion
+
+**Rationale:** These patterns come directly from the project brief. Encoding them in the system prompt means every generated ad has this context, even without the Researcher. The Researcher adds competitor-specific patterns on top.
+
+---
+
+### D-023: 10 Briefs Covering Audience × Goal × Angle Matrix
+
+**Date:** 2026-03-09
+**Context:** The implementation plan calls for 10 briefs × 5-8 ads each = 50+ total. Briefs need variety across target audience, campaign goal, and emotional angle to demonstrate the system handles different campaign types.
+
+**Decision:** Created 10 briefs covering:
+- **Audiences:** student (4), parent (4), both (2)
+- **Goals:** conversion (5), awareness (3), engagement (2)
+- **Angles:** aspiration (3), anxiety (2), social_proof (2), urgency (2), relief (1)
+- **Constraints:** 2 briefs include constraints (specific stats, limited availability) to test constraint adherence
+
+**Design choices:**
+- Heavier on conversion (5/10) because the brief emphasizes paid social performance
+- Parents and students split evenly because both are primary audiences per the brief
+- Two briefs have explicit constraints to test whether the writer respects them
+- Key messages are specific and actionable — not vague ("expert tutors" → "1-on-1 expert SAT tutors with personalized prep plan")
+
+---
+
 ## Provisional Decisions
 
 These decisions are explicitly provisional. They were made without first-party Varsity Tutors reference ads (see D-018) and would benefit from recalibration if real performance data becomes available:
