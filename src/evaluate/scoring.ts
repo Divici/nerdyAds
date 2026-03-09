@@ -26,14 +26,14 @@ export function computeConfidence(scores: DimensionScore[]): ConfidenceLevel {
 
 /**
  * Identify the weakest dimension (lowest score).
- * Returns the dimension name. On tie, returns the first encountered.
+ * Returns the full DimensionScore object. On tie, returns the first encountered.
  */
-export function identifyWeakest(scores: DimensionScore[]): DimensionName {
+export function identifyWeakest(scores: DimensionScore[]): DimensionScore {
   let weakest = scores[0];
   for (let i = 1; i < scores.length; i++) {
     if (scores[i].score < weakest.score) {
       weakest = scores[i];
     }
   }
-  return weakest.dimension;
+  return weakest;
 }

@@ -127,11 +127,15 @@ describe('computeConfidence', () => {
 });
 
 describe('identifyWeakest', () => {
-  it('returns the dimension with the lowest score', () => {
+  it('returns the full DimensionScore object for the weakest dimension', () => {
     const scores = makeScores({
       cta: { score: 3, confidence: 7 },
     });
-    expect(identifyWeakest(scores)).toBe('cta');
+    const weakest = identifyWeakest(scores);
+    expect(weakest.dimension).toBe('cta');
+    expect(weakest.score).toBe(3);
+    expect(weakest.rationale).toBeDefined();
+    expect(weakest.confidence).toBe(7);
   });
 
   it('returns first lowest when there is a tie', () => {
@@ -142,7 +146,8 @@ describe('identifyWeakest', () => {
     });
     const weakest = identifyWeakest(scores);
     // Should return one of the tied dimensions
-    expect(['clarity', 'brand_voice']).toContain(weakest);
+    expect(['clarity', 'brand_voice']).toContain(weakest.dimension);
+    expect(weakest.score).toBe(3);
   });
 
   it('identifies weakest among otherwise strong scores', () => {
@@ -153,6 +158,6 @@ describe('identifyWeakest', () => {
       cta: { score: 9, confidence: 8 },
       brand_voice: { score: 5, confidence: 8 },
     });
-    expect(identifyWeakest(scores)).toBe('brand_voice');
+    expect(identifyWeakest(scores).dimension).toBe('brand_voice');
   });
 });
