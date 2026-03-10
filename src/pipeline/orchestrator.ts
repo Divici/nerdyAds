@@ -4,6 +4,7 @@ import type { PipelineResult } from '../types/pipeline.js';
 import type { CompetitorPattern } from '../types/patterns.js';
 import { WriterAgent } from '../agents/writer.js';
 import { EvaluatorAgent } from '../agents/evaluator.js';
+import type { ModelRole } from '../utils/gemini-client.js';
 import { EditorAgent } from '../agents/editor.js';
 import { QualityRatchet } from '../evaluate/threshold.js';
 import { MetricsTracker } from '../metrics/tracker.js';
@@ -24,6 +25,8 @@ export interface OrchestratorOptions {
   runId?: string;
   /** Override base quality threshold (default: 7.0 from config). */
   threshold?: number;
+  /** Model for the evaluator agent (default: 'pro'). */
+  evalModel?: ModelRole;
 }
 
 /**
@@ -34,7 +37,7 @@ export async function processBrief(
   options: OrchestratorOptions = {},
 ): Promise<BatchResult> {
   const writer = new WriterAgent();
-  const evaluator = new EvaluatorAgent();
+  const evaluator = new EvaluatorAgent(options.evalModel);
   const editor = new EditorAgent();
   const ratchet = new QualityRatchet(options.threshold);
 
@@ -65,7 +68,7 @@ export async function processAllBriefs(
   const outputDir = options.outputDir ?? 'data/output';
 
   const writer = new WriterAgent();
-  const evaluator = new EvaluatorAgent();
+  const evaluator = new EvaluatorAgent(options.evalModel);
   const editor = new EditorAgent();
   const ratchet = new QualityRatchet(options.threshold);
   const tracker = new MetricsTracker();

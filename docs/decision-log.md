@@ -716,3 +716,36 @@ These decisions are explicitly provisional. They were made without first-party V
 - More realistic simulation of real ad generation (briefs don't include finished copy)
 
 **Files changed:** 13 files across types, prompts, agents, data, and tests.
+
+---
+
+### D-027: Flash Evaluator — Viable at Higher Threshold
+
+**Date:** 2026-03-09
+**Context:** Evaluator (Gemini Pro) accounts for ~81% of pipeline cost. Tested whether Gemini Flash can evaluate reliably by running identical 10-brief pipelines with Pro vs Flash eval.
+
+**Experiment results:**
+
+| Config | Accepted | Avg Score | Editor Used | Cost |
+|---|---|---|---|---|
+| Pro eval @ 8.0 | 50/50 (100%) | 8.62 | ~10/50 (20%) | $0.204 |
+| Flash eval @ 8.0 | 50/50 (100%) | 8.70 | 4/50 (8%) | $0.016 |
+| Flash eval @ 9.0 | 34/50 (68%) | 8.96 | ~46/50 (92%) | $0.043 |
+
+**Decision:** Flash eval at threshold 9.0 is the best configuration. It produces 68% acceptance (within target 65-75%), exercises the editor on nearly every ad, costs 5x less than Pro at 8.0, and outputs a higher-quality ad library (avg 8.96 for accepted ads).
+
+**Key findings:**
+- Flash is slightly more lenient than Pro (~+0.08 avg score at same threshold)
+- Flash is ~2x faster per evaluation
+- Raising threshold from 8.0 to 9.0 compensates for Flash leniency and creates real failures
+- CTA remains #1 weak dimension across all configurations
+- brief-004 (parent/conversion/confidence) is hardest at 9.0 (1/5 accepted); brief-006 and brief-010 easiest (5/5)
+- Evaluator model is now configurable via `--eval-model=flash|pro` CLI flag
+
+**Tradeoffs:**
+- Pro: Flash rationales may be less detailed, potentially degrading Editor targeting over time
+- Pro: Flash may cluster scores more tightly, reducing discrimination between 8.5 and 9.0 quality
+- Con: Slight risk of inconsistency at boundary (8.85 scores getting different pass/fail across runs)
+- Mitigated: The rubric + competitor reference anchors grading, so both models evaluate against the same standard
+
+**Files changed:** `src/agents/evaluator.ts`, `src/pipeline/orchestrator.ts`, `src/scripts/run-pipeline.ts`

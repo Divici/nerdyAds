@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { callGemini } from '../utils/gemini-client.js';
+import { callGemini, type ModelRole } from '../utils/gemini-client.js';
 import { EVALUATOR_SYSTEM_PROMPT, buildEvaluatorUserPrompt, type CalibrationAnchor } from '../config/prompts.js';
 import { DimensionScoreSchema, type Evaluation, type DimensionScore } from '../types/evaluation.js';
 import type { Ad } from '../types/ad.js';
@@ -13,8 +13,14 @@ const EvaluatorResponseSchema = z.object({
 });
 
 export class EvaluatorAgent {
+  private readonly model: ModelRole;
+
+  constructor(model: ModelRole = 'pro') {
+    this.model = model;
+  }
+
   /**
-   * Evaluate an ad across 5 quality dimensions using Gemini Pro.
+   * Evaluate an ad across 5 quality dimensions.
    * Returns a fully computed Evaluation with weighted score and confidence.
    */
   async evaluate(ad: Ad, brief?: Brief, calibrationAnchors?: CalibrationAnchor[]): Promise<Evaluation> {
@@ -38,7 +44,7 @@ export class EvaluatorAgent {
 
     logger.debug('Evaluating ad', { adId: ad.id, hasBrief: !!brief });
 
-    const result = await callGemini('pro', EVALUATOR_SYSTEM_PROMPT, userPrompt, {
+    const result = await callGemini(this.model, EVALUATOR_SYSTEM_PROMPT, userPrompt, {
       jsonMode: true,
     });
 

@@ -2,13 +2,14 @@
  * Phase 7: Run the full pipeline on a subset of briefs (first run).
  * Defaults to the first 3 briefs. Override with --briefs=5 for more.
  *
- * Usage: npx tsx src/scripts/run-pipeline.ts [--briefs=N] [--ads=N] [--threshold=N] [--no-patterns]
+ * Usage: npx tsx src/scripts/run-pipeline.ts [--briefs=N] [--ads=N] [--threshold=N] [--no-patterns] [--eval-model=flash|pro]
  */
 import 'dotenv/config';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import type { Brief } from '../types/brief.js';
 import type { CompetitorPattern } from '../types/patterns.js';
+import type { ModelRole } from '../utils/gemini-client.js';
 import { processAllBriefs } from '../pipeline/orchestrator.js';
 
 function parseArgInt(name: string, defaultVal: number): number {
@@ -38,9 +39,11 @@ async function main() {
   const adsPerBrief = parseArgInt('ads', 5);
   const threshold = parseArgFloat('threshold');
   const noPatterns = hasFlag('no-patterns');
+  const evalModelArg = process.argv.find((a) => a.startsWith('--eval-model='))?.split('=')[1];
+  const evalModel = (evalModelArg === 'flash' || evalModelArg === 'pro') ? evalModelArg as ModelRole : undefined;
 
   console.log('=== nerdyAds Pipeline ===\n');
-  console.log(`Briefs: ${briefCount}, Ads per brief: ${adsPerBrief}, Threshold: ${threshold ?? '7.0 (default)'}, Patterns: ${noPatterns ? 'DISABLED' : 'enabled'}\n`);
+  console.log(`Briefs: ${briefCount}, Ads per brief: ${adsPerBrief}, Threshold: ${threshold ?? '7.0 (default)'}, Patterns: ${noPatterns ? 'DISABLED' : 'enabled'}, Eval model: ${evalModel ?? 'pro (default)'}\n`);
 
   // Load briefs
   const rawBriefs = await readFile(path.resolve('data/briefs.json'), 'utf8');
@@ -69,6 +72,7 @@ async function main() {
     patterns,
     outputDir: 'data/output',
     threshold,
+    evalModel,
   });
 
   // Results
