@@ -152,7 +152,7 @@
 
 ---
 
-### Phase 8.7: Langfuse Observability Integration (1.5h) ← PRIORITY
+### Phase 8.7: Langfuse Observability Integration (1.5h) ✅ COMPLETE
 **Why:** Langfuse is already a dependency (`langfuse@^3`) and the stub exists at `src/utils/langfuse.ts`, but it's never called. The project brief rewards observability, and cost-per-call tracking feeds the performance-per-token metric. Currently on the cut list — this phase promotes it to done.
 
 **What to wire up:**
@@ -171,9 +171,11 @@
 - `src/utils/langfuse.ts` — replace stub with real client + no-op fallback
 - `src/utils/gemini-client.ts` — add span instrumentation around API calls
 - `src/pipeline/orchestrator.ts` — add trace-per-brief wrapping
-- `.env.example` — add `LANGFUSE_SECRET_KEY`, `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_HOST` (optional)
+- `.env.example` — add `LANGFUSE_SECRET_KEY`, `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_BASE_URL` (optional)
 
 **Done when:** Pipeline run produces traces visible in Langfuse dashboard (or logs locally if no keys). Cost tracking works per-call and per-run.
+
+**Completed:** Real Langfuse client with AsyncLocalStorage trace context (D-030). 19 new tests, 183 total. Traces verified in Langfuse US cloud dashboard. Env var uses `LANGFUSE_BASE_URL` (SDK convention, not `LANGFUSE_HOST`).
 
 ---
 
