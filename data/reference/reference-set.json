@@ -1,0 +1,298 @@
+[
+  {
+    "id": "ref-strong-001",
+    "copy_tier": "strong",
+    "tier_rationale": "Longest-running VT ad (10 days, Feb 27). GPA-SAT disconnect is their proven #1 messaging angle. Rich copy with checkmark list, strategy reframing, digital SAT differentiator. Hits all 5 dimensions strongly.",
+    "source": "varsity_tutors_real",
+    "days_active": 10,
+    "started_running": "2026-02-27",
+    "primary_text": "📊 Your child isn't struggling with the material—they're struggling with the test.\n\nThe digital SAT rewards strategy, not just knowledge. That's why high-achieving students often score below their potential.\n\n✓ Diagnostic pinpoints exact timing gaps\n✓ Digital interface training\n✓ 1-on-1 strategy coaching\n✓ Flexible scheduling around your timeline\n\nSmart students need smart test strategy.\n\nReady to see scores that match their ability?",
+    "headline": "3.8 GPA But 1180 SAT? Here's Why",
+    "description": "Strategy-based SAT improvement",
+    "cta_button": "Learn more",
+    "target_audience": "parents",
+    "creative_metadata": {
+      "format": "static_image",
+      "image_path": "data/reference/nerdy-top-ad-3.png",
+      "notes": "Comic-style illustration showing progress report (3.8 GPA) next to SAT score report (1180, 20th percentile). Confused/stressed student imagery. Company-confirmed top 3 ad."
+    }
+  },
+  {
+    "id": "ref-strong-006",
+    "copy_tier": "strong",
+    "tier_rationale": "Company-confirmed top 3 performer. Urgency countdown format — the image IS the copy. Mathematical progression (8 weeks → 2 sessions/week → 16 sessions → 200+ points) makes improvement feel inevitable. Specific date (May 2nd), specific CTA ('Start this week'). Strongest provenance in the set: company-validated, not just longevity-inferred.",
+    "source": "varsity_tutors_real_company_confirmed",
+    "days_active": 4,
+    "started_running": "2026-03-05",
+    "primary_text": "With just weeks until the May 2nd SAT, your child can experience remarkable improvements.\n\n16 tutoring sessions increases scores by an average of 200 points.\n\nThis isn't just about numbers; it's about opportunities, options and possibly savings in tuition.\n\nInvest these weeks wisely and watch your child thrive!\n\nStart today!",
+    "headline": "May 2nd SAT is Weeks Away. It's not too late to help your child raise their score.",
+    "description": "",
+    "cta_button": "Learn more",
+    "target_audience": "parents",
+    "creative_metadata": {
+      "format": "static_image",
+      "image_path": "data/reference/nerdy-top-ad-1.png",
+      "notes": "Urgency countdown image: 'May 2nd SAT. 8 weeks away. 2 sessions a week. 16 sessions total. That is about 200+ points. Start this week.' Company-confirmed top 3 ad. Also has 7-second video variant."
+    }
+  },
+  {
+    "id": "ref-strong-002",
+    "copy_tier": "strong",
+    "tier_rationale": "2nd longest-running VT ad (8 days, Mar 1). Same GPA-disconnect messaging — reinforces this is their core winner. Long-form copy with diagnostic positioning and free Strategy Call CTA (specific, low-friction). Includes 4.9/5.0 rating social proof.",
+    "source": "varsity_tutors_real",
+    "days_active": 8,
+    "started_running": "2026-03-01",
+    "primary_text": "3.8 GPA. 1260 SAT. Something's off.\n\nThe SAT isn't anything like a classroom test. It's taken on a laptop with built in tools they're expected to master in order to not run out of time.\n\nWe help smart students score a 1400+ on the SAT.\n\nAt Varsity Tutors, we diagnose exactly where your child is struggling, whether it's pacing, using the built in Digital SAT tools to their advantage, test anxiety, or knowledge gaps.\n\nWe can help you see what score is realistic for their timeline with a free SAT Strategy Call.",
+    "headline": "Good GPA. Low SAT. Something's off.",
+    "description": "Rating: 4.9/5.0. Varsity Tutors seamlessly connects experts and learners in any subject, anywhere, anytime. Access 3,000+ subjects and 40,000 experts today.",
+    "cta_button": "Learn more",
+    "target_audience": "parents",
+    "creative_metadata": {
+      "format": "static_image",
+      "notes": "Static image version. Includes rating and platform description."
+    }
+  },
+  {
+    "id": "ref-strong-003",
+    "copy_tier": "strong",
+    "tier_rationale": "Khan Academy attack ad (Mar 5). Directly names competitor, identifies 3 self-study pain points (no focus, no self-diagnosis, no accountability), uses 10x improvement claim. Long-form with checkmarks. Specific CTA with weekly progress reports.",
+    "source": "varsity_tutors_real",
+    "days_active": 4,
+    "started_running": "2026-03-05",
+    "primary_text": "Khan Academy not cutting it for your child's SAT score?\n\nThe problem with self-study is your child doesn't know what to focus on, they can't figure out on their own what they're getting wrong or why, and there's no one keeping them on track.\n\nOur students gain points 10x faster than self-study because they have a tutor identifying exactly what they need to work on and making sure they actually do it.\n\nWith 2 sessions per week, most students gain 100+ points per month.\n\n✅ A diagnostic that shows exactly what questions your child is getting wrong and why\n✅ A study plan that keeps them on track between sessions\n✅ Weekly progress reports so you can see it working\n\nYou can raise their score on the next SAT with 1-on-1 tutoring.",
+    "headline": "Your child is smarter than their score",
+    "description": "Expert test strategy training for the digital SAT",
+    "cta_button": "Learn More",
+    "target_audience": "parents",
+    "creative_metadata": {
+      "format": "static_image",
+      "notes": "Directly attacks Khan Academy as competitor. Uses checkmark list."
+    }
+  },
+  {
+    "id": "ref-strong-004",
+    "copy_tier": "strong",
+    "tier_rationale": "Sports analogy ad (Mar 5). Memorable 'football on a baseball field' hook — one of VT's most distinctive creative devices. Long-form with specific claims (200+ pts in 8 weeks, 2.6x improvement, 60% stat). Strong CTA with guarantees (cancel anytime, perfect match).",
+    "source": "varsity_tutors_real",
+    "days_active": 4,
+    "started_running": "2026-03-05",
+    "primary_text": "You wouldn't practice football on a baseball field. 🏈\n\nSo why is your child preparing for a digital SAT with paper practice tests?\n\nThe May SAT happens on a laptop. Built-in calculator. Digital tools. Adaptive sections that change based on performance.\n\nMost tutors still use whiteboards and worksheets. That puts your child at a real disadvantage.\n\nYour child needs 8 weeks of practice in the same digital environment they'll be tested in. 💻\n\nOur tutors train your child on the actual SAT interface. They learn to use built-in formulas and tools that 60% of test-takers ignore - then run out of time doing math by hand.\n\nAverage improvement: 200+ points in 8 weeks with 2 sessions per week.\n\nWe deliver 2.6x the score improvement of traditional in-person tutoring.\n\nPerfect tutor match guaranteed. Cancel anytime.",
+    "headline": "Your child is smarter than their score",
+    "description": "Expert test strategy training for the digital SAT",
+    "cta_button": "Learn more",
+    "target_audience": "parents",
+    "creative_metadata": {
+      "format": "static_image",
+      "notes": "Football/baseball analogy hook. One of VT's most distinctive ads."
+    }
+  },
+  {
+    "id": "ref-strong-005",
+    "copy_tier": "strong",
+    "tier_rationale": "Parent testimonial ad (Mar 5). Story-driven with dramatic 360-point score jump (1010→1370). Uses parent voice for authenticity. Addresses scheduling flexibility (busy parent pain point). Strong emotional resonance with 'game changer' language. Specific lead-gen CTA.",
+    "source": "varsity_tutors_real",
+    "days_active": 4,
+    "started_running": "2026-03-05",
+    "primary_text": "Her SAT Score Jumped 360 Points! 📈\n\n📈 \"My daughter's SAT score jumped from 1010 to 1370 in just 2 months with Varsity Tutors' 1:1 tutoring.\" \"She uses her sessions for SAT prep — and sometimes even for her AP classes when she needs extra help. I love that we can schedule each week around her busy school schedule.\" If your child is aiming for a great college, this program is a game changer. 👉 Fill out the quick form, and an SAT-prep expert will call right away to match your child with the right tutor.",
+    "headline": "From 1010 to 1370 in Just 2 Months 🎓",
+    "description": "",
+    "cta_button": "Learn More",
+    "target_audience": "parents",
+    "creative_metadata": {
+      "format": "video",
+      "duration_seconds": 78,
+      "notes": "Video ad (1:18). Parent testimonial. Multiple versions (2 creatives)."
+    }
+  },
+
+  {
+    "id": "ref-medium-001",
+    "copy_tier": "medium",
+    "tier_rationale": "Princeton Review's longest-running SAT ad (20 days, 11 geo-targeted versions). Longevity proves it works, but copy is generic — 'reach your highest score' is vague. Strong guarantee (1400+ or refund) carries the ad, not the copy craft. No emotional depth, no named testimonials, relies on creative/location for differentiation.",
+    "source": "princeton_review_real",
+    "days_active": 20,
+    "started_running": "2026-02-18",
+    "primary_text": "Learn from top SAT tutors with 40+ years of experience. Master tough questions and build a game plan so you can reach your highest score!",
+    "headline": "In-Person SAT 1400+ Course",
+    "description": "Score a 1400+ or add 150 points depending on your first score, or you get a refund. Result-oriented SAT prep for high scorers taught by top SAT instructors.",
+    "cta_button": "Get offer",
+    "target_audience": "both",
+    "creative_metadata": {
+      "format": "static_image",
+      "notes": "7 geo-targeted versions with city-specific creatives. $400 discount code SAT400."
+    }
+  },
+  {
+    "id": "ref-medium-002",
+    "copy_tier": "medium",
+    "tier_rationale": "Kaplan's SAT-specific longest-runner (21 days). Third-party endorsement from Test Prep Insight is effective authority positioning, but the copy is a single line — entirely reliant on the quote. No emotional hook, no specificity, no compelling CTA. Works via trust shortcut, not copy quality.",
+    "source": "kaplan_real",
+    "days_active": 21,
+    "started_running": "2026-02-17",
+    "primary_text": "\"Their SAT curriculum is about the best out there.\" -Test Prep Insight",
+    "headline": "Let Us Show You What Sets Kaplan Apart",
+    "description": "Find your course.",
+    "cta_button": "Learn More",
+    "target_audience": "both",
+    "creative_metadata": {
+      "format": "static_image",
+      "notes": "Short copy — relies on authority quote. One of 3 ads launched Feb 17."
+    }
+  },
+  {
+    "id": "ref-medium-003",
+    "copy_tier": "medium",
+    "tier_rationale": "Kaplan's longest-running ad overall (35 days). Bundle positioning — broad, not SAT-specific. Copy is adequate but generic ('at a price that works for you'). No specificity, no emotional depth, no competitive differentiation. Longevity suggests the bundle concept resonates, but copy alone is unremarkable.",
+    "source": "kaplan_real",
+    "days_active": 35,
+    "started_running": "2026-02-03",
+    "primary_text": "Test prep, advising, and support for every year of high school—all in one package, at a price that works for you. Welcome to where high schoolers become college students.",
+    "headline": "A Prep Package That Fits Your Budget",
+    "description": "",
+    "cta_button": "Learn More",
+    "target_audience": "parents",
+    "creative_metadata": {
+      "format": "video",
+      "duration_seconds": 15,
+      "notes": "Video ad. Bundle positioning — SAT, ACT, AP prep + college advising. Multiple versions."
+    }
+  },
+  {
+    "id": "ref-medium-004",
+    "copy_tier": "medium",
+    "tier_rationale": "Degraded VT ad. Based on ref-strong-001 (GPA disconnect) but with checkmarks removed, digital SAT specifics stripped, and CTA genericized to 'Learn More'. Still has the core hook but loses the structured scanning format and specific differentiators that made the original strong.",
+    "source": "varsity_tutors_degraded",
+    "days_active": null,
+    "started_running": null,
+    "primary_text": "Your child isn't struggling with the material—they're struggling with the test.\n\nThe SAT rewards strategy, not just knowledge. That's why high-achieving students often score below their potential.\n\nWe offer diagnostic assessments, personalized coaching, and flexible scheduling to help your child improve.\n\nSmart students need smart test strategy.",
+    "headline": "GPA Doesn't Match SAT Score?",
+    "description": "Personalized SAT improvement",
+    "cta_button": "Learn More",
+    "target_audience": "parents",
+    "creative_metadata": {
+      "format": "static_image",
+      "notes": "Degraded from ref-strong-001. Removed: checkmarks, digital SAT specifics, emoji, question CTA. Generic headline."
+    }
+  },
+  {
+    "id": "ref-medium-005",
+    "copy_tier": "medium",
+    "tier_rationale": "Degraded VT ad. Based on ref-strong-004 (football analogy) but shortened — removed 2.6x claim, 60% stat, cancel-anytime guarantee, perfect match guarantee. Keeps the memorable hook but strips the proof points and risk-reversal that made the original compelling.",
+    "source": "varsity_tutors_degraded",
+    "days_active": null,
+    "started_running": null,
+    "primary_text": "You wouldn't practice football on a baseball field.\n\nSo why is your child preparing for a digital SAT with paper practice tests?\n\nThe SAT is taken on a laptop now. Most tutors still use whiteboards and worksheets.\n\nOur tutors train your child on the actual SAT interface so they're prepared for test day.",
+    "headline": "Is Your Child Preparing the Right Way?",
+    "description": "SAT tutoring for the digital test",
+    "cta_button": "Learn More",
+    "target_audience": "parents",
+    "creative_metadata": {
+      "format": "static_image",
+      "notes": "Degraded from ref-strong-004. Removed: 200+ pts claim, 2.6x stat, cancel-anytime, perfect match guarantee, emoji. Shortened significantly."
+    }
+  },
+
+  {
+    "id": "ref-weak-001",
+    "copy_tier": "weak",
+    "tier_rationale": "Real VT ad with empty primary text — entirely image/video dependent. As copy, this is genuinely weak: no hook, no value proposition, no emotional resonance, no persuasive structure. The headline and description do minimal work. May perform well with strong creative, but copy alone scores low across all 5 dimensions.",
+    "source": "varsity_tutors_real",
+    "days_active": 3,
+    "started_running": "2026-03-06",
+    "primary_text": "",
+    "headline": "Higher SAT Score = More Options",
+    "description": "Tutoring = Higher Score",
+    "cta_button": "Learn More",
+    "target_audience": "both",
+    "creative_metadata": {
+      "format": "static_image",
+      "image_path": "data/reference/nerdy-top-ad-2.png",
+      "notes": "Before/After SAT score reports (1170→1410) held by student. Company-confirmed top 3 ad. Primary text is 'SAT Tutoring that raises scores fast' — minimal copy, image carries the value proposition. Strong visual but weak copy."
+    }
+  },
+  {
+    "id": "ref-weak-002",
+    "copy_tier": "weak",
+    "tier_rationale": "Real VT ad with minimal copy — primary text is just a trust metric. No hook, no value proposition explained, no emotional angle, no persuasive structure. Headline does the heavy lifting. This is a trust-badge ad that works via social proof shortcut, not copy quality.",
+    "source": "varsity_tutors_real",
+    "days_active": 4,
+    "started_running": "2026-03-05",
+    "primary_text": "Trusted by 12k+ Families since 2007",
+    "headline": "+200 pts with 1:1 SAT Tutoring",
+    "description": "Trusted by 12k+ Families since 2007",
+    "cta_button": "Learn More",
+    "target_audience": "parents",
+    "creative_metadata": {
+      "format": "static_image",
+      "notes": "Minimal copy. Trust-first messaging. Repeats trust metric in primary text and description."
+    }
+  },
+  {
+    "id": "ref-weak-003",
+    "copy_tier": "weak",
+    "tier_rationale": "Deliberately degraded generic ad. Could be any tutoring brand — no differentiators, no specificity, no emotional hook, vague CTA. Represents the baseline of 'technically an ad but zero copy craft.' Tests whether evaluator correctly identifies generic copy.",
+    "source": "synthetic_degraded",
+    "days_active": null,
+    "started_running": null,
+    "primary_text": "Improve your SAT score with expert tutoring. Our experienced tutors help students achieve better results on the SAT. Sign up today to get started on your test prep journey.",
+    "headline": "SAT Tutoring Available Now",
+    "description": "Expert SAT preparation",
+    "cta_button": "Learn More",
+    "target_audience": "both",
+    "creative_metadata": {
+      "format": "static_image",
+      "notes": "Synthetic generic ad. No brand specificity, no emotional hook, vague promises."
+    }
+  },
+  {
+    "id": "ref-weak-004",
+    "copy_tier": "weak",
+    "tier_rationale": "Wildcard: wrong audience tone. Student slang and casual tone in what's supposed to be a parent-targeted ad. Tests whether evaluator catches audience mismatch and inappropriate brand voice for Varsity Tutors.",
+    "source": "synthetic_wildcard",
+    "days_active": null,
+    "started_running": null,
+    "primary_text": "yo your SAT score kinda mid tbh 😬\n\nlike why are you still grinding khan academy when you could literally just get a tutor who actually knows what's up\n\nour tutors are lowkey cracked at the SAT and they'll get your score bussin in no time fr fr\n\ndon't be sus about it just sign up already lol",
+    "headline": "SAT prep that hits different 🔥",
+    "description": "no cap we'll raise your score",
+    "cta_button": "Sign Up",
+    "target_audience": "parents",
+    "creative_metadata": {
+      "format": "static_image",
+      "notes": "Wildcard: student slang in parent-targeted ad. Tests audience mismatch and brand voice violations."
+    }
+  },
+  {
+    "id": "ref-weak-005",
+    "copy_tier": "weak",
+    "tier_rationale": "Wildcard: competing messages. Tries to sell SAT prep, college admissions consulting, AP tutoring, and summer programs in one ad. No clear single message, no focused CTA, violates clarity dimension. Tests whether evaluator catches message overload.",
+    "source": "synthetic_wildcard",
+    "days_active": null,
+    "started_running": null,
+    "primary_text": "Varsity Tutors offers SAT prep, ACT prep, AP class tutoring, college admissions consulting, essay review, summer enrichment programs, and academic coaching for students in grades 6-12. We also provide tutoring in over 3,000 subjects including math, science, English, foreign languages, and test prep. Our platform connects you with expert tutors available 24/7. Whether your child needs help with homework, test preparation, or college applications, we have a solution. Contact us today to learn about our various packages and pricing options for families.",
+    "headline": "Everything Your Child Needs for Academic Success",
+    "description": "SAT, ACT, AP, College Admissions, Tutoring, and More",
+    "cta_button": "Learn More",
+    "target_audience": "parents",
+    "creative_metadata": {
+      "format": "static_image",
+      "notes": "Wildcard: message overload. 7+ services listed, no focus, no emotional hook, no clear CTA. Tests clarity dimension."
+    }
+  },
+  {
+    "id": "ref-weak-006",
+    "copy_tier": "weak",
+    "tier_rationale": "Wildcard: fear-only with no solution. Creates anxiety without offering a clear path forward. No specific service mentioned, no differentiators, no CTA beyond vague 'don't let that happen.' Tests whether evaluator catches missing value proposition and solution framing.",
+    "source": "synthetic_wildcard",
+    "days_active": null,
+    "started_running": null,
+    "primary_text": "Your child's SAT score could cost them their dream college. Every year, thousands of students get rejected because their scores don't meet the minimum. The competition is fiercer than ever. Spots are filling up. Time is running out. Don't let your child fall behind their peers. Don't let a number define their future. Don't let that happen.",
+    "headline": "Is Your Child's Future at Risk?",
+    "description": "Don't wait until it's too late",
+    "cta_button": "Learn More",
+    "target_audience": "parents",
+    "creative_metadata": {
+      "format": "static_image",
+      "notes": "Wildcard: pure fear, no solution offered. No service mentioned, no brand, no specifics. Tests value proposition and CTA dimensions."
+    }
+  }
+]
