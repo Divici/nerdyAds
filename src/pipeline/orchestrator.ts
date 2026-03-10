@@ -12,6 +12,7 @@ import { runBatch, type BatchResult } from './batch-runner.js';
 import { classifyFailure } from '../evaluate/failure-taxonomy.js';
 import { saveSnapshot } from '../utils/snapshot.js';
 import { logger } from '../utils/logger.js';
+import { createTrace, withTrace, flush as flushLangfuse } from '../utils/langfuse.js';
 import { MAX_CYCLES } from '../config/thresholds.js';
 import type { CalibrationAnchor } from '../config/prompts.js';
 
@@ -39,22 +40,34 @@ export async function processBrief(
   brief: Brief,
   options: OrchestratorOptions = {},
 ): Promise<BatchResult> {
+  const trace = createTrace({
+    name: 'process-brief',
+    metadata: {
+      runId: options.runId,
+      briefId: brief.id,
+      evalModel: options.evalModel ?? 'pro',
+    },
+    tags: ['pipeline', `brief:${brief.id}`],
+  });
+
   const writer = new WriterAgent();
   const evaluator = new EvaluatorAgent(options.evalModel);
   const editor = new EditorAgent();
   const ratchet = new QualityRatchet(options.threshold);
 
-  const result = await runBatch(brief, options.adsPerBrief ?? 5, {
-    generateBatch: (b, count, patterns) => writer.generateBatch(b, count, patterns),
-    evaluate: (ad, b) => evaluator.evaluate(ad, b, options.calibrationAnchors),
-    improve: (ad, evaluation, b) => editor.improve(ad, evaluation, b),
-    checkThreshold: (score, dimensionScores) => {
-      const passes = ratchet.check(score, dimensionScores);
-      if (passes) ratchet.record(score);
-      return passes;
-    },
-    maxCycles: MAX_CYCLES,
-  }, options.patterns);
+  const result = await withTrace(trace, () =>
+    runBatch(brief, options.adsPerBrief ?? 5, {
+      generateBatch: (b, count, patterns) => writer.generateBatch(b, count, patterns),
+      evaluate: (ad, b) => evaluator.evaluate(ad, b, options.calibrationAnchors),
+      improve: (ad, evaluation, b) => editor.improve(ad, evaluation, b),
+      checkThreshold: (score, dimensionScores) => {
+        const passes = ratchet.check(score, dimensionScores);
+        if (passes) ratchet.record(score);
+        return passes;
+      },
+      maxCycles: MAX_CYCLES,
+    }, options.patterns),
+  );
 
   return result;
 }
@@ -81,17 +94,30 @@ export async function processAllBriefs(
   const briefResults: PipelineResult['briefs'] = [];
 
   for (const brief of briefs) {
-    const batchResult = await runBatch(brief, options.adsPerBrief ?? 5, {
-      generateBatch: (b, count, patterns) => writer.generateBatch(b, count, patterns),
-      evaluate: (ad, b) => evaluator.evaluate(ad, b, options.calibrationAnchors),
-      improve: (ad, evaluation, b) => editor.improve(ad, evaluation, b),
-      checkThreshold: (score) => {
-        const passes = ratchet.check(score);
-        if (passes) ratchet.record(score);
-        return passes;
+    const briefTrace = createTrace({
+      name: 'process-brief',
+      metadata: {
+        runId,
+        briefId: brief.id,
+        evalModel: options.evalModel ?? 'pro',
+        phase: 'pipeline',
       },
-      maxCycles: MAX_CYCLES,
-    }, options.patterns);
+      tags: ['pipeline', `brief:${brief.id}`, `run:${runId}`],
+    });
+
+    const batchResult = await withTrace(briefTrace, () =>
+      runBatch(brief, options.adsPerBrief ?? 5, {
+        generateBatch: (b, count, patterns) => writer.generateBatch(b, count, patterns),
+        evaluate: (ad, b) => evaluator.evaluate(ad, b, options.calibrationAnchors),
+        improve: (ad, evaluation, b) => editor.improve(ad, evaluation, b),
+        checkThreshold: (score) => {
+          const passes = ratchet.check(score);
+          if (passes) ratchet.record(score);
+          return passes;
+        },
+        maxCycles: MAX_CYCLES,
+      }, options.patterns),
+    );
 
     // Record metrics for each ad
     for (const adHistory of batchResult.ads) {
@@ -165,6 +191,9 @@ export async function processAllBriefs(
     averageScore: summary.averageScore.toFixed(2),
     totalCostUsd: summary.totalCostUsd.toFixed(4),
   });
+
+  // Flush Langfuse traces
+  await flushLangfuse();
 
   return pipelineResult;
 }

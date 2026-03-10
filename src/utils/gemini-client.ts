@@ -3,6 +3,7 @@ import { MODELS, TOKEN_PRICING, DEFAULT_SEED, type ModelConfig } from '../config
 import { RateLimiter } from './rate-limiter.js';
 import { hashPrompt } from './hash.js';
 import { logger } from './logger.js';
+import { getActiveTrace, type LangfuseTraceHandle } from './langfuse.js';
 
 export interface GeminiCallResult {
   text: string;
@@ -62,12 +63,15 @@ export async function callGemini(
     seed?: number;
     jsonMode?: boolean;
     temperature?: number;
+    trace?: LangfuseTraceHandle;
+    spanName?: string;
   },
 ): Promise<GeminiCallResult> {
   const modelConfig: ModelConfig = MODELS[role];
   const seed = options?.seed ?? DEFAULT_SEED;
   const fullPrompt = `${systemPrompt}\n\n${userPrompt}`;
   const promptHash = hashPrompt(fullPrompt);
+  const startTime = new Date();
 
   const result = await rateLimiter.execute(async () => {
     const ai = getClient();
@@ -114,6 +118,27 @@ export async function callGemini(
       generatedAt: new Date().toISOString(),
     };
   });
+
+  // Record Langfuse generation span (explicit trace param or active context)
+  const activeTrace = options?.trace ?? getActiveTrace();
+  if (activeTrace) {
+    const gen = activeTrace.generation({
+      name: options?.spanName ?? `callGemini-${role}`,
+      model: modelConfig.modelId,
+      input: { system: systemPrompt, user: userPrompt },
+      output: result.text,
+      usage: { input: result.tokensIn, output: result.tokensOut },
+      metadata: {
+        costUsd: result.costUsd,
+        seed: result.seed,
+        promptHash: result.promptHash,
+        role,
+      },
+      startTime,
+      endTime: new Date(),
+    });
+    gen.end();
+  }
 
   return result;
 }
