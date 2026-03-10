@@ -73,11 +73,11 @@ export function getLangfuse(): Langfuse | null {
     instance = new Langfuse({
       secretKey: process.env.LANGFUSE_SECRET_KEY!,
       publicKey: process.env.LANGFUSE_PUBLIC_KEY!,
-      baseUrl: process.env.LANGFUSE_HOST || 'https://cloud.langfuse.com',
+      baseUrl: process.env.LANGFUSE_BASE_URL || 'https://cloud.langfuse.com',
     });
     initialized = true;
     logger.info('Langfuse client initialized', {
-      host: process.env.LANGFUSE_HOST || 'https://cloud.langfuse.com',
+      baseUrl: process.env.LANGFUSE_BASE_URL || 'https://cloud.langfuse.com',
     });
   }
 
