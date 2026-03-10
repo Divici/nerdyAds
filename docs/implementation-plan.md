@@ -152,6 +152,31 @@
 
 ---
 
+### Phase 8.7: Langfuse Observability Integration (1.5h) ← PRIORITY
+**Why:** Langfuse is already a dependency (`langfuse@^3`) and the stub exists at `src/utils/langfuse.ts`, but it's never called. The project brief rewards observability, and cost-per-call tracking feeds the performance-per-token metric. Currently on the cut list — this phase promotes it to done.
+
+**What to wire up:**
+- Replace the in-memory stub with a real Langfuse client (reads `LANGFUSE_SECRET_KEY` + `LANGFUSE_PUBLIC_KEY` from `.env`)
+- Instrument `callGemini()` in `src/utils/gemini-client.ts` — wrap every LLM call in a Langfuse generation span (model, tokens, cost, latency)
+- Instrument the pipeline orchestrator — one trace per brief, child spans for writer → evaluator → editor cycles
+- Tag traces with `runId`, `briefId`, `adId`, `evalModel`, `phase` for filtering in the Langfuse dashboard
+- Graceful degradation: if no Langfuse keys in `.env`, log a warning and skip (pipeline still works)
+
+**Tests:**
+- Unit test: Langfuse client initializes without keys → no-op mode (no crash)
+- Unit test: `callGemini` wrapper emits generation span with correct metadata
+- Integration: mocked Langfuse — verify trace structure (brief trace → generation spans)
+
+**Files to touch:**
+- `src/utils/langfuse.ts` — replace stub with real client + no-op fallback
+- `src/utils/gemini-client.ts` — add span instrumentation around API calls
+- `src/pipeline/orchestrator.ts` — add trace-per-brief wrapping
+- `.env.example` — add `LANGFUSE_SECRET_KEY`, `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_HOST` (optional)
+
+**Done when:** Pipeline run produces traces visible in Langfuse dashboard (or logs locally if no keys). Cost tracking works per-call and per-run.
+
+---
+
 ### Phase 9: Evals Suite (2.5h)
 **Files:**
 - `tests/evals/calibration.eval.ts` — reference set ranking: strong > medium > weak (replaces old synthetic-only calibration)
@@ -199,15 +224,14 @@ Run via: `npm run eval` (separate from `npm test`)
 
 ## Critical Path
 ```
-Phase 1 → Phase 2 → Phase 3 → Phase 4 (evaluator) → Phase 5 (agents) → Phase 6 (pipeline) → Phase 7 (calibration) → Phase 8 (full run) → Phase 8.5 (reference calibration validation) → Phase 9 (evals) → Phase 10 (UI)
+Phase 1 → Phase 2 → Phase 3 → Phase 4 (evaluator) → Phase 5 (agents) → Phase 6 (pipeline) → Phase 7 (calibration) → Phase 8 (full run) → Phase 8.5 (reference calibration) → Phase 8.7 (Langfuse) → Phase 9 (evals) → Phase 10 (UI)
 ```
 
 ## Cut List (if behind)
-1. Langfuse → stub with local JSON logging
-2. Recharts → show raw numbers in UI
-3. Consistency + regression evals → keep calibration + improvement
-4. Tailwind styling → basic CSS
-5. MetricsDashboard → just show summary numbers
+1. Recharts → show raw numbers in UI
+2. Consistency + regression evals → keep calibration + improvement
+3. Tailwind styling → basic CSS
+4. MetricsDashboard → just show summary numbers
 
 ## Dependency Graph
 ```
@@ -220,8 +244,9 @@ Phase 1 (scaffold)
                           ├── Phase 7 (calibration)
                           │     └── Phase 8 (full run)
                           │           └── Phase 8.5 (reference calibration validation)
-                          │                 ├── Phase 9 (evals)
-                          │                 └── Phase 10 (UI)
+                          │                 └── Phase 8.7 (Langfuse observability)
+                          │                       ├── Phase 9 (evals)
+                          │                       └── Phase 10 (UI)
 
 Phase 11 (docs) — parallel after Phase 8
 Phase 12 (polish) — final
