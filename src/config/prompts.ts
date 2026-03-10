@@ -79,7 +79,7 @@ export function buildEvaluatorUserPrompt(ad: {
   targetAudience: string;
   campaignGoal: string;
   emotionalAngle: string;
-  keyMessage: string;
+  offer: string;
 }, calibrationAnchors?: CalibrationAnchor[]): string {
   let prompt = '';
 
@@ -106,7 +106,7 @@ export function buildEvaluatorUserPrompt(ad: {
 - **Target Audience:** ${brief.targetAudience}
 - **Campaign Goal:** ${brief.campaignGoal}
 - **Emotional Angle:** ${brief.emotionalAngle}
-- **Key Message:** ${brief.keyMessage}`;
+- **Offer:** ${brief.offer}`;
   }
 
   prompt += `
@@ -182,7 +182,7 @@ export function buildWriterUserPrompt(
 - **Target Audience:** ${brief.targetAudience}
 - **Campaign Goal:** ${brief.campaignGoal}
 - **Emotional Angle:** ${brief.emotionalAngle}
-- **Key Message:** ${brief.keyMessage}`;
+- **Offer:** ${brief.offer}`;
 
   if (brief.constraints && brief.constraints.length > 0) {
     prompt += `\n- **Constraints:** ${brief.constraints.join('; ')}`;
@@ -255,7 +255,7 @@ export function buildEditorUserPrompt(
 - **Target Audience:** ${brief.targetAudience}
 - **Campaign Goal:** ${brief.campaignGoal}
 - **Emotional Angle:** ${brief.emotionalAngle}
-- **Key Message:** ${brief.keyMessage}
+- **Offer:** ${brief.offer}
 `;
   }
 

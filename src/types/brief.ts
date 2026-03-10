@@ -11,7 +11,7 @@ export const BriefSchema = z.object({
   targetAudience: TargetAudienceSchema,
   campaignGoal: CampaignGoalSchema,
   emotionalAngle: z.string(),
-  keyMessage: z.string().min(1),
+  offer: z.string().min(1),
   constraints: z.array(z.string()).optional(),
 });
 

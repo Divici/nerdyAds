@@ -36,7 +36,7 @@ const MOCK_BRIEF: Brief = {
   targetAudience: 'student',
   campaignGoal: 'conversion',
   emotionalAngle: 'aspiration',
-  keyMessage: 'Expert SAT tutors help you reach your target score',
+  offer: 'Expert SAT tutors help you reach your target score',
 };
 
 function makeMockGeminiResponse(scores: Array<{

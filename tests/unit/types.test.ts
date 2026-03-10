@@ -79,7 +79,7 @@ describe('Brief schema', () => {
     targetAudience: 'student' as const,
     campaignGoal: 'awareness' as const,
     emotionalAngle: 'aspiration',
-    keyMessage: 'Expert SAT tutoring that gets results',
+    offer: 'Expert SAT tutoring that gets results',
     constraints: ['Must mention score guarantee'],
   };
 

@@ -4,7 +4,7 @@
     "targetAudience": "student",
     "campaignGoal": "conversion",
     "emotionalAngle": "humor",
-    "keyMessage": "SAT prep doesn't have to feel like punishment — Varsity Tutors makes studying actually fun with gamified sessions and chill expert tutors",
+    "offer": "Varsity Tutors SAT test prep",
     "constraints": [
       "Must use a humorous/lighthearted tone throughout",
       "Cannot use fear, anxiety, or urgency as motivators",
@@ -17,7 +17,7 @@
     "targetAudience": "parent",
     "campaignGoal": "conversion",
     "emotionalAngle": "guilt",
-    "keyMessage": "Your child's SAT score could determine their college future — are you doing enough to help them prepare?",
+    "offer": "Varsity Tutors SAT test prep",
     "constraints": [
       "Must evoke parental responsibility without being accusatory",
       "Tone must remain supportive and empathetic, not manipulative",
@@ -30,7 +30,7 @@
     "targetAudience": "both",
     "campaignGoal": "awareness",
     "emotionalAngle": "skepticism",
-    "keyMessage": "Most SAT prep courses overpromise and underdeliver — Varsity Tutors is different because we guarantee matched expert tutors and track every point of improvement",
+    "offer": "Varsity Tutors SAT test prep",
     "constraints": [
       "Must acknowledge that the audience is skeptical of test prep marketing",
       "Cannot make unsubstantiated score improvement claims",
@@ -44,7 +44,7 @@
     "targetAudience": "student",
     "campaignGoal": "engagement",
     "emotionalAngle": "defiance",
-    "keyMessage": "You don't need to be a 'test person' to crush the SAT — Varsity Tutors helps you beat the system with strategies that work for YOUR brain",
+    "offer": "Varsity Tutors SAT test prep",
     "constraints": [
       "Must feel rebellious/empowering, not corporate",
       "Cannot use standard test prep language (journey, unlock potential, achieve your dreams)",
@@ -58,7 +58,7 @@
     "targetAudience": "parent",
     "campaignGoal": "conversion",
     "emotionalAngle": "comparison",
-    "keyMessage": "While other families are scrambling for SAT prep, Varsity Tutors families already have a plan — personalized 1-on-1 tutoring that starts working from day one",
+    "offer": "Varsity Tutors SAT test prep",
     "constraints": [
       "Must create FOMO through social comparison without naming competitors",
       "Must mention a specific timeline (weeks/months to improvement)",

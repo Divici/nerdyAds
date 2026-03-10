@@ -55,7 +55,7 @@ const brief: Brief = {
   targetAudience: 'student',
   campaignGoal: 'conversion',
   emotionalAngle: 'urgency',
-  keyMessage: 'Boost your SAT score',
+  offer: 'Boost your SAT score',
 };
 
 // ── Scenario 1: Pass on first try ────────────────────────────────────────

@@ -421,7 +421,7 @@ This is a living document tracking every major decision, why it was made, what w
 1. The full ad text
 2. ALL 5 dimension scores with rationales (not just the weakest)
 3. The weakest dimension highlighted with `← WEAKEST` marker
-4. The original brief (target audience, campaign goal, emotional angle, key message)
+4. The original brief (target audience, campaign goal, emotional angle, offer)
 
 **Alternatives considered:**
 - Only weakest dimension: simpler prompt but editor has no context for what NOT to break
@@ -471,7 +471,7 @@ This is a living document tracking every major decision, why it was made, what w
 - Heavier on conversion (5/10) because the brief emphasizes paid social performance
 - Parents and students split evenly because both are primary audiences per the brief
 - Two briefs have explicit constraints to test whether the writer respects them
-- Key messages are specific and actionable — not vague ("expert tutors" → "1-on-1 expert SAT tutors with personalized prep plan")
+- Each brief specifies the offer as "Varsity Tutors SAT test prep" — the Writer must craft value propositions and messaging from audience + goal + angle alone
 
 ---
 
@@ -697,3 +697,22 @@ These decisions are explicitly provisional. They were made without first-party V
 4. **Engagement briefs are strong** (brief-006: 9.20). Low-pressure CTAs like "take a free practice test" score well.
 5. **Cost scales linearly**: 50 ads at $0.19 = ~$0.004/ad. Editor cycles add ~50% more cost per edited ad.
 6. **100% acceptance rate persists**: Even at 8.0 threshold, the system accepts everything. To truly exercise the editor, threshold 9.0+ is needed (as demonstrated in the stress test).
+
+---
+
+### D-026: Replace keyMessage with offer — Stop Spoon-Feeding the Writer
+
+**Date:** 2026-03-09
+**Context:** Phase 8 showed 84% of ads passing on first evaluation even at threshold 8.0. Investigation revealed the `keyMessage` field was essentially writing half the ad — e.g., `"Expert 1-on-1 SAT tutors help you reach your target score with a personalized prep plan"`. The Writer just needed to wrap it in a hook and CTA. This defeated the purpose of evaluating creative quality.
+
+**Decision:** Replaced `keyMessage: string` (a full value proposition sentence) with `offer: string` set to `"Varsity Tutors SAT test prep"` for all briefs. The Writer must now craft its own messaging, hooks, and value propositions from just audience + goal + emotional angle + constraints.
+
+**Why:** The project brief specifies inputs as `audience + product/offer + goal + tone`. The product/offer is always the same (Varsity Tutors SAT prep). The creative differentiation should come from how the Writer handles different audiences and angles — not from being handed a pre-written message.
+
+**Expected impact:**
+- Writer must do more creative work → likely lower first-pass scores
+- Editor gets exercised more → better test of the iterate-improve loop
+- Ads become more varied (Writer invents value props instead of rewording one)
+- More realistic simulation of real ad generation (briefs don't include finished copy)
+
+**Files changed:** 13 files across types, prompts, agents, data, and tests.

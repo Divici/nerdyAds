@@ -4,63 +4,63 @@
     "targetAudience": "student",
     "campaignGoal": "conversion",
     "emotionalAngle": "aspiration",
-    "keyMessage": "Expert 1-on-1 SAT tutors help you reach your target score with a personalized prep plan"
+    "offer": "Varsity Tutors SAT test prep"
   },
   {
     "id": "brief-002",
     "targetAudience": "parent",
     "campaignGoal": "conversion",
     "emotionalAngle": "anxiety",
-    "keyMessage": "Don't let SAT prep stress your family — Varsity Tutors handles the plan so you don't have to"
+    "offer": "Varsity Tutors SAT test prep"
   },
   {
     "id": "brief-003",
     "targetAudience": "student",
     "campaignGoal": "awareness",
     "emotionalAngle": "urgency",
-    "keyMessage": "The SAT is weeks away — Varsity Tutors can build a focused cram plan that actually works"
+    "offer": "Varsity Tutors SAT test prep"
   },
   {
     "id": "brief-004",
     "targetAudience": "parent",
     "campaignGoal": "awareness",
     "emotionalAngle": "social_proof",
-    "keyMessage": "Thousands of families trust Varsity Tutors for SAT prep — see why students improve 200+ points"
+    "offer": "Varsity Tutors SAT test prep"
   },
   {
     "id": "brief-005",
     "targetAudience": "both",
     "campaignGoal": "conversion",
     "emotionalAngle": "aspiration",
-    "keyMessage": "Top-scoring SAT tutors matched to your learning style — get a free consultation today"
+    "offer": "Varsity Tutors SAT test prep"
   },
   {
     "id": "brief-006",
     "targetAudience": "student",
     "campaignGoal": "engagement",
     "emotionalAngle": "relief",
-    "keyMessage": "Stop stressing about the SAT — take a free practice test and see exactly where you stand"
+    "offer": "Varsity Tutors SAT test prep"
   },
   {
     "id": "brief-007",
     "targetAudience": "parent",
     "campaignGoal": "conversion",
     "emotionalAngle": "aspiration",
-    "keyMessage": "Give your child the competitive edge — Varsity Tutors SAT prep gets results that open doors"
+    "offer": "Varsity Tutors SAT test prep"
   },
   {
     "id": "brief-008",
     "targetAudience": "both",
     "campaignGoal": "awareness",
     "emotionalAngle": "anxiety",
-    "keyMessage": "Most students study the wrong way for the SAT — Varsity Tutors teaches what actually moves scores"
+    "offer": "Varsity Tutors SAT test prep"
   },
   {
     "id": "brief-009",
     "targetAudience": "student",
     "campaignGoal": "conversion",
     "emotionalAngle": "social_proof",
-    "keyMessage": "Join 40,000+ students who boosted their SAT scores with Varsity Tutors expert tutors",
+    "offer": "Varsity Tutors SAT test prep",
     "constraints": ["Must mention free consultation offer", "Include specific score improvement stat"]
   },
   {
@@ -68,7 +68,7 @@
     "targetAudience": "parent",
     "campaignGoal": "engagement",
     "emotionalAngle": "urgency",
-    "keyMessage": "College admissions are more competitive than ever — SAT prep with Varsity Tutors starts with a free assessment",
+    "offer": "Varsity Tutors SAT test prep",
     "constraints": ["Target parents of juniors/seniors", "Mention limited availability"]
   }
 ]

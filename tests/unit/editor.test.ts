@@ -205,7 +205,7 @@ describe('EditorAgent', () => {
       targetAudience: 'parent',
       campaignGoal: 'conversion',
       emotionalAngle: 'anxiety',
-      keyMessage: 'SAT prep without the family stress',
+      offer: 'SAT prep without the family stress',
     };
 
     await editor.improve(MOCK_AD, MOCK_EVALUATION, brief);

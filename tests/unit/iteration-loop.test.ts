@@ -51,7 +51,7 @@ const makeBrief = (): Brief => ({
   targetAudience: 'student',
   campaignGoal: 'conversion',
   emotionalAngle: 'urgency',
-  keyMessage: 'Boost your SAT score',
+  offer: 'Boost your SAT score',
 });
 
 describe('iterateAd', () => {

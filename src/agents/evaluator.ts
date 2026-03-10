@@ -30,7 +30,7 @@ export class EvaluatorAgent {
             targetAudience: brief.targetAudience,
             campaignGoal: brief.campaignGoal,
             emotionalAngle: brief.emotionalAngle,
-            keyMessage: brief.keyMessage,
+            offer: brief.offer,
           }
         : undefined,
       calibrationAnchors,
