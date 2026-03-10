@@ -92,9 +92,69 @@
 - Snapshot all results to data/output/{runId}/
 - Compute final metrics
 
+### Phase 8.5: Reference Ad Calibration Validation (2.5h) ← PRIORITY
+**Why this exists:** The project brief's highest-weighted section (25%) requires the evaluator to be "calibrated against best/worst reference ads." Our previous calibration used only synthetic ads we wrote ourselves — circular validation. This phase builds a tiered reference set from real ads and proves the evaluator can rank them correctly.
+
+**Step 1: Build tiered reference set (~15-18 ads)**
+
+**File:** `data/reference/reference-set.json`
+
+**Strong tier (5-6 ads)** — Real Varsity Tutors longest-running ads (copy-tier: strong):
+- "3.8 GPA But 1180 SAT? Here's Why" (10 days active, Feb 27)
+- "Good GPA. Low SAT. Something's off." (8 days active, Mar 1)
+- "Your child is smarter than their score" (Khan attack, long-form, Mar 5)
+- "You wouldn't practice football on a baseball field" (sports analogy, Mar 5)
+- "Her SAT Score Jumped 360 Points!" (parent testimonial, 1010→1370, Mar 5)
+
+**Medium tier (5-6 ads)** — Proven competitor ads + degraded VT:
+- Princeton Review in-person SAT ad as-is (20 days active — longevity-proven but generic copy)
+- Kaplan Test Prep Insight endorsement as-is (21 days — authority works, but one-line copy)
+- Kaplan bundle ad as-is (35 days — longest of any brand, but broad/non-specific)
+- Degraded VT: "3.8 GPA" without checkmarks, generic CTA, remove digital SAT specifics
+- Degraded VT: football analogy without claims (2.6x, cancel-anytime), shortened
+
+**Weak tier (5-6 ads)** — Minimal-copy VT ads + degraded + wildcards:
+- VT image-only ads as-is (empty primary_text — genuinely weak copy)
+- VT trust-only ad as-is ("Trusted by 12k+ Families" as entire primary text)
+- Further degraded: generic "Improve your SAT score with expert tutoring. Sign up today."
+- Wildcard: wrong audience tone (student slang in parent-targeted ad)
+- Wildcard: competing messages (SAT + admissions + AP in one ad, no clear CTA)
+- Wildcard: fear-only with no solution
+
+**Tier labeling rules:**
+- Tiers are **copy-tier** (v1 scope), not ad-tier — visual quality is not evaluated
+- VT ads weighted higher (brand match) despite shorter longevity
+- Competitor ads weighted for longevity but down-weighted for non-brand copy
+- Each ad in the reference set gets a `tier`, `tier_rationale`, and optional `creative_metadata` field (image URL, video duration, format) for future v2 extension
+- User reviews and approves all tier assignments before validation run
+
+**Step 2: Run evaluator against reference set**
+- Score all ~15-18 reference ads using the evaluator (same config as pipeline)
+- Record all 5 dimension scores + weighted average for each ad
+
+**Step 3: Validate ranking**
+- Assert: strong tier avg > medium tier avg > weak tier avg
+- Assert: meaningful separation between tiers (≥1.0 point gap)
+- Assert: no individual strong ad scores below any weak ad
+- Report per-dimension breakdown by tier (which dimensions discriminate best?)
+
+**Step 4: Tune if needed**
+- If ranking fails, adjust evaluator prompt and re-run
+- Document any tuning in decision log
+- If ranking passes, this becomes the centerpiece evidence for the 25%-weighted evaluation section
+
+**Step 5: Replace old calibration anchors**
+- Update `data/calibration/` with top strong and bottom weak ads from the validated reference set
+- These become the evaluator's grading anchors in the pipeline (replacing the old synthetic-only anchors)
+- Re-run pipeline on 2-3 briefs to verify output quality with new anchors
+
+**Design note (v2 readiness):** The reference set schema includes optional `creative_metadata` fields so v2 image evaluation can extend the reference set without rebuilding. Tier labels are scoped as `copy_tier` — a future v2 calibration would add `visual_tier` and `overall_tier`.
+
+---
+
 ### Phase 9: Evals Suite (2.5h)
 **Files:**
-- `tests/evals/calibration.eval.ts` — strong > borderline > weak
+- `tests/evals/calibration.eval.ts` — reference set ranking: strong > medium > weak (replaces old synthetic-only calibration)
 - `tests/evals/consistency.eval.ts` — same ad 3x, variance < 1.0
 - `tests/evals/dimension-independence.eval.ts` — catches the one weak dimension
 - `tests/evals/improvement.eval.ts` — targeted dimension improves after editing
@@ -139,7 +199,7 @@ Run via: `npm run eval` (separate from `npm test`)
 
 ## Critical Path
 ```
-Phase 1 → Phase 2 → Phase 3 → Phase 4 (evaluator) → Phase 5 (agents) → Phase 6 (pipeline) → Phase 7 (calibration) → Phase 8 (full run) → Phase 10 (UI)
+Phase 1 → Phase 2 → Phase 3 → Phase 4 (evaluator) → Phase 5 (agents) → Phase 6 (pipeline) → Phase 7 (calibration) → Phase 8 (full run) → Phase 8.5 (reference calibration validation) → Phase 9 (evals) → Phase 10 (UI)
 ```
 
 ## Cut List (if behind)
@@ -159,8 +219,9 @@ Phase 1 (scaffold)
                     └── Phase 6 (pipeline)
                           ├── Phase 7 (calibration)
                           │     └── Phase 8 (full run)
-                          │           └── Phase 10 (UI)
-                          └── Phase 9 (evals)
+                          │           └── Phase 8.5 (reference calibration validation)
+                          │                 ├── Phase 9 (evals)
+                          │                 └── Phase 10 (UI)
 
 Phase 11 (docs) — parallel after Phase 8
 Phase 12 (polish) — final

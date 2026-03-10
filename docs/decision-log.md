@@ -749,3 +749,42 @@ These decisions are explicitly provisional. They were made without first-party V
 - Mitigated: The rubric + competitor reference anchors grading, so both models evaluate against the same standard
 
 **Files changed:** `src/agents/evaluator.ts`, `src/pipeline/orchestrator.ts`, `src/scripts/run-pipeline.ts`
+
+---
+
+### D-028: Reference Ad Calibration — Real Ads Replace Synthetic-Only Validation
+
+**Date:** 2026-03-10
+**Context:** The project brief's highest-weighted evaluation section (Quality Measurement & Evaluation, 25%) requires the evaluator to be "calibrated against best/worst reference ads." The Excellent tier (23-25 points) specifically requires "calibrated against best/worst reference ads" while the starter kit says "run your evaluator against the reference ads... if it can't score the best ads high and the worst ads low, fix that before moving on."
+
+Our previous calibration (Phase 7) used only synthetic ads we wrote ourselves. This is circular — we wrote the calibration ads, we wrote the evaluator prompt, and we used our own ads to validate our own evaluator. There was no external ground truth.
+
+**What changed:** We obtained 41 real Varsity Tutors ads from the Meta Ad Library with longevity data (days active as a proxy for performance). We also obtained longevity-sorted ads from Princeton Review (20 days, 11 geo-targeted versions of one concept) and Kaplan (35 days longest, 21 days for SAT-specific).
+
+**Decision:** Build a tiered reference set (~15-18 ads) from real ads and validate the evaluator against it:
+
+- **Strong tier:** Top 5-6 VT longest-running ads as-is. These are the brand's proven performers (GPA-SAT disconnect messaging, Khan Academy attack ads, parent testimonials). VT ads weighted highest because they ARE the brand our system generates for.
+- **Medium tier:** 5-6 ads — proven competitor ads as-is (Princeton Review 20-day ad, Kaplan 21-35 day ads) plus slightly degraded VT ads (remove specificity, weaken hooks/CTAs). Competitor ads are longevity-proven but lack the copy depth that VT ads have — they rely on creative/images more than copy.
+- **Weak tier:** 5-6 ads — VT minimal-copy ads as-is (empty primary_text, trust-metric-only), further degraded versions, and wildcard bad ads (wrong audience, competing messages, fear-only with no solution).
+
+**Key design choices:**
+- Tiers are **copy-tier** (v1 scope), not overall ad quality. An ad with great video but minimal copy is weak *copy* even if it performs well. This is honest about what our v1 evaluator measures.
+- Schema includes optional `creative_metadata` fields (image URL, video duration, format) so v2 image evaluation can re-tier without rebuilding the reference set.
+- VT ads weighted higher than competitors for tier placement despite shorter longevity, because brand voice match is a scored dimension.
+- User reviews and approves all tier assignments — not automated.
+
+**This partially resolves D-018:** We now have real first-party Varsity Tutors ads as reference material. Brand voice scoring is no longer pure guesswork — we have 41 examples of how VT actually writes. Calibration tiers are grounded in real market data (ad longevity) rather than purely self-constructed judgment.
+
+**Alternatives considered:**
+- Keep synthetic-only calibration: faster but caps us at "Acceptable" tier (13-17/25) on the brief's rubric
+- Score competitor ads only: misses brand voice validation since competitors aren't VT
+- Use all 41 VT ads: too many for a focused reference set, dilutes tier clarity
+
+**Tradeoffs:**
+- Pro: Directly addresses the #1 weighted evaluation criterion (25%)
+- Pro: External ground truth replaces circular self-validation
+- Pro: VT ads give real brand voice calibration (was our weakest dimension per D-018)
+- Pro: v2-ready schema means image evaluation can extend without rebuilding
+- Con: Tier assignments still involve judgment (longevity is a proxy, not a guarantee)
+- Con: Reference set needs user review and approval before validation run
+- Con: May require evaluator prompt tuning if ranking fails
