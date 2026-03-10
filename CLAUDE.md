@@ -4,7 +4,7 @@
 An autonomous ad generation engine for Varsity Tutors (Nerdy) SAT test prep campaigns on Facebook/Instagram. It generates ad copy, evaluates quality across 5 dimensions, iterates to improve weak ads, and tracks performance per token spent.
 
 ## Current Status
-- **Phase:** Phase 8.7 complete (Langfuse observability). Phase 9 (evals) is next.
+- **Phase:** Phase 9 complete (Evals suite). Phase 10 (Demo UI) is next.
 - **Key docs to read first:**
   - `docs/implementation-plan.md` — 12-phase build plan with Phases 8.5 and 8.7 added
   - `docs/decision-log.md` — 30 decisions with full rationale (D-030 covers Langfuse integration)

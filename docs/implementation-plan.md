@@ -179,7 +179,7 @@
 
 ---
 
-### Phase 9: Evals Suite (2.5h)
+### Phase 9: Evals Suite (2.5h) ✅ COMPLETE
 **Files:**
 - `tests/evals/calibration.eval.ts` — reference set ranking: strong > medium > weak (replaces old synthetic-only calibration)
 - `tests/evals/consistency.eval.ts` — same ad 3x, variance < 1.0
@@ -188,6 +188,8 @@
 - `tests/evals/regression.eval.ts` — other dimensions don't drop > 1 point
 
 Run via: `npm run eval` (separate from `npm test`)
+
+**Completed:** 5 eval files, 11 tests, all passing. Calibration uses parallel evaluation with 300s timeout. Results: Strong avg 8.99 > Medium 7.32 > Weak 3.92 (gaps 1.67, 3.40). Consistency variance 0.01. Editor improves targeted dimension (3→9). No regressions (max drop = 0).
 
 ### Phase 10: Demo UI (4h)
 **Files:**

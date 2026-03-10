@@ -314,11 +314,26 @@ The evaluator is built first (Phase 4) because the brief's highest-weighted cate
 - Graceful degradation: no Langfuse keys → no-op mode, pipeline works normally
 - 19 new tests (langfuse client, no-op mode, trace context, gemini instrumentation)
 
+### Phase 9: Evals Suite (Complete)
+- **5 eval test files** (11 tests total) that hit real Gemini API — run via `npm run eval`
+- **Calibration eval** (`calibration.eval.ts`): Evaluates all 17 reference set ads in parallel, asserts tier ranking strong > medium > weak with ≥1.0 gap, and no individual strong ad scores below any weak ad
+  - Results: Strong avg 8.99 > Medium avg 7.32 > Weak avg 3.92 (gaps: 1.67, 3.40)
+  - Min strong (8.75) > Max weak (4.75) — no crossover
+- **Consistency eval** (`consistency.eval.ts`): Same ad evaluated 3x, asserts variance < 1.0 and per-dimension range < 2
+  - Results: Variance 0.01, range 0.25. Per-dimension ranges all ≤ 1
+- **Dimension independence eval** (`dimension-independence.eval.ts`): Uses ads designed with one deliberately weak dimension, verifies evaluator catches it in the bottom 2
+  - Results: CTA correctly identified as weakest (3/10), clarity (2/10), emotional_resonance (1/10)
+- **Improvement eval** (`improvement.eval.ts`): Evaluates mediocre ad, edits targeting weakest, re-evaluates — asserts targeted dimension improves
+  - Results: value_proposition 3→9, overall 2.7→8.95 after edit
+- **Regression eval** (`regression.eval.ts`): After editing, asserts non-targeted dimensions don't drop > 1 point
+  - Results: Max non-targeted drop = 0
+
 ### Test Coverage
-- 183 tests passing across 18 test files
+- 183 unit/integration tests passing across 18 test files
+- 11 eval tests passing across 5 eval files (hit real API, ~2 min total)
 - Unit tests: scoring, threshold, ratchet, confidence, failure taxonomy, rate limiter, cost, hash, snapshot, config, agents (mocked), langfuse, gemini-langfuse
 - Integration tests: mocked pipeline scenarios (pass first try, improve then pass, fail all cycles, ratchet increase)
-- Evals: not yet implemented (Phase 9)
+- Evals: calibration ranking, consistency, dimension independence, improvement verification, regression check
 
 ---
 
