@@ -58,13 +58,25 @@ describe('Calibration Eval — reference set tier ranking', () => {
       refAds.map(async (ref) => {
         const ad = refToAd(ref);
         const evaluation = await evaluator.evaluate(ad);
-        return { tier: ref.copy_tier, id: ref.id, score: evaluation.weightedScore };
+        return {
+          tier: ref.copy_tier,
+          id: ref.id,
+          score: evaluation.weightedScore,
+          dimensions: evaluation.scores,
+        };
       }),
     );
 
     const tiers: Record<string, number[]> = { strong: [], medium: [], weak: [] };
+    const dimensionsByTier: Record<string, Record<string, number[]>> = {
+      strong: {}, medium: {}, weak: {},
+    };
     for (const r of results) {
       tiers[r.tier].push(r.score);
+      for (const ds of r.dimensions) {
+        if (!dimensionsByTier[r.tier][ds.dimension]) dimensionsByTier[r.tier][ds.dimension] = [];
+        dimensionsByTier[r.tier][ds.dimension].push(ds.score);
+      }
     }
 
     const avg = (arr: number[]) => arr.reduce((s, v) => s + v, 0) / arr.length;
@@ -77,6 +89,15 @@ describe('Calibration Eval — reference set tier ranking', () => {
     console.log('Strong scores:', tiers.strong);
     console.log('Medium scores:', tiers.medium);
     console.log('Weak scores:', tiers.weak);
+
+    // Per-dimension breakdown by tier — shows which dimensions discriminate best
+    console.log('\nPer-dimension breakdown by tier:');
+    for (const dim of ['clarity', 'value_proposition', 'emotional_resonance', 'cta', 'brand_voice']) {
+      const s = avg(dimensionsByTier.strong[dim] || []);
+      const m = avg(dimensionsByTier.medium[dim] || []);
+      const w = avg(dimensionsByTier.weak[dim] || []);
+      console.log(`  ${dim}: strong=${s.toFixed(1)} medium=${m.toFixed(1)} weak=${w.toFixed(1)} (S-W gap=${(s - w).toFixed(1)})`);
+    }
 
     // Tier ordering
     expect(strongAvg).toBeGreaterThan(mediumAvg);
