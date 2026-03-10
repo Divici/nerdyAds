@@ -814,3 +814,26 @@ Our previous calibration (Phase 7) used only synthetic ads we wrote ourselves. T
 **Pipeline verification:** Re-ran pipeline on 2 briefs with new reference-set anchors. 6/6 accepted, avg 8.34 — consistent with Phase 8 results.
 
 **Calibration loader updated:** Now loads anchors directly from `data/reference/reference-set.json` instead of old synthetic `data/calibration/` files. Picks top 2 strong + top 2 weak as scoring anchors.
+
+---
+
+### D-030: Langfuse Integration — AsyncLocalStorage Trace Context
+**Date:** 2026-03-10
+**Context:** Phase 8.7 wires up Langfuse observability. Key design decision: how to thread trace context from the orchestrator into `callGemini()` calls that happen inside agents (Writer, Evaluator, Editor).
+
+**Options considered:**
+1. **Explicit trace parameter through all agents** — modify every agent's method signature to accept a trace. Clean but high blast radius (4 agents + batch-runner + iteration-loop + all tests).
+2. **Module-level singleton trace** — store current trace in a mutable variable. Simple but not async-safe (concurrent briefs would overwrite each other).
+3. **AsyncLocalStorage context** — Node.js built-in async context propagation. Zero agent changes, async-safe, works with `Promise.all` in batch-runner.
+
+**Chosen:** Option 3 — `AsyncLocalStorage` via `withTrace()` / `getActiveTrace()`.
+
+**Why:** Zero modifications to agent interfaces or existing tests. The orchestrator wraps each brief in `withTrace(trace, () => runBatch(...))`, and `callGemini()` reads the trace from async context. When no trace is active (tests, standalone scripts), the generation span is simply skipped. Concurrent brief processing would get isolated traces automatically (though we currently process sequentially).
+
+**What was built:**
+- `src/utils/langfuse.ts` — real Langfuse client with no-op fallback (no crash without keys), `createTrace()`, `createGeneration()`, `withTrace()`, `getActiveTrace()`, `flush()`, `shutdown()`
+- `src/utils/gemini-client.ts` — `callGemini()` emits a Langfuse generation span (model, tokens, cost, latency, seed, promptHash) using either an explicit `trace` option or the active context
+- `src/pipeline/orchestrator.ts` — one trace per brief tagged with `runId`, `briefId`, `evalModel`; flush at end of pipeline
+- 19 new tests (16 langfuse + 3 gemini-langfuse), 183 total passing
+
+**Tradeoff:** AsyncLocalStorage adds ~0 overhead for the no-op case. The context is invisible in the type system — you can't tell from `callGemini`'s signature that it may emit traces. Mitigated by the explicit `trace` option still being available for direct use.
