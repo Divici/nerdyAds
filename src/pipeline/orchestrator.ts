@@ -13,6 +13,7 @@ import { classifyFailure } from '../evaluate/failure-taxonomy.js';
 import { saveSnapshot } from '../utils/snapshot.js';
 import { logger } from '../utils/logger.js';
 import { MAX_CYCLES } from '../config/thresholds.js';
+import type { CalibrationAnchor } from '../config/prompts.js';
 
 export interface OrchestratorOptions {
   /** Number of ads per brief (default: 5). */
@@ -27,6 +28,8 @@ export interface OrchestratorOptions {
   threshold?: number;
   /** Model for the evaluator agent (default: 'pro'). */
   evalModel?: ModelRole;
+  /** Calibration anchors for the evaluator (strong/weak/borderline examples). */
+  calibrationAnchors?: CalibrationAnchor[];
 }
 
 /**
@@ -43,7 +46,7 @@ export async function processBrief(
 
   const result = await runBatch(brief, options.adsPerBrief ?? 5, {
     generateBatch: (b, count, patterns) => writer.generateBatch(b, count, patterns),
-    evaluate: (ad, b) => evaluator.evaluate(ad, b),
+    evaluate: (ad, b) => evaluator.evaluate(ad, b, options.calibrationAnchors),
     improve: (ad, evaluation, b) => editor.improve(ad, evaluation, b),
     checkThreshold: (score, dimensionScores) => {
       const passes = ratchet.check(score, dimensionScores);
@@ -80,7 +83,7 @@ export async function processAllBriefs(
   for (const brief of briefs) {
     const batchResult = await runBatch(brief, options.adsPerBrief ?? 5, {
       generateBatch: (b, count, patterns) => writer.generateBatch(b, count, patterns),
-      evaluate: (ad, b) => evaluator.evaluate(ad, b),
+      evaluate: (ad, b) => evaluator.evaluate(ad, b, options.calibrationAnchors),
       improve: (ad, evaluation, b) => editor.improve(ad, evaluation, b),
       checkThreshold: (score) => {
         const passes = ratchet.check(score);

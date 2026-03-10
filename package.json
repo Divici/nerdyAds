@@ -13,6 +13,7 @@
     "generate": "tsx src/main.ts",
     "researcher": "tsx src/scripts/run-researcher.ts",
     "calibrate": "tsx src/scripts/run-calibration.ts",
+    "calibrate:ref": "tsx src/scripts/run-reference-calibration.ts",
     "pipeline": "tsx src/scripts/run-pipeline.ts",
     "view-run": "tsx src/scripts/view-run.ts",
     "stress-test": "tsx src/scripts/stress-test.ts",

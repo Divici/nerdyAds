@@ -245,5 +245,462 @@
       "target_audience": "student",
       "emotional_angle": "aspiration",
       "notes": "Synthetic supportive-semester variation. Keeps the emotional framing but shifts slightly from distress to progress."
-    }
+    },
+
+
+
+
+    
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "Her SAT Score Jumped 360 Points! 📈\n\n📈 \"My daughter's SAT score jumped from 1010 to 1370 in just 2 months with Varsity Tutors' 1:1 tutoring.\" \"She uses her sessions for SAT prep — and sometimes even for her AP classes when she needs extra help. I love that we can schedule each week around her busy school schedule.\" If your child is aiming for a great college, this program is a game changer. 👉 Fill out the quick form, and an SAT-prep expert will call right away to match your child with the right tutor.",
+        "headline": "From 1010 to 1370 in Just 2 Months 🎓",
+        "description": "",
+        "cta_button": "Learn More",
+        "hook_type": "social_proof",
+        "target_audience": "parents",
+        "emotional_angle": "aspiration",
+        "notes": "Video ad (1:18). Uses parent testimonial as hook. Emphasizes dramatic 360-point score jump. Appeals to busy parents with flexible scheduling. Has multiple versions (2 ads use this creative)."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "3.8 GPA. 1260 SAT. Something's off.\n\nThe SAT isn't anything like a classroom test. It's taken on a laptop with built in tools they're expected to master in order to not run out of time.\n\nWe help smart students score a 1400+ on the SAT.\n\nAt Varsity Tutors, we diagnose exactly where your child is struggling, whether it's pacing, using the built in Digital SAT tools to their advantage, test anxiety, or knowledge gaps.\n\nWe can help you see what score is realistic for their timeline with a free SAT Strategy Call.",
+        "headline": "See summary details",
+        "description": "",
+        "cta_button": "Learn More",
+        "hook_type": "pain_point",
+        "target_audience": "parents",
+        "emotional_angle": "frustration",
+        "notes": "Hook identifies the GPA-SAT disconnect parents feel. Positions digital SAT as fundamentally different from classroom tests. Offers free Strategy Call as lead magnet. 2 ads use this creative."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "📊 Your child isn't struggling with the material—they're struggling with the test.\n\nThe digital SAT rewards strategy, not just knowledge. That's why high-achieving students often score below their potential.\n\n✓ Diagnostic pinpoints exact timing gaps\n✓ Digital interface training\n✓ 1-on-1 strategy coaching\n✓ Flexible scheduling around your timeline\n\nSmart students need smart test strategy.\n\nReady to see scores that match their ability?",
+        "headline": "3.8 GPA But 1180 SAT? Here's Why",
+        "description": "Strategy-based SAT improvement",
+        "cta_button": "Learn more",
+        "hook_type": "pain_point",
+        "target_audience": "parents",
+        "emotional_angle": "frustration",
+        "notes": "Static image ad showing '3.8 GPA But 1180 SAT?' with score graphic. Reframes the problem as test strategy, not intelligence. Uses checkmark list for quick scanning. Started Feb 27 — longest-running ad in the set."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "Most smart kids with good grades are stuck in the mid-1200s on the SAT. 📚\n\nIt's not because they don't know the material. It's because they're practicing on paper for a test taken on a laptop.\n\nThe SAT is fully digital now. Your child needs 10s of hours of practice in the same digital environment they'll be tested in. Up to 60% of the math section can be solved with built-in formulas and calculator — but students who aren't trained on it try to do all the math by hand and run out of time.\n\nThat's where 1:1 SAT tutoring makes the difference. 📈\n\nWe deliver 10x the score improvement of self-study and 2.6x the improvement of in-person learning centers. Our students typically gain 100 points per month with 2 sessions per week plus daily practice.\n\n✅ Real human tutor matched to your child\n✅ Training on actual Digital SAT interface\n✅ Weekly progress reports",
+        "headline": "Your child is smarter than their score",
+        "description": "Expert test strategy training for the digital SAT",
+        "cta_button": "Learn More",
+        "hook_type": "pain_point",
+        "target_audience": "parents",
+        "emotional_angle": "frustration",
+        "notes": "Long-form copy. Emphasizes paper-vs-digital gap heavily. Includes strong statistical claims (10x improvement, 2.6x vs in-person, 100 pts/month). Positions against self-study and learning centers."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "Khan Academy not cutting it for your child's SAT score?\n\nThe problem with self-study is your child doesn't know what to focus on, they can't figure out on their own what they're getting wrong or why, and there's no one keeping them on track.\n\nOur students gain points 10x faster than self-study because they have a tutor identifying exactly what they need to work on and making sure they actually do it.\n\nWith 2 sessions per week, most students gain 100+ points per month.\n\n✅ A diagnostic that shows exactly what questions your child is getting wrong and why\n✅ A study plan that keeps them on track between sessions\n✅ Weekly progress reports so you can see it working\n\nYou can raise their score on the next SAT with 1-on-1 tutoring.",
+        "headline": "Your child is smarter than their score",
+        "description": "Expert test strategy training for the digital SAT",
+        "cta_button": "Learn More",
+        "hook_type": "question",
+        "target_audience": "parents",
+        "emotional_angle": "frustration",
+        "notes": "Directly attacks Khan Academy as a competitor. Identifies three pain points of self-study: no focus, no self-diagnosis, no accountability. Uses 10x improvement claim."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "You wouldn't practice football on a baseball field. 🏈\n\nSo why is your child preparing for a digital SAT with paper practice tests?\n\nThe May SAT happens on a laptop. Built-in calculator. Digital tools. Adaptive sections that change based on performance.\n\nMost tutors still use whiteboards and worksheets. That puts your child at a real disadvantage.\n\nYour child needs 8 weeks of practice in the same digital environment they'll be tested in. 💻\n\nOur tutors train your child on the actual SAT interface. They learn to use built-in formulas and tools that 60% of test-takers ignore - then run out of time doing math by hand.\n\nAverage improvement: 200+ points in 8 weeks with 2 sessions per week.\n\nWe deliver 2.6x the score improvement of traditional in-person tutoring.\n\nPerfect tutor match guaranteed. Cancel anytime.",
+        "headline": "Your child is smarter than their score",
+        "description": "Expert test strategy training for the digital SAT",
+        "cta_button": "Learn more",
+        "hook_type": "analogy",
+        "target_audience": "parents",
+        "emotional_angle": "logic",
+        "notes": "Sports analogy hook is highly memorable. Urgency via May SAT timeline. Claims 200+ points in 8 weeks. Attacks traditional tutoring methods (whiteboards/worksheets)."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "A higher SAT score doesn't just open one more door — it changes the entire set of options on the table",
+        "headline": "Higher SAT Score = More Options",
+        "description": "",
+        "cta_button": "Learn More",
+        "hook_type": "statement",
+        "target_audience": "both",
+        "emotional_angle": "aspiration",
+        "notes": "Very short copy — image/video-driven ad. Multiple versions. Aspirational framing about opportunity expansion."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "3.8 GPA. 1260 SAT. Something's off.\n\nThe SAT isn't anything like a classroom test. It's taken on a laptop with built in tools they're expected to master in order to not run out of time.\n\nWe help smart students score a 1400+ on the SAT.\n\nAt Varsity Tutors, we diagnose exactly where your child is struggling, whether it's pacing, using the built in Digital SAT tools to their advantage, test anxiety, or knowledge gaps.\n\nWe can help you see what score is realistic for their timeline with a free SAT Strategy Call.",
+        "headline": "Good GPA. Low SAT. Something's off.",
+        "description": "Rating: 4.9/5.0. Varsity Tutors seamlessly connects experts and learners in any subject, anywhere, anytime. Access 3,000+ subjects and 40,000 experts today.",
+        "cta_button": "Learn more",
+        "hook_type": "pain_point",
+        "target_audience": "parents",
+        "emotional_angle": "frustration",
+        "notes": "Same copy as ad #2 but with different headline and includes rating/description. Static image version. Offers free SAT Strategy Call."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "Your child crushes AP classes but struggles on the SAT? 🤔\n\nThis disconnect isn't about intelligence - it's about test-specific training.\n\nThe digital SAT has built-in formulas and calculator tools that can solve 60% of math problems instantly. But students trained on paper try to work everything by hand and run out of time.\n\nWith 8 weeks until May 2nd, we can close this gap.\n\nOur SAT tutoring focuses on digital test strategy, not content review. Your child already knows the material - they just need to learn how to use it efficiently under pressure.\n\n✅ Train on real digital SAT interface\n✅ Perfect tutor match guarantee\n✅ 2.6x better results than in-person centers\n✅ Cancel anytime - zero commitment risk\n\nStop fighting about homework. Start celebrating progress.",
+        "headline": "3.8 GPA. 1260 SAT. Something's Off",
+        "description": "Get your child SAT ready",
+        "cta_button": "Learn more",
+        "hook_type": "question",
+        "target_audience": "parents",
+        "emotional_angle": "frustration",
+        "notes": "Opens with relatable parent question. Specific May 2nd deadline creates urgency. 'Stop fighting about homework' line targets parent-child tension. Emphasizes zero-risk positioning."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "A higher SAT score opens better college opportunities.\n\nVarsity Tutors' monthly SAT tutoring membership gives your child:\n✔️ Weekly 1-on-1 sessions with expert SAT tutors\n✔️ A personalized SAT prep plan with daily practice problems\n✔️ Built-in accountability to stay consistent and get results\n\nFill out the form and a SAT advisor will call to help you get started.",
+        "headline": "SAT Tutoring That Gets Results",
+        "description": "A proven approach to SAT score improvements.",
+        "cta_button": "Learn More",
+        "hook_type": "statement",
+        "target_audience": "parents",
+        "emotional_angle": "aspiration",
+        "notes": "Multiple versions. Straightforward value prop. Membership framing. Lead gen CTA (form fill → advisor call). More concise than other ads."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "May 2nd SAT is 8 weeks away. If your child's score doesn't match their grades, here's what's still possible. 📚\n\nMost students scoring in the 1200s can hit 1400+ with the right approach. Not generic SAT content review—targeted fixes for the specific question patterns your child gets wrong.\n\nOur 1:1 SAT tutoring finds those gaps in the first session. Then we focus there. No wasted time on what they already know.\n\nYour child trains on the same digital interface they'll see test day. In-person classes still use paper—that puts students at a disadvantage when 60% of math problems can be solved with built-in tools they've never practiced with.\n\nPerfect tutor match guarantee. Cancel anytime. 📈",
+        "headline": "Your child is smarter than their score",
+        "description": "8 weeks = 200 point gains possible",
+        "cta_button": "Learn more",
+        "hook_type": "urgency",
+        "target_audience": "parents",
+        "emotional_angle": "urgency",
+        "notes": "Leads with specific date (May 2nd) and countdown (8 weeks). Promises 1200→1400+ transformation. Attacks generic content review and in-person classes."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "Remember when the world felt wide open? ✨\n\nBack then, a good SAT score was your ticket to anywhere. Now it's your child's turn to walk through those same doors.\n\nBut here's what's changed since '93: The SAT is fully digital now. Your child will take it on a laptop, not paper.\n\nThat's why Khan Academy and old-school prep books aren't cutting it anymore. Students need to train in the same digital environment they'll be tested in.\n\nOur 1-on-1 SAT tutoring gives your child what you had - a real shot at their dream school. Students typically gain 100+ points per month with twice-weekly sessions.\n\nPerfect tutor match guaranteed. Cancel anytime. 📚",
+        "headline": "Class of '93 had big dreams too",
+        "description": "Digital SAT training that works",
+        "cta_button": "Learn more",
+        "hook_type": "nostalgia",
+        "target_audience": "parents",
+        "emotional_angle": "nostalgia",
+        "notes": "Nostalgia hook targeting Gen X parents (Class of '93). Connects parents' own college dreams to their child's journey. Emotionally resonant opening line. Bridges to digital SAT differentiator."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "Improve your child's SAT score by 200+ points",
+        "headline": "1:1 SAT Tutoring 4.9/5.0 ⭐⭐⭐⭐⭐",
+        "description": "Trusted by 12k+ Families since 2007",
+        "cta_button": "Learn More",
+        "hook_type": "claim",
+        "target_audience": "parents",
+        "emotional_angle": "trust",
+        "notes": "Very short, image-driven ad. Multiple versions. Leads with bold 200+ point claim. Social proof via rating (4.9/5.0) and trust metric (12k+ families since 2007)."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "Unlock Your Child's Potential 🎓\nImprove SAT score & increase college acceptance chances. Get expert tutoring to prepare them for the future!",
+        "headline": "UGA Bound thanks to Varsity Tutors SAT Prep!",
+        "description": "1:1 SAT Tutoring Trusted by 250k+ Families.",
+        "cta_button": "Learn More",
+        "hook_type": "aspiration",
+        "target_audience": "parents",
+        "emotional_angle": "aspiration",
+        "notes": "Multiple versions. Short copy. UGA-specific headline suggests geo-targeted creative for Georgia market. Trust metric: 250k+ families (higher number than other ads)."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "",
+        "headline": "Higher SAT Score = More Options",
+        "description": "Tutoring = Higher Score",
+        "cta_button": "Learn More",
+        "hook_type": "statement",
+        "target_audience": "both",
+        "emotional_angle": "aspiration",
+        "notes": "Image/video-only ad with no primary text. Multiple versions. Simple equation-style messaging. Minimal copy approach — relies entirely on creative."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "Trusted by 12k+ Families since 2007",
+        "headline": "+200 pts with 1:1 SAT Tutoring",
+        "description": "Trusted by 12k+ Families since 2007",
+        "cta_button": "Learn More",
+        "hook_type": "social_proof",
+        "target_audience": "parents",
+        "emotional_angle": "trust",
+        "notes": "Multiple versions. Minimal copy. Trust-first messaging. Repeats '12k+ Families since 2007' in both primary text and description."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "Your child is smart. The score just doesn't show it yet. 📚\n\nWith the May SAT approaching, you're running out of time for generic group classes or hoping Khan Academy finally clicks.\n\nHere's what's still achievable in 6 weeks:\n\nSarah started at 1180. Hit 1380 by her May test date. 16 focused sessions targeting her specific gaps - not reviewing everything she already knows.\n\nDigital SAT training matters: Your child takes the test on a laptop, not paper. Up to 60% of math problems can be solved using built-in tools - but only if they're trained on them. 🖥️\n\nWe deliver 2.6x the score improvement of local tutors and group courses. For what Princeton Review charges for group classes ($1,500-2,000), we provide 1:1 attention.\n\nPerfect tutor match guarantee. Cancel anytime. Start this week.",
+        "headline": "May SAT in 6 weeks. Still possible.",
+        "description": "1:1 tutoring. Real results.",
+        "cta_button": "Learn more",
+        "hook_type": "empathy",
+        "target_audience": "parents",
+        "emotional_angle": "urgency",
+        "notes": "Uses 'Sarah' case study (1180→1380). Directly names and attacks Princeton Review on price ($1,500-2,000). 6-week urgency framing. Calls out Khan Academy by name."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "",
+        "headline": "SAT Tutoring that raises scores fast",
+        "description": "Help your child raise their SAT score",
+        "cta_button": "Learn More",
+        "hook_type": "statement",
+        "target_audience": "parents",
+        "emotional_angle": "aspiration",
+        "notes": "Image/video-only ad with no primary text. Multiple versions. Simple direct messaging."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "Here's what parents planning 8 weeks ahead figured out that most don't...\n\nYour child doesn't need more Khan Academy videos. They need someone to identify exactly which 3-4 question patterns are costing them 150+ points.\n\nMost parents wait until 3 weeks before the SAT. Smart parents start 8 weeks out because that's how long it takes to turn a 1200 into a 1400+ with targeted 1:1 sessions.\n\nThe difference? 🎯 A real human tutor who spots what your child keeps missing, trains them on the actual digital SAT interface, and holds them accountable week by week.\n\nWhile other families scramble with generic prep courses, your child gets a personalized plan: diagnostic → target weak spots → practice on real SAT tools → track progress → hit their goal.\n\nPrinceton Review charges $1,500-2,000 for group courses. We give you dedicated 1:1 for less than that.",
+        "headline": "Smart parents start 8 weeks out",
+        "description": "1:1 SAT tutoring that actually works",
+        "cta_button": "Learn more",
+        "hook_type": "curiosity",
+        "target_audience": "parents",
+        "emotional_angle": "fomo",
+        "notes": "Positions parents who act early as 'smart parents' — creates social comparison. Attacks Khan Academy videos. Includes diagnostic→results pipeline. Directly undercuts Princeton Review pricing."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "With just weeks until the May 2nd SAT, your child can experience remarkable improvements.\n\n16 tutoring sessions increases scores by an average of 200 points.\n\nThis isn't just about numbers; it's about opportunities, options and possibly savings in tuition.\n\nInvest these weeks wisely and watch your child thrive!\n\nStart today!",
+        "headline": "May 2nd SAT is Weeks Away. It's not too late to help your child raise their score.",
+        "description": "May 2nd SAT is Weeks Away. It's not too late to help your child raise their score.",
+        "cta_button": "Learn more",
+        "hook_type": "urgency",
+        "target_audience": "parents",
+        "emotional_angle": "urgency",
+        "notes": "Video ad (0:07 — very short). Strong urgency with May 2nd deadline. Ties score improvement to tuition savings. Headline and description are identical. Shorter, punchier copy."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "With just weeks until the May 2nd SAT, your child can experience remarkable improvements.\n\n16 tutoring sessions increases scores by an average of 200 points.\n\nThis isn't just about numbers; it's about opportunities, options and possibly savings in tuition.\n\nStart today!",
+        "headline": "May 2nd SAT is Weeks Away. It's not too late to help your child raise their score.",
+        "description": "",
+        "cta_button": "Learn More",
+        "hook_type": "urgency",
+        "target_audience": "parents",
+        "emotional_angle": "urgency",
+        "notes": "Multiple versions. Nearly identical to ad #20 but slightly shorter (removes 'Invest these weeks wisely' line). Same urgency framing."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "There's something about the May SAT that most tutoring centers won't tell you...\n\nThe test is completely digital now. Your child takes it on a laptop with built-in tools that can solve 60% of math problems instantly.\n\nBut here's the catch: if they're not trained on these digital tools, they'll try to do everything by hand and run out of time. ⏰\n\nThat's why students with 3.8 GPAs still score in the 1200s.\n\nOur tutors teach your child to use the same digital interface they'll face on test day. Students who master this typically gain 100 points per month.\n\nPerfect tutor match guarantee. Cancel anytime.\n\nWant to see how digital training changes everything?",
+        "headline": "8 weeks left. Is it enough? ⏳",
+        "description": "Start this week - 8 weeks left",
+        "cta_button": "Learn more",
+        "hook_type": "curiosity",
+        "target_audience": "parents",
+        "emotional_angle": "fear",
+        "notes": "Opens with 'secret' framing — 'most tutoring centers won't tell you.' Creates insider knowledge dynamic. Headline uses question + countdown combo. Attacks traditional centers."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "Picture this: Your child walks into their May SAT confident, prepared, and ready to show colleges who they really are. ✨\n\nNot because they crammed with Khan Academy or sat through generic group classes.\n\nBecause they had 16 focused sessions with a real human tutor who knew exactly what they needed to work on.\n\n**2 sessions per week. Digital practice that mirrors test day. 200-point improvements in 8 weeks.**\n\nWhile other parents stress about whether their child is 'ready,' you'll have data showing steady progress: 1200→1250→1300→1400.\n\nYour child gets:\n🎯 A tutor matched specifically to how they learn\n📊 Weekly progress tracking (no guessing if it's working)\n💻 Training on the actual digital SAT interface\n🚫 Cancel anytime - no long commitments\n\nFor what Princeton Review charges for group courses ($1,500-2,000), you get 1:1 attention focused entirely on your child.",
+        "headline": "1200 → 1400 in 8 weeks",
+        "description": "See what's possible with 1:1 SAT tutoring",
+        "cta_button": "Learn more",
+        "hook_type": "visualization",
+        "target_audience": "parents",
+        "emotional_angle": "aspiration",
+        "notes": "'Picture this' visualization hook. Shows score progression ladder (1200→1250→1300→1400). Attacks Khan Academy and group classes. Princeton Review price comparison. Uses bold formatting."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "\"My daughter was FAILING AP calc.\" 📚\n\nThen Varsity Tutors happened.\n\nB in the class. SAT up 150 points. Got into UGA.\n\nJennifer from Atlanta isn't someone who usually writes reviews. But this result? She had to share it.\n\n\"The tutor figured out exactly what she was getting wrong. It wasn't generic at all.\"\n\nYour child is smart. Their score just doesn't show it yet.\n\nOur tutors don't teach generic SAT content. They diagnose what YOUR child specifically misses, then fix those exact gaps.\n\n✓ 10x the score improvement vs Khan Academy\n✓ 2.6x better results than group classes\n✓ Perfect tutor match guarantee\n✓ Cancel anytime - no long-term commitment\n\nFor what Princeton Review charges for group classes ($1,500-$2,000), you get dedicated 1:1 tutoring.\n\nReady to see what's possible when someone actually figures out what your child needs?",
+        "headline": "Real parent review from Atlanta",
+        "description": "See why families trust us",
+        "cta_button": "Learn more",
+        "hook_type": "testimonial",
+        "target_audience": "parents",
+        "emotional_angle": "social_proof",
+        "notes": "Story-driven testimonial format. Named parent 'Jennifer from Atlanta' — geo-targeted for Georgia/UGA. Dramatic arc: failing → B → UGA acceptance. Attacks Princeton Review, Khan Academy, group classes."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "Your child has straight A's but their SAT score doesn't show it. ⏰\n\nThe May test date is circled on your calendar, but you're not sure if your child is actually prepared.\n\nKhan Academy raised their score 20 points. The prep book helped a little. But they're still stuck in the 1200s when they should be hitting 1400+.\n\n**BEFORE**: Frustrated parent watching their smart child underperform on standardized tests\n**AFTER**: Your child walks into the May SAT confident, scoring 200+ points higher than their first attempt\n**BRIDGE**: Our 16-session SAT tutoring program gets your child from where they are now to their target score by May 2nd\n\nHere's what makes the difference:\n📊 Digital diagnostic pinpoints exactly what's holding them back\n🎯 One-on-one tutoring sessions twice weekly (not group classes)\n💻 Training on the actual digital SAT interface",
+        "headline": "May SAT. Your child's score gap, fixed.",
+        "description": "1:1 digital SAT tutoring",
+        "cta_button": "Learn more",
+        "hook_type": "pain_point",
+        "target_audience": "parents",
+        "emotional_angle": "frustration",
+        "notes": "Uses explicit BEFORE/AFTER/BRIDGE copywriting framework. Calls out Khan Academy by name (only 20 points). Specific 16-session program structure. Bold text formatting for emphasis."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "Your child will take the SAT on a laptop. So why are they practicing on paper? 📱\n\nThe SAT is fully digital now — taken on the Bluebook interface with built-in tools, on-screen reading, and adaptive sections.\n\nYet most prep still happens the old way: paper books, in-person classes, and generic content review.\n\nThat's like practicing football on a baseball field.\n\nYour child needs:\n• Training in the actual digital environment\n• Practice with built-in calculators and formulas\n• Personalized focus on their specific gaps\n\nOur 1-on-1 SAT tutoring delivers 10x the score improvement of self-study and 2.6x better results than in-person learning centers.\n\nReal human tutors. Real digital practice. Typical gains of 100+ points per month with 2 sessions weekly.\n\nCancel anytime — no long-term commitments. 🎯",
+        "headline": "Your child deserves better than paper prep",
+        "description": "Start digital SAT training this week",
+        "cta_button": "Learn more",
+        "hook_type": "question",
+        "target_audience": "parents",
+        "emotional_angle": "logic",
+        "notes": "Mentions Bluebook by name — shows SAT knowledge depth. Football/baseball analogy reappears. 10x and 2.6x improvement claims. Bullet-point format for scanning."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "",
+        "headline": "Tutors who help your child reach their target SAT score",
+        "description": "",
+        "cta_button": "Learn More",
+        "hook_type": "statement",
+        "target_audience": "parents",
+        "emotional_angle": "aspiration",
+        "notes": "Image/video-only ad. Multiple versions. Minimal copy — creative-dependent."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "150 points can mean $40,000 in scholarship money lost forever. 💸\n\nYour child isn't failing because they're not smart enough. They're failing because the SAT is digital now - and most tutoring still trains them on paper.\n\n**The harsh truth**: While your child practices with pencil and paper, 60% of SAT math can be solved using the built-in calculator and formulas. Students who don't train digitally run out of time trying to do everything by hand.\n\n**Here's what we do differently**:\n✓ Train on the actual digital SAT interface\n✓ 100 points/month average improvement with 2 sessions weekly\n✓ Real human tutor (not group classes or apps)\n✓ Perfect tutor match guarantee\n✓ Cancel anytime - no long-term commitment\n\nStop letting paper-based prep put your child at a disadvantage. Every month you wait is another month of potential scholarship money slipping away.",
+        "headline": "150 points = $40,000 in scholarships",
+        "description": "Don't let paper prep cost your child's future",
+        "cta_button": "Learn more",
+        "hook_type": "financial_loss",
+        "target_audience": "parents",
+        "emotional_angle": "fear",
+        "notes": "Dollar-amount hook ties SAT points directly to scholarship money. Loss aversion framing. Bold section headers. Creates financial urgency beyond just test scores."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "You wouldn't practice football on a baseball field. So why prepare for a digital SAT with paper worksheets? 📱\n\nYour child will take the SAT on a laptop with built-in tools, adaptive sections, and digital interfaces. Yet most tutoring still uses outdated paper-based methods.\n\nHere's what changes everything: SAT Tutoring that trains your child exactly how they'll be tested.\n\n✅ Real digital practice environment\n✅ Built-in calculator and formula training\n✅ 1-on-1 sessions (not group classes)\n✅ Typical score gains: 100+ points per month\n\nWhile other kids struggle with unfamiliar digital tools on test day, your child walks in confident and prepared.\n\nFor what Princeton Review charges for group classes ($1,500-$2,000), we provide 1-on-1 digital SAT tutoring starting at $349/month.\n\nPerfect tutor match guarantee. Cancel anytime.",
+        "headline": "Your child deserves better than paper prep",
+        "description": "Digital SAT training starting at $349/mo",
+        "cta_button": "Learn more",
+        "hook_type": "analogy",
+        "target_audience": "parents",
+        "emotional_angle": "logic",
+        "notes": "Football/baseball analogy hook (reused). Only ad that reveals actual pricing ($349/month). Directly undercuts Princeton Review ($1,500-$2,000 vs $349/mo). Strong value positioning."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "3.8 GPA. 1260 SAT. Something's off, right?\n\nYou're not imagining it. Smart kids often underperform on standardized tests - not because they don't know the material, but because they haven't learned to test well.\n\nGood news: This is completely fixable.\n\nJessica had the same disconnect. Honor roll student, disappointing SAT score. After 16 sessions with her matched tutor, she hit 1420. Ready for May 2nd. 📈\n\nYour child gets:\n✅ Digital SAT training (matches actual test format)\n✅ Real human tutor who understands how they think\n✅ Perfect tutor match guarantee\n✅ Cancel anytime - zero risk",
+        "headline": "200 Points by May 2nd ✅",
+        "description": "Ready by May 2nd",
+        "cta_button": "Learn more",
+        "hook_type": "pain_point",
+        "target_audience": "parents",
+        "emotional_angle": "reassurance",
+        "notes": "Low impression count (<100). Uses 'Jessica' case study. Validates parent's instinct ('You're not imagining it'). Reassuring tone — 'completely fixable.' May 2nd urgency."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "This Reddit post is going viral in r/ApplyingToCollege... 🤯\n\nA mom asked: 'Is SAT tutoring actually worth it or just throwing money away?'\n\nThe top comment shocked everyone:\n\n'Varsity Tutors... my daughter went from FAILING AP Calculus to getting a B. Her SAT jumped 150 points. She got into UGA. I literally cried.'\n\nAnother parent chimed in: 'My son went from 1360 to 1560. 200 points with one tutor.'\n\nWhat parents are discovering: Your child gets 2.6x better score improvements compared to group courses or local tutors. 📈\n\nFor what Princeton Review charges for group classes ($1,500-2,000), you get dedicated 1:1 attention.\n\nPlus: Perfect tutor match guarantee. If it's not the right fit, we'll find someone who is.\n\nCancel anytime. No long-term commitments.",
+        "headline": "This Reddit post is going viral...",
+        "description": "See what parents are saying",
+        "cta_button": "Learn more",
+        "hook_type": "social_proof",
+        "target_audience": "parents",
+        "emotional_angle": "curiosity",
+        "notes": "Viral Reddit post framing — native-feeling UGC hook. References r/ApplyingToCollege subreddit. Multiple testimonials woven in. Emotional 'I literally cried' quote. Attacks Princeton Review."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "Picture this: Your child confidently walks into their dream college knowing they earned their spot 🎯\n\nNot because they got lucky on test day. Because they actually mastered the digital SAT.\n\nWhile other parents are stressing about scores, you're celebrating scholarship offers. While other families are settling for their 'safety school,' your child is choosing between top options.\n\nHere's what changed everything for parents like you:\n\n✅ Real 1-on-1 digital SAT tutoring (not group classes)\n✅ Training on the actual laptop interface they'll use on test day\n✅ Typical gains of 100+ points with 2 sessions/week\n✅ Perfect tutor match guarantee - if it's not the right fit, we switch immediately\n\nYour child isn't 'bad at tests.' They just need someone who understands how the digital SAT actually works.\n\nEvery 10 points on the SAT equals approximately $1,000+ in potential scholarship money.",
+        "headline": "Dream college, earned.",
+        "description": "1:1 digital SAT tutoring that works",
+        "cta_button": "Learn more",
+        "hook_type": "visualization",
+        "target_audience": "parents",
+        "emotional_angle": "aspiration",
+        "notes": "'Picture this' visualization hook. Contrast framing: 'other parents stressing' vs 'you celebrating.' Ties points to scholarship dollars ($1,000+ per 10 points). Reframes 'bad at tests.'"
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "You dreamed of college in '92. Now it's their moment to make it happen. 🎓\n\nBut here's what most parents don't know: the SAT is completely digital now. Your child will take it on a laptop, not paper.\n\nThat changes everything about how they should prepare.\n\nMost in-person SAT classes still use paper workbooks and whiteboards. But 60% of the math section can be solved using built-in digital tools - if your child knows how to use them.\n\nStudents who practice on paper try to do all the math by hand and run out of time.\n\nOur expert tutors train your child on the exact same digital interface they'll face on test day. Real Bluebook practice, real digital tools, real score gains.\n\nTypical improvements: 100+ points per month with 2 weekly sessions.\n\nPerfect tutor match guaranteed. Cancel anytime. 📚",
+        "headline": "Class of '92 — it's their turn now",
+        "description": "Digital SAT prep that actually works",
+        "cta_button": "Learn more",
+        "hook_type": "nostalgia",
+        "target_audience": "parents",
+        "emotional_angle": "nostalgia",
+        "notes": "Low impression count (<100). Similar to ad #12 but targets Class of '92 instead of '93. Mentions Bluebook by name. Nostalgia-to-action bridge."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "\"She started at 1180. Hit 1370 in 8 weeks.\" 💪\n\nSarah's mom from Westfield chose us over Princeton Review because her daughter needed more than group classes could offer.\n\nWith 2 sessions per week plus daily practice, Sarah gained 190 points - typical for our students who follow the program.\n\n**Here's what Sarah got that Khan Academy can't provide:**\n→ Real human tutor matched to her learning style\n→ Digital SAT training on actual test interface\n→ Weekly progress tracking with score projections\n\n**The difference?** While Princeton Review charges $199-252/hour for 1:1 help, we include it starting at $349/month.\n\nOur students improve 2.6x more than group courses because your child gets personalized attention, not generic curriculum.\n\n**Perfect tutor match guaranteed.** If the fit isn't right, we'll rematch.",
+        "headline": "1180 → 1370 in 8 weeks",
+        "description": "See Sarah's full story",
+        "cta_button": "Learn more",
+        "hook_type": "testimonial",
+        "target_audience": "parents",
+        "emotional_angle": "social_proof",
+        "notes": "Low impression count (<100). Named case study 'Sarah from Westfield.' Most specific Princeton Review pricing comparison ($199-252/hr vs $349/mo). Bold formatting. Arrow bullet points."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "3.7 GPA. 1240 SAT. Your child is smarter than their score shows. 📚\n\nThe May SAT is their final shot before college apps. But here's what most parents don't realize...\n\n**BEFORE**: Your child studies hard but keeps hitting the same score ceiling. Khan Academy isn't cutting it. Princeton Review group classes move too slow.\n\n**AFTER**: Imagine your child walking into May SAT having practiced 200+ real questions on the exact digital interface. They know every shortcut, every built-in tool. Score jumps 100+ points. ✨\n\n**THE BRIDGE**: 1-on-1 digital SAT tutoring that targets their specific gaps. Real human tutor who gets them. Cancel anytime.\n\nFor what Kaplan charges $1,500+ for group classes, we deliver personalized 1-on-1 starting at $349/month.\n\nYour child deserves their real score.",
+        "headline": "May SAT = last chance before apps",
+        "description": "1:1 digital SAT tutoring from $349/mo",
+        "cta_button": "Learn more",
+        "hook_type": "pain_point",
+        "target_audience": "parents",
+        "emotional_angle": "urgency",
+        "notes": "Low impression count (<100). BEFORE/AFTER/BRIDGE framework. Attacks Kaplan by name ($1,500+) — only ad targeting Kaplan specifically. Reveals $349/mo pricing. 'Final shot' urgency."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "Your child is brilliant in the classroom but the SAT isn't showing it. You're not imagining things.\n\nWe see this every day: honor roll kids scoring in the mid-1100s while their classmates with lower GPAs hit 1400+. It's not about being 'smart enough.'\n\n📊 Sarah started at 1180 with a 3.9 GPA. After 8 weeks of targeted SAT tutoring, she scored 1390. Her mom said: 'Finally, a score that matches who my daughter actually is.'\n\nThe difference? We don't teach all SAT content from scratch like group courses do. We run a digital diagnostic, find the 3-4 specific gaps holding your child back, and fix those first.\n\n✅ Human tutor matched to your child (not a random assignment)\n✅ Training on the actual Digital SAT interface\n✅ 2.6X better results than local tutors or group courses\n✅ Perfect tutor match guarantee\n✅ Cancel anytime",
+        "headline": "3.9 GPA. 1180 SAT. Fixed in 8 weeks.",
+        "description": "See how Sarah's score matched her grades",
+        "cta_button": "Learn more",
+        "hook_type": "empathy",
+        "target_audience": "parents",
+        "emotional_angle": "validation",
+        "notes": "Low impression count (<100). Validates parents' frustration ('You're not imagining things'). Sarah case study (1180→1390). Parent quote adds emotional depth. Emphasizes diagnostic-first approach."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "The SAT should never jeopardize your child's athletic dreams.\n\nIf this test is the only thing standing between them and a scholarship, don't wait until it's too late.\n\nThe recruiting window is closing fast, and coaches want to see results.\n\nYour athlete is working hard on the field; let's ensure their SAT score reflects that effort.\n\nDon't let a number become a barrier to college scholarship opportunities.\n\nVarsity tutors specializes in personalized tutoring to improve their SAT score fast — because every point matters when it comes to funding their future.",
+        "headline": "SAT Tutoring to raise their score and unblock their dreams.",
+        "description": "SAT Tutoring to raise their score and unblock their dreams.",
+        "cta_button": "Learn More",
+        "hook_type": "pain_point",
+        "target_audience": "parents",
+        "emotional_angle": "fear",
+        "notes": "Multiple versions. Athlete-specific targeting — unique audience segment. Recruiting window urgency. Scholarship-focused messaging. Video creative shows athlete imagery."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "Khan Academy raised your child's score 10 points. Now what? 📚\n\nYour child has the grades. They have the intelligence. What they don't have is someone explaining WHY they're missing questions.\n\nHere's what happens when smart kids get stuck at 1180:\n• They lose $15,000+ in merit aid per 100-point gap\n• State schools become safety schools\n• Their dream college slips away\n\nThe SAT is digital now. Training on Khan's interface isn't the same as training on the actual Bluebook platform your child will face.\n\nOur tutors don't just review content - they identify the specific question patterns your child misses and fix them fast.\n\nTypical gain: 100+ points per month with 2 sessions weekly. 📈\n\nPerfect tutor match guarantee. Cancel anytime.",
+        "headline": "3.8 GPA. 1180 SAT. Khan failed.",
+        "description": "Real tutors beat apps",
+        "cta_button": "Learn more",
+        "hook_type": "question",
+        "target_audience": "parents",
+        "emotional_angle": "frustration",
+        "notes": "Most aggressive Khan Academy attack — headline says 'Khan failed.' Only 10-point improvement from Khan. Ties scores to dollar amounts ($15,000+ merit aid). Mentions Bluebook platform."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "Match your child with an SAT tutor who scored 1500+ on the SAT",
+        "headline": "Our SAT Tutors help smart kids score a 1400+",
+        "description": "",
+        "cta_button": "Learn More",
+        "hook_type": "authority",
+        "target_audience": "parents",
+        "emotional_angle": "trust",
+        "notes": "Multiple versions. Short copy — creative-dependent. Tutor credential hook (1500+ scorers). Positions service for 'smart kids.'"
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "SAT Tutoring to raise their score and unblock their dreams.\n\nThe SAT should never jeopardize your child's athletic dreams.\n\nIf this test is the only thing standing between them and a scholarship, don't wait until it's too late.\n\nThe recruiting window is closing fast, and coaches want to see results.\n\nYour athlete is working hard on the field; let's ensure their SAT score reflects that effort.\n\nDon't let a number become a barrier to opportunity.\n\nVarsity tutors specializes in personalized tutoring for high school athletes. We improve their SAT score fast — because every point matters when it comes to funding their future.",
+        "headline": "SAT Tutoring to raise their score and unblock their dreams.",
+        "description": "SAT Tutoring to raise their score and unblock their dreams.",
+        "cta_button": "Learn more",
+        "hook_type": "pain_point",
+        "target_audience": "parents",
+        "emotional_angle": "fear",
+        "notes": "Low impression count (<100). Athlete variant — specifies 'high school athletes.' Video ad (0:09). Nearly identical to ad #37 but adds 'personalized tutoring for high school athletes' specificity."
+      },
+      {
+        "competitor": "Varsity Tutors",
+        "primary_text": "The SAT should never jeopardize your child's athletic dreams.\n\nIf this test is the only thing standing between them and a scholarship, don't wait until it's too late.\n\nThe recruiting window is closing fast, and coaches want to see results.\n\nYour athlete is working hard on the field; let's ensure their SAT score reflects that effort.\n\nDon't let a number become a barrier to opportunity.\n\nVarsity tutors specializes in personalized tutoring to improve their SAT score fast — because every point matters when it comes to funding their future.",
+        "headline": "SAT Tutoring to raise their score and unblock their dreams.",
+        "description": "Rating: 4.9/5.0. Varsity Tutors seamlessly connects experts and learners in any subject, anywhere, anytime. Access 3,000+ subjects and 40,000 experts today.",
+        "cta_button": "Learn more",
+        "hook_type": "pain_point",
+        "target_audience": "parents",
+        "emotional_angle": "fear",
+        "notes": "Low impression count (<100). Third athlete variant. Includes platform rating (4.9/5.0) and scale metrics (3,000+ subjects, 40,000 experts) in description."
+      }
+    
   ]

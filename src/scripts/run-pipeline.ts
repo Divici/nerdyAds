@@ -11,6 +11,7 @@ import type { Brief } from '../types/brief.js';
 import type { CompetitorPattern } from '../types/patterns.js';
 import type { ModelRole } from '../utils/gemini-client.js';
 import { processAllBriefs } from '../pipeline/orchestrator.js';
+import { loadCalibrationAnchors } from '../utils/calibration-loader.js';
 
 function parseArgInt(name: string, defaultVal: number): number {
   const arg = process.argv.find((a) => a.startsWith(`--${name}=`));
@@ -66,6 +67,20 @@ async function main() {
     }
   }
 
+  // Load calibration anchors for evaluator grading
+  const noAnchors = hasFlag('no-anchors');
+  let calibrationAnchors;
+  if (noAnchors) {
+    console.log('Calibration anchors DISABLED via --no-anchors flag\n');
+  } else {
+    try {
+      calibrationAnchors = await loadCalibrationAnchors();
+      console.log(`Loaded ${calibrationAnchors.length} calibration anchors from reference set (${calibrationAnchors.filter(a => a.label === 'strong').length} strong, ${calibrationAnchors.filter(a => a.label === 'weak').length} weak)\n`);
+    } catch {
+      console.log('No calibration data found — evaluator will use rubric only\n');
+    }
+  }
+
   // Run pipeline
   const result = await processAllBriefs(briefs, {
     adsPerBrief,
@@ -73,6 +88,7 @@ async function main() {
     outputDir: 'data/output',
     threshold,
     evalModel,
+    calibrationAnchors,
   });
 
   // Results
