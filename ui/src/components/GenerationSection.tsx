@@ -175,7 +175,7 @@ export function GenerationSection({
         </div>
 
         {/* Mode toggle — below controls row, right-aligned */}
-        <div className="relative flex items-center justify-end mt-3 pt-3 border-t border-gray-100">
+        <div className="relative flex items-center justify-end pt-3">
           <span className="text-xs text-gray-400 mr-2">Mode</span>
           <div className="flex rounded-full border border-gray-200 overflow-hidden">
             <button
@@ -225,7 +225,7 @@ export function GenerationSection({
 
         {/* Selected brief preview */}
         {selectedBriefData && (
-          <div className="mt-3 pt-3 border-t border-gray-100">
+          <div className="mt-3 pt-3">
             <BriefPreview brief={selectedBriefData} />
           </div>
         )}
@@ -240,7 +240,7 @@ export function GenerationSection({
 
       {/* Card dealing area */}
       {(generating || pendingAds.length > 0) && (
-        <div className="flex gap-4 overflow-x-auto pb-4">
+        <div className="flex gap-4 overflow-x-auto pb-4 styled-scrollbar">
           <AnimatePresence mode="popLayout">
             {pendingAds.map((adh, i) => (
               <AdCard key={adh.ad.id} adWithHistory={adh} index={i} status={pendingStatus.get(adh.ad.id)} />

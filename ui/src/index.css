@@ -39,3 +39,27 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
 }
+
+/* Styled scrollbars */
+.styled-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-vt-lavender) transparent;
+}
+
+.styled-scrollbar::-webkit-scrollbar {
+  height: 6px;
+}
+
+.styled-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 3px;
+}
+
+.styled-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-vt-lavender);
+  border-radius: 3px;
+}
+
+.styled-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--color-vt-accent);
+}

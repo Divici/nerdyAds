@@ -55,28 +55,12 @@ export function AcceptedCarousel({ ads, onAdClick, onViewAll }: AcceptedCarousel
           </p>
         </div>
         {ads.length > 0 && (
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => scroll('left')}
-              disabled={!canScrollLeft}
-              className="w-8 h-8 rounded-full bg-white border border-gray-200/60 shadow-sm flex items-center justify-center hover:bg-gray-50 text-vt-text transition-colors disabled:opacity-30 disabled:cursor-default"
-            >
-              &#8249;
-            </button>
-            <button
-              onClick={() => scroll('right')}
-              disabled={!canScrollRight}
-              className="w-8 h-8 rounded-full bg-white border border-gray-200/60 shadow-sm flex items-center justify-center hover:bg-gray-50 text-vt-text transition-colors disabled:opacity-30 disabled:cursor-default"
-            >
-              &#8250;
-            </button>
-            <button
-              onClick={onViewAll}
-              className="text-sm font-button font-medium text-vt-accent hover:text-vt-primary transition-colors ml-2"
-            >
-              View All
-            </button>
-          </div>
+          <button
+            onClick={onViewAll}
+            className="text-sm font-button font-medium text-vt-accent hover:text-vt-primary transition-colors"
+          >
+            View All
+          </button>
         )}
       </div>
 
@@ -90,39 +74,63 @@ export function AcceptedCarousel({ ads, onAdClick, onViewAll }: AcceptedCarousel
           </div>
         </div>
       ) : (
-        <div className="relative">
-          {/* Left fade */}
-          <div
-            className="pointer-events-none absolute left-0 top-0 bottom-4 w-12 z-10 rounded-l-xl transition-opacity duration-200"
-            style={{
-              background: 'linear-gradient(to right, var(--color-vt-light), transparent)',
-              opacity: canScrollLeft ? 1 : 0,
-            }}
-          />
-          {/* Right fade */}
-          <div
-            className="pointer-events-none absolute right-0 top-0 bottom-4 w-12 z-10 rounded-r-xl transition-opacity duration-200"
-            style={{
-              background: 'linear-gradient(to left, var(--color-vt-light), transparent)',
-              opacity: canScrollRight ? 1 : 0,
-            }}
-          />
-
-          <div
-            ref={scrollRef}
-            className="flex gap-4 overflow-x-auto pb-4 scroll-smooth"
-            style={{ scrollbarWidth: 'thin' }}
+        <div className="relative flex items-center">
+          {/* Left arrow */}
+          <button
+            onClick={() => scroll('left')}
+            disabled={!canScrollLeft}
+            className="absolute -left-5 z-20 w-10 h-10 rounded-full bg-white border border-gray-200/60 shadow-md flex items-center justify-center hover:bg-gray-50 text-vt-text text-xl transition-colors disabled:opacity-0 disabled:pointer-events-none"
           >
-            {ads.map((adh, i) => (
-              <AdCard
-                key={adh.ad.id}
-                adWithHistory={adh}
-                onClick={() => onAdClick(adh)}
-                index={i}
-                variant="default"
-              />
-            ))}
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          {/* Carousel */}
+          <div className="flex-1 overflow-hidden">
+            {/* Left fade */}
+            <div
+              className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 z-10 rounded-l-xl transition-opacity duration-200"
+              style={{
+                background: 'linear-gradient(to right, var(--color-vt-light), transparent)',
+                opacity: canScrollLeft ? 1 : 0,
+              }}
+            />
+            {/* Right fade */}
+            <div
+              className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 z-10 rounded-r-xl transition-opacity duration-200"
+              style={{
+                background: 'linear-gradient(to left, var(--color-vt-light), transparent)',
+                opacity: canScrollRight ? 1 : 0,
+              }}
+            />
+
+            <div
+              ref={scrollRef}
+              className="flex gap-4 overflow-x-auto pb-4 scroll-smooth styled-scrollbar"
+            >
+              {ads.map((adh, i) => (
+                <AdCard
+                  key={adh.ad.id}
+                  adWithHistory={adh}
+                  onClick={() => onAdClick(adh)}
+                  index={i}
+                  variant="default"
+                />
+              ))}
+            </div>
           </div>
+
+          {/* Right arrow */}
+          <button
+            onClick={() => scroll('right')}
+            disabled={!canScrollRight}
+            className="absolute -right-5 z-20 w-10 h-10 rounded-full bg-white border border-gray-200/60 shadow-md flex items-center justify-center hover:bg-gray-50 text-vt-text text-xl transition-colors disabled:opacity-0 disabled:pointer-events-none"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
         </div>
       )}
     </section>
