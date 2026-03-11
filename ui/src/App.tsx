@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { Brief, AdWithHistory, PipelineResult, Ad } from './types.ts';
+import type { Brief, AdWithHistory, PipelineResult, Ad, AdStatus } from './types.ts';
 import { useApi } from './hooks/useApi.ts';
 import { useSSE } from './hooks/useSSE.ts';
 import { Header } from './components/Header.tsx';
@@ -21,6 +21,7 @@ function App() {
   const [accepted, setAccepted] = useState<AdWithHistory[]>([]);
   const [rejected, setRejected] = useState<AdWithHistory[]>([]);
   const [pending, setPending] = useState<AdWithHistory[]>([]);
+  const [pendingStatus, setPendingStatus] = useState<Map<string, AdStatus>>(new Map());
   const [generating, setGenerating] = useState(false);
   const [currentRound, setCurrentRound] = useState(0);
   const [skeletonCount, setSkeletonCount] = useState(0);
@@ -46,10 +47,24 @@ function App() {
     setPending([]);
   }, []);
 
+  const handleAdGenerating = useCallback((data: unknown) => {
+    const d = data as { ad: Ad };
+    setSkeletonCount((c) => Math.max(0, c - 1));
+    setPendingStatus((prev) => new Map(prev).set(d.ad.id, 'generating'));
+    setPending((prev) => {
+      if (prev.some((a) => a.ad.id === d.ad.id)) return prev;
+      return [
+        ...prev,
+        { ad: d.ad, evaluations: [], accepted: false, cyclesUsed: 0 },
+      ];
+    });
+  }, []);
+
   const handleAdAccepted = useCallback((data: unknown) => {
     const d = data as { adWithHistory: AdWithHistory };
     setSkeletonCount((c) => Math.max(0, c - 1));
     setPending((p) => p.filter((a) => a.ad.id !== d.adWithHistory.ad.id));
+    setPendingStatus((prev) => { const next = new Map(prev); next.delete(d.adWithHistory.ad.id); return next; });
     setAccepted((prev) => [...prev, d.adWithHistory]);
   }, []);
 
@@ -57,22 +72,19 @@ function App() {
     const d = data as { adWithHistory: AdWithHistory };
     setSkeletonCount((c) => Math.max(0, c - 1));
     setPending((p) => p.filter((a) => a.ad.id !== d.adWithHistory.ad.id));
+    setPendingStatus((prev) => { const next = new Map(prev); next.delete(d.adWithHistory.ad.id); return next; });
     setRejected((prev) => [...prev, d.adWithHistory]);
   }, []);
 
   const handleAdEvaluating = useCallback((data: unknown) => {
     const d = data as { ad: Ad };
     setSkeletonCount((c) => Math.max(0, c - 1));
+    setPendingStatus((prev) => new Map(prev).set(d.ad.id, 'evaluating'));
     setPending((prev) => {
       if (prev.some((a) => a.ad.id === d.ad.id)) return prev;
       return [
         ...prev,
-        {
-          ad: d.ad,
-          evaluations: [],
-          accepted: false,
-          cyclesUsed: 0,
-        },
+        { ad: d.ad, evaluations: [], accepted: false, cyclesUsed: 0 },
       ];
     });
   }, []);
@@ -83,6 +95,7 @@ function App() {
     setGenerating(false);
     setSkeletonCount(0);
     setPending([]);
+    setPendingStatus(new Map());
     setActiveRunId(null);
   }, []);
 
@@ -92,11 +105,13 @@ function App() {
     setGenerating(false);
     setSkeletonCount(0);
     setPending([]);
+    setPendingStatus(new Map());
     setActiveRunId(null);
   }, []);
 
   useSSE(activeRunId, {
     'round:start': handleRoundStart,
+    'ad:generating': handleAdGenerating,
     'ad:evaluating': handleAdEvaluating,
     'ad:accepted': handleAdAccepted,
     'ad:rejected': handleAdRejected,
@@ -141,6 +156,7 @@ function App() {
               generating={generating}
               currentRound={currentRound}
               pendingAds={pending}
+              pendingStatus={pendingStatus}
               skeletonCount={skeletonCount}
             />
 

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import type { AdWithHistory } from '../types.ts';
+import type { AdWithHistory, AdStatus } from '../types.ts';
 import { ScoreBadge } from './ScoreBadge.tsx';
 
 interface AdCardProps {
@@ -7,12 +7,43 @@ interface AdCardProps {
   onClick?: () => void;
   index?: number;
   variant?: 'default' | 'compact';
+  /** Pipeline status — when set, overrides default score/status display */
+  status?: AdStatus;
 }
 
-export function AdCard({ adWithHistory, onClick, index = 0, variant = 'default' }: AdCardProps) {
+const STATUS_CONFIG: Record<AdStatus, { label: string; color: string; barClass: string; animate: boolean }> = {
+  generating: { label: 'Draft', color: 'bg-gray-400 text-white', barClass: 'bg-gray-300', animate: true },
+  evaluating: { label: 'Scoring...', color: 'bg-vt-accent text-white', barClass: 'bg-vt-accent', animate: true },
+  improving: { label: 'Improving...', color: 'bg-amber-500 text-white', barClass: 'bg-amber-400', animate: true },
+  accepted: { label: '', color: '', barClass: 'bg-score-good', animate: false },
+  rejected: { label: '', color: '', barClass: 'bg-score-bad', animate: false },
+};
+
+function StatusBadge({ status }: { status: AdStatus }) {
+  const cfg = STATUS_CONFIG[status];
+  return (
+    <span className={`${cfg.color} text-xs px-2 py-0.5 rounded-md font-button font-semibold inline-flex items-center gap-1.5`}>
+      {cfg.animate && (
+        <span className="relative flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-white" />
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
+        </span>
+      )}
+      {cfg.label}
+    </span>
+  );
+}
+
+export function AdCard({ adWithHistory, onClick, index = 0, variant = 'default', status }: AdCardProps) {
   const { ad, evaluations, accepted } = adWithHistory;
   const lastEval = evaluations[evaluations.length - 1];
   const score = lastEval?.weightedScore ?? 0;
+
+  // Determine if we're in an in-progress state
+  const inProgress = status === 'generating' || status === 'evaluating' || status === 'improving';
+  const resolvedBarClass = status
+    ? STATUS_CONFIG[status].barClass
+    : accepted ? 'bg-score-good' : 'bg-score-bad';
 
   return (
     <motion.div
@@ -25,6 +56,7 @@ export function AdCard({ adWithHistory, onClick, index = 0, variant = 'default' 
         hover:shadow-lg transition-shadow duration-200
         ${variant === 'compact' ? 'w-[280px]' : 'w-[320px]'}
         flex-shrink-0 border border-gray-100
+        ${inProgress ? 'ring-1 ring-vt-accent/20' : ''}
       `}
     >
       {/* Brand Header */}
@@ -38,7 +70,11 @@ export function AdCard({ adWithHistory, onClick, index = 0, variant = 'default' 
             <p className="text-xs text-gray-400">Sponsored</p>
           </div>
         </div>
-        <ScoreBadge score={score} size="sm" />
+        {inProgress ? (
+          <StatusBadge status={status!} />
+        ) : (
+          <ScoreBadge score={score} size="sm" />
+        )}
       </div>
 
       {/* Primary Text */}
@@ -67,10 +103,8 @@ export function AdCard({ adWithHistory, onClick, index = 0, variant = 'default' 
         </div>
       </div>
 
-      {/* Status indicator */}
-      <div
-        className={`h-1 ${accepted ? 'bg-score-good' : 'bg-score-bad'}`}
-      />
+      {/* Status indicator bar */}
+      <div className={`h-1 ${resolvedBarClass} ${inProgress ? 'animate-pulse' : ''}`} />
     </motion.div>
   );
 }

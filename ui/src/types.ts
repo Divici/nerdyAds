@@ -94,6 +94,9 @@ export interface Brief {
   constraints?: string[];
 }
 
+/** Lifecycle status of an ad in the generation pipeline */
+export type AdStatus = 'generating' | 'evaluating' | 'improving' | 'accepted' | 'rejected';
+
 // SSE event types
 export type SSEEventType =
   | 'round:start'

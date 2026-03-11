@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import type { Brief, AdWithHistory } from '../types.ts';
+import type { Brief, AdWithHistory, AdStatus } from '../types.ts';
 import { AdCard, AdCardSkeleton } from './AdCard.tsx';
 
 const AUDIENCE_LABELS: Record<string, string> = {
@@ -55,6 +55,8 @@ interface GenerationSectionProps {
   currentRound: number;
   /** Ads currently being generated/evaluated in this round */
   pendingAds: AdWithHistory[];
+  /** Status per ad ID for in-progress cards */
+  pendingStatus: Map<string, AdStatus>;
   skeletonCount: number;
 }
 
@@ -64,6 +66,7 @@ export function GenerationSection({
   generating,
   currentRound,
   pendingAds,
+  pendingStatus,
   skeletonCount,
 }: GenerationSectionProps) {
   const [selectedBrief, setSelectedBrief] = useState<string>('');
@@ -179,7 +182,7 @@ export function GenerationSection({
         <div className="flex gap-4 overflow-x-auto pb-4">
           <AnimatePresence mode="popLayout">
             {pendingAds.map((adh, i) => (
-              <AdCard key={adh.ad.id} adWithHistory={adh} index={i} />
+              <AdCard key={adh.ad.id} adWithHistory={adh} index={i} status={pendingStatus.get(adh.ad.id)} />
             ))}
           </AnimatePresence>
           {generating &&
