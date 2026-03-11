@@ -2,6 +2,16 @@ import { motion } from 'framer-motion';
 import type { AdWithHistory, AdStatus, AdStatusType } from '../types.ts';
 import { ScoreBadge } from './ScoreBadge.tsx';
 
+function VTLogoSmall() {
+  return (
+    <svg className="w-8 h-8" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="16" cy="16" r="16" fill="#20205F" />
+      <path d="M10 12c0-2.5 2-4.5 4.5-4.5 3.5 0 5.5 2.5 5.5 5.5 0 4-3 7.5-7 11-1.5-1.3-2.8-2.6-3.8-4" stroke="white" strokeWidth="2.2" strokeLinecap="round" fill="none" />
+      <path d="M22 20c0 2.5-2 4.5-4.5 4.5-3.5 0-5.5-2.5-5.5-5.5 0-4 3-7.5 7-11 1.5 1.3 2.8 2.6 3.8 4" stroke="white" strokeWidth="2.2" strokeLinecap="round" fill="none" />
+    </svg>
+  );
+}
+
 interface AdCardProps {
   adWithHistory: AdWithHistory;
   onClick?: () => void;
@@ -64,9 +74,7 @@ export function AdCard({ adWithHistory, onClick, index = 0, variant = 'default',
       {/* Brand Header */}
       <div className="flex items-center justify-between px-4 pt-3 pb-2">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-vt-navy flex items-center justify-center">
-            <span className="text-white text-xs font-bold font-heading">VT</span>
-          </div>
+          <VTLogoSmall />
           <div>
             <p className="text-sm font-semibold text-vt-text leading-tight">Varsity Tutors</p>
             <p className="text-xs text-gray-400">Sponsored</p>
@@ -163,8 +171,11 @@ export function AdCardBack({ onClick, index = 0 }: { onClick?: () => void; index
       >
         <div className="w-full h-full rounded-lg bg-gradient-to-br from-vt-navy to-vt-dark flex items-center justify-center border-2 border-vt-lavender/30">
           <div className="text-center">
-            <div className="w-10 h-10 mx-auto rounded-full bg-vt-lavender/20 flex items-center justify-center mb-1">
-              <span className="text-vt-lavender text-lg font-bold font-heading">VT</span>
+            <div className="w-10 h-10 mx-auto mb-1 opacity-30">
+              <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 12c0-2.5 2-4.5 4.5-4.5 3.5 0 5.5 2.5 5.5 5.5 0 4-3 7.5-7 11-1.5-1.3-2.8-2.6-3.8-4" stroke="#d4d1ec" strokeWidth="2.2" strokeLinecap="round" fill="none" />
+                <path d="M22 20c0 2.5-2 4.5-4.5 4.5-3.5 0-5.5-2.5-5.5-5.5 0-4 3-7.5 7-11 1.5 1.3 2.8 2.6 3.8 4" stroke="#d4d1ec" strokeWidth="2.2" strokeLinecap="round" fill="none" />
+              </svg>
             </div>
             <div className="w-8 h-0.5 mx-auto bg-vt-lavender/20 rounded mt-1" />
             <div className="w-6 h-0.5 mx-auto bg-vt-lavender/20 rounded mt-1" />
