@@ -54,10 +54,10 @@ export function AdCard({ adWithHistory, onClick, index = 0, variant = 'default',
       transition={{ delay: index * 0.15, duration: 0.4, ease: 'easeOut' }}
       onClick={onClick}
       className={`
-        bg-white rounded-lg shadow-md overflow-hidden cursor-pointer
-        hover:shadow-lg transition-shadow duration-200
+        bg-white rounded-2xl shadow-sm overflow-hidden cursor-pointer
+        hover:shadow-md transition-shadow duration-200
         ${variant === 'compact' ? 'w-[280px]' : 'w-[320px]'}
-        flex-shrink-0 border border-gray-100
+        flex-shrink-0 border border-gray-100/60
         ${inProgress ? 'ring-1 ring-vt-accent/20' : ''}
       `}
     >
@@ -85,7 +85,7 @@ export function AdCard({ adWithHistory, onClick, index = 0, variant = 'default',
       </div>
 
       {/* Image Placeholder */}
-      <div className="bg-vt-light-blue mx-0 aspect-square flex items-center justify-center border-y border-gray-100">
+      <div className="bg-vt-light-blue mx-0 aspect-square flex items-center justify-center border-y border-gray-100/60">
         <div className="text-center">
           <div className="text-3xl mb-1 opacity-40">&#x1F393;</div>
           <p className="text-xs text-vt-accent opacity-60 font-button">IMAGE — v2</p>
@@ -93,13 +93,13 @@ export function AdCard({ adWithHistory, onClick, index = 0, variant = 'default',
       </div>
 
       {/* Headline + Description + CTA */}
-      <div className="px-4 py-3 bg-vt-light border-t border-gray-100">
+      <div className="px-4 py-3 bg-vt-light border-t border-gray-100/60">
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0 mr-3">
             <p className="text-sm font-bold text-vt-text truncate">{ad.headline}</p>
             <p className="text-xs text-gray-500 truncate">{ad.description}</p>
           </div>
-          <button className="bg-vt-primary text-white text-xs font-button font-medium px-3 py-1.5 rounded whitespace-nowrap hover:bg-vt-primary-hover transition-colors">
+          <button className="bg-vt-primary text-white text-xs font-button font-medium px-3.5 py-1.5 rounded-full whitespace-nowrap hover:bg-vt-primary-hover transition-colors">
             {ad.ctaButton}
           </button>
         </div>
@@ -118,7 +118,7 @@ export function AdCardSkeleton({ index = 0 }: { index?: number }) {
       initial={{ opacity: 0, x: -50, rotateY: -30 }}
       animate={{ opacity: 1, x: 0, rotateY: 0 }}
       transition={{ delay: index * 0.2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="bg-white rounded-lg shadow-md overflow-hidden w-[320px] flex-shrink-0 border border-gray-100"
+      className="bg-white rounded-2xl shadow-sm overflow-hidden w-[320px] shrink-0 border border-gray-100/60"
     >
       <div className="flex items-center gap-2 px-4 pt-3 pb-2">
         <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
@@ -155,7 +155,7 @@ export function AdCardBack({ onClick, index = 0 }: { onClick?: () => void; index
       transition={{ delay: index * 0.1, duration: 0.5 }}
       onClick={onClick}
       style={{ transformStyle: 'preserve-3d' }}
-      className="w-[120px] h-[170px] rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow flex-shrink-0"
+      className="w-[120px] h-[170px] rounded-xl shadow-sm cursor-pointer hover:shadow-md transition-shadow shrink-0"
     >
       <div
         className="w-full h-full rounded-lg flex items-center justify-center"

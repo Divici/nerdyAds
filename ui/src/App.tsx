@@ -145,12 +145,12 @@ function App() {
   );
 
   return (
-    <div className="min-h-screen bg-vt-light">
+    <div className="min-h-screen">
       <Header activeTab={activeTab} onTabChange={setActiveTab} />
 
       <main>
         {activeTab === 'campaign' && (
-          <div className="max-w-7xl mx-auto px-6 py-8">
+          <div className="max-w-7xl mx-auto px-6 py-10">
             <AcceptedCarousel
               ads={accepted}
               onAdClick={setSelectedAd}

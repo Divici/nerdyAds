@@ -44,8 +44,8 @@ export function AcceptedCarousel({ ads, onAdClick, onViewAll }: AcceptedCarousel
   };
 
   return (
-    <section className="mb-8">
-      <div className="flex items-center justify-between mb-4">
+    <section className="mb-10">
+      <div className="flex items-center justify-between mb-5">
         <div>
           <h2 className="text-lg font-heading font-semibold text-vt-text">Accepted Ads</h2>
           <p className="text-sm text-gray-400">
@@ -59,14 +59,14 @@ export function AcceptedCarousel({ ads, onAdClick, onViewAll }: AcceptedCarousel
             <button
               onClick={() => scroll('left')}
               disabled={!canScrollLeft}
-              className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 text-vt-text transition-colors disabled:opacity-30 disabled:cursor-default"
+              className="w-8 h-8 rounded-full bg-white border border-gray-200/60 shadow-sm flex items-center justify-center hover:bg-gray-50 text-vt-text transition-colors disabled:opacity-30 disabled:cursor-default"
             >
               &#8249;
             </button>
             <button
               onClick={() => scroll('right')}
               disabled={!canScrollRight}
-              className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 text-vt-text transition-colors disabled:opacity-30 disabled:cursor-default"
+              className="w-8 h-8 rounded-full bg-white border border-gray-200/60 shadow-sm flex items-center justify-center hover:bg-gray-50 text-vt-text transition-colors disabled:opacity-30 disabled:cursor-default"
             >
               &#8250;
             </button>
@@ -81,7 +81,7 @@ export function AcceptedCarousel({ ads, onAdClick, onViewAll }: AcceptedCarousel
       </div>
 
       {ads.length === 0 ? (
-        <div className="bg-white rounded-xl border-2 border-dashed border-gray-200 h-64 flex items-center justify-center">
+        <div className="bg-white/60 rounded-2xl border-2 border-dashed border-gray-200/60 h-64 flex items-center justify-center">
           <div className="text-center">
             <div className="text-4xl mb-2 opacity-20">&#x1F4E2;</div>
             <p className="text-sm text-gray-400">

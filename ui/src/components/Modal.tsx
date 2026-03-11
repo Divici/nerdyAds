@@ -30,7 +30,7 @@ export function Modal({ open, onClose, title, children, wide = false }: ModalPro
             transition={{ duration: 0.2 }}
             className={`fixed inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2
               ${wide ? 'md:w-[90vw] md:max-w-6xl' : 'md:w-[600px] md:max-w-2xl'}
-              md:max-h-[85vh] bg-white rounded-xl shadow-2xl z-50 flex flex-col overflow-hidden`}
+              md:max-h-[85vh] bg-white rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden`}
           >
             {/* Header */}
             {title && (

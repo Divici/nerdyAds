@@ -9,8 +9,10 @@
   --color-vt-dark: #153154;
   --color-vt-accent: #007ac0;
   --color-vt-lavender: #d4d1ec;
-  --color-vt-light: #f9f9f9;
+  --color-vt-light: #f5f3f9;
   --color-vt-light-blue: #e7f2f7;
+  --color-vt-gradient-start: #e8e4f0;
+  --color-vt-gradient-end: #f9f8fc;
   --color-vt-navy: #181a2e;
 
   /* Scores */
@@ -28,7 +30,8 @@ body {
   margin: 0;
   font-family: var(--font-body);
   color: var(--color-vt-text);
-  background-color: var(--color-vt-light);
+  background: linear-gradient(180deg, var(--color-vt-gradient-start) 0%, var(--color-vt-gradient-end) 40%, white 100%);
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

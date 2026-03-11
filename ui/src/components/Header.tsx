@@ -11,12 +11,12 @@ export function Header({ activeTab, onTabChange }: HeaderProps) {
   ];
 
   return (
-    <header className="bg-white border-b border-gray-100 sticky top-0 z-30">
+    <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200/60 sticky top-0 z-30">
       <div className="max-w-7xl mx-auto px-6">
         {/* Brand bar */}
-        <div className="flex items-center justify-between py-3">
+        <div className="flex items-center justify-between py-4">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-vt-navy flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-vt-navy flex items-center justify-center">
               <span className="text-white text-sm font-bold font-heading">VT</span>
             </div>
             <div>
@@ -33,7 +33,7 @@ export function Header({ activeTab, onTabChange }: HeaderProps) {
         </div>
 
         {/* Tab bar */}
-        <nav className="flex gap-6 -mb-px">
+        <nav className="flex gap-8 -mb-px">
           {tabs.map((tab) => (
             <button
               key={tab.id}

@@ -100,8 +100,8 @@ export function GenerationSection({
     : `All Briefs (${briefs.length})`;
 
   return (
-    <section className="mb-8">
-      <div className="flex items-center justify-between mb-4">
+    <section className="mb-10">
+      <div className="flex items-center justify-between mb-5">
         <div>
           <h2 className="text-lg font-heading font-semibold text-vt-text">Generate Ads</h2>
           <p className="text-sm text-gray-400">
@@ -113,7 +113,7 @@ export function GenerationSection({
       </div>
 
       {/* Controls */}
-      <div className="bg-white rounded-xl border border-gray-100 p-4 mb-4">
+      <div className="bg-white rounded-2xl border border-gray-100/60 shadow-sm p-5 mb-4">
         <div className="flex items-center gap-3 flex-wrap">
           {/* Custom brief dropdown */}
           <div className="relative flex-1 min-w-[200px]" ref={dropdownRef}>
@@ -121,7 +121,7 @@ export function GenerationSection({
               type="button"
               onClick={() => !generating && setDropdownOpen((o) => !o)}
               disabled={generating}
-              className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm text-vt-dark bg-white text-left flex items-center justify-between focus:border-vt-accent focus:ring-1 focus:ring-vt-accent/20 outline-none disabled:opacity-50 transition-colors"
+              className="w-full px-4 py-2.5 rounded-full border border-gray-200 text-sm text-vt-dark bg-white text-left flex items-center justify-between focus:border-vt-accent focus:ring-1 focus:ring-vt-accent/20 outline-none disabled:opacity-50 transition-colors"
             >
               <span className="truncate">{briefButtonLabel}</span>
               <svg className={`w-4 h-4 ml-2 text-gray-400 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -130,7 +130,7 @@ export function GenerationSection({
             </button>
 
             {dropdownOpen && (
-              <div className="absolute z-30 mt-1 w-full bg-white rounded-xl border border-gray-200 shadow-lg max-h-80 overflow-y-auto">
+              <div className="absolute z-30 mt-1 w-full bg-white rounded-2xl border border-gray-100/60 shadow-lg max-h-80 overflow-y-auto">
                 {/* All briefs option */}
                 <button
                   type="button"
@@ -165,7 +165,7 @@ export function GenerationSection({
             <button
               onClick={handleGenerate}
               disabled={generating}
-              className="bg-vt-primary text-white font-button font-medium text-sm px-6 py-2 rounded-lg hover:bg-vt-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+              className="bg-vt-primary text-white font-button font-medium text-sm px-7 py-2.5 rounded-full hover:bg-vt-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
             >
               {generating ? (
                 <span className="flex items-center gap-2">

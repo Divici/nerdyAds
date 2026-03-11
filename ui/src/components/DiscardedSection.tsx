@@ -13,8 +13,8 @@ export function DiscardedSection({ ads, onViewDiscarded }: DiscardedSectionProps
   const visibleCount = Math.min(ads.length, 8);
 
   return (
-    <section className="mb-8">
-      <div className="flex items-center justify-between mb-4">
+    <section className="mb-10">
+      <div className="flex items-center justify-between mb-5">
         <div>
           <h2 className="text-lg font-heading font-semibold text-vt-text">
             Discarded
@@ -34,7 +34,7 @@ export function DiscardedSection({ ads, onViewDiscarded }: DiscardedSectionProps
 
       <div
         onClick={onViewDiscarded}
-        className="flex gap-2 cursor-pointer p-4 bg-white rounded-xl border border-gray-100 hover:border-gray-200 transition-colors overflow-hidden"
+        className="flex gap-2 cursor-pointer p-4 bg-white rounded-2xl border border-gray-100/60 shadow-sm hover:shadow-md transition-all overflow-hidden"
       >
         {Array.from({ length: visibleCount }).map((_, i) => (
           <AdCardBack key={i} index={i} />
