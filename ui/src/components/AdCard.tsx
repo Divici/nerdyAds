@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import type { AdWithHistory, AdStatus } from '../types.ts';
+import type { AdWithHistory, AdStatus, AdStatusType } from '../types.ts';
 import { ScoreBadge } from './ScoreBadge.tsx';
 
 interface AdCardProps {
@@ -11,16 +11,17 @@ interface AdCardProps {
   status?: AdStatus;
 }
 
-const STATUS_CONFIG: Record<AdStatus, { label: string; color: string; barClass: string; animate: boolean }> = {
+const STATUS_CONFIG: Record<AdStatusType, { label: string; color: string; barClass: string; animate: boolean }> = {
   generating: { label: 'Draft', color: 'bg-gray-400 text-white', barClass: 'bg-gray-300', animate: true },
-  evaluating: { label: 'Scoring...', color: 'bg-vt-accent text-white', barClass: 'bg-vt-accent', animate: true },
-  improving: { label: 'Improving...', color: 'bg-amber-500 text-white', barClass: 'bg-amber-400', animate: true },
+  evaluating: { label: 'Scoring', color: 'bg-vt-accent text-white', barClass: 'bg-vt-accent', animate: true },
+  improving: { label: 'Editing', color: 'bg-amber-500 text-white', barClass: 'bg-amber-400', animate: true },
   accepted: { label: '', color: '', barClass: 'bg-score-good', animate: false },
   rejected: { label: '', color: '', barClass: 'bg-score-bad', animate: false },
 };
 
 function StatusBadge({ status }: { status: AdStatus }) {
-  const cfg = STATUS_CONFIG[status];
+  const cfg = STATUS_CONFIG[status.status];
+  const cycleLabel = status.cycle ? ` (${status.cycle}/3)` : '';
   return (
     <span className={`${cfg.color} text-xs px-2 py-0.5 rounded-md font-button font-semibold inline-flex items-center gap-1.5`}>
       {cfg.animate && (
@@ -29,7 +30,7 @@ function StatusBadge({ status }: { status: AdStatus }) {
           <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
         </span>
       )}
-      {cfg.label}
+      {cfg.label}{cycleLabel}
     </span>
   );
 }
@@ -40,9 +41,10 @@ export function AdCard({ adWithHistory, onClick, index = 0, variant = 'default',
   const score = lastEval?.weightedScore ?? 0;
 
   // Determine if we're in an in-progress state
-  const inProgress = status === 'generating' || status === 'evaluating' || status === 'improving';
-  const resolvedBarClass = status
-    ? STATUS_CONFIG[status].barClass
+  const statusType = status?.status;
+  const inProgress = statusType === 'generating' || statusType === 'evaluating' || statusType === 'improving';
+  const resolvedBarClass = statusType
+    ? STATUS_CONFIG[statusType].barClass
     : accepted ? 'bg-score-good' : 'bg-score-bad';
 
   return (
@@ -83,7 +85,7 @@ export function AdCard({ adWithHistory, onClick, index = 0, variant = 'default',
       </div>
 
       {/* Image Placeholder */}
-      <div className="bg-vt-light-blue mx-0 h-40 flex items-center justify-center border-y border-gray-100">
+      <div className="bg-vt-light-blue mx-0 aspect-square flex items-center justify-center border-y border-gray-100">
         <div className="text-center">
           <div className="text-3xl mb-1 opacity-40">&#x1F393;</div>
           <p className="text-xs text-vt-accent opacity-60 font-button">IMAGE — v2</p>
@@ -104,7 +106,7 @@ export function AdCard({ adWithHistory, onClick, index = 0, variant = 'default',
       </div>
 
       {/* Status indicator bar */}
-      <div className={`h-1 ${resolvedBarClass} ${inProgress ? 'animate-pulse' : ''}`} />
+      <div className={`h-1 ${resolvedBarClass} ${statusType && STATUS_CONFIG[statusType].animate ? 'animate-pulse' : ''}`} />
     </motion.div>
   );
 }
@@ -130,7 +132,7 @@ export function AdCardSkeleton({ index = 0 }: { index?: number }) {
         <div className="h-3 bg-gray-200 rounded animate-pulse w-4/5" />
         <div className="h-3 bg-gray-200 rounded animate-pulse w-3/5" />
       </div>
-      <div className="bg-gray-100 h-40 animate-pulse" />
+      <div className="bg-gray-100 aspect-square animate-pulse" />
       <div className="px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex-1 mr-3">

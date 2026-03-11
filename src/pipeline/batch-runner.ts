@@ -69,6 +69,8 @@ export interface PipelineEvent {
   type: PipelineEventType;
   briefId: string;
   round?: number;
+  /** Current edit cycle (1-based) during improving/re-evaluating */
+  cycle?: number;
   ad?: Ad;
   adWithHistory?: AdWithHistory;
   evaluation?: Evaluation;

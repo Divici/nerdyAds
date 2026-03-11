@@ -45,11 +45,11 @@ export async function iterateAd(
   // Improvement cycles
   for (let cycle = 0; cycle < deps.maxCycles; cycle++) {
     const lastEval = evaluations[evaluations.length - 1];
-    emit({ type: 'ad:improving', briefId, ad: currentAd, evaluation: lastEval });
+    emit({ type: 'ad:improving', briefId, ad: currentAd, evaluation: lastEval, cycle: cycle + 1 });
     currentAd = await deps.improve(currentAd, lastEval, brief);
     cyclesUsed++;
 
-    emit({ type: 'ad:evaluating', briefId, ad: currentAd });
+    emit({ type: 'ad:evaluating', briefId, ad: currentAd, cycle: cycle + 1 });
     const evaluation = await deps.evaluate(currentAd, brief);
     evaluations.push(evaluation);
 

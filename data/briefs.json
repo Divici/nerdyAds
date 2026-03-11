@@ -1,62 +1,62 @@
 [
   {
-    "id": "brief-001",
+    "id": "student-aspire",
     "targetAudience": "student",
     "campaignGoal": "conversion",
     "emotionalAngle": "aspiration",
     "offer": "Varsity Tutors SAT test prep"
   },
   {
-    "id": "brief-002",
+    "id": "parent-anxiety",
     "targetAudience": "parent",
     "campaignGoal": "conversion",
     "emotionalAngle": "anxiety",
     "offer": "Varsity Tutors SAT test prep"
   },
   {
-    "id": "brief-003",
+    "id": "student-urgent",
     "targetAudience": "student",
     "campaignGoal": "awareness",
     "emotionalAngle": "urgency",
     "offer": "Varsity Tutors SAT test prep"
   },
   {
-    "id": "brief-004",
+    "id": "parent-proof",
     "targetAudience": "parent",
     "campaignGoal": "awareness",
     "emotionalAngle": "social_proof",
     "offer": "Varsity Tutors SAT test prep"
   },
   {
-    "id": "brief-005",
+    "id": "family-aspire",
     "targetAudience": "both",
     "campaignGoal": "conversion",
     "emotionalAngle": "aspiration",
     "offer": "Varsity Tutors SAT test prep"
   },
   {
-    "id": "brief-006",
+    "id": "student-relief",
     "targetAudience": "student",
     "campaignGoal": "engagement",
     "emotionalAngle": "relief",
     "offer": "Varsity Tutors SAT test prep"
   },
   {
-    "id": "brief-007",
+    "id": "parent-aspire",
     "targetAudience": "parent",
     "campaignGoal": "conversion",
     "emotionalAngle": "aspiration",
     "offer": "Varsity Tutors SAT test prep"
   },
   {
-    "id": "brief-008",
+    "id": "family-anxiety",
     "targetAudience": "both",
     "campaignGoal": "awareness",
     "emotionalAngle": "anxiety",
     "offer": "Varsity Tutors SAT test prep"
   },
   {
-    "id": "brief-009",
+    "id": "student-proof",
     "targetAudience": "student",
     "campaignGoal": "conversion",
     "emotionalAngle": "social_proof",
@@ -64,7 +64,7 @@
     "constraints": ["Must mention free consultation offer", "Include specific score improvement stat"]
   },
   {
-    "id": "brief-010",
+    "id": "parent-urgent",
     "targetAudience": "parent",
     "campaignGoal": "engagement",
     "emotionalAngle": "urgency",

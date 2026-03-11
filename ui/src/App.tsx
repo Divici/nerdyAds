@@ -21,7 +21,7 @@ function App() {
   const [accepted, setAccepted] = useState<AdWithHistory[]>([]);
   const [rejected, setRejected] = useState<AdWithHistory[]>([]);
   const [pending, setPending] = useState<AdWithHistory[]>([]);
-  const [pendingStatus, setPendingStatus] = useState<Map<string, AdStatus>>(new Map());
+  const [pendingStatus, setPendingStatus] = useState<Map<string, AdStatus>>(new Map<string, AdStatus>());
   const [generating, setGenerating] = useState(false);
   const [currentRound, setCurrentRound] = useState(0);
   const [skeletonCount, setSkeletonCount] = useState(0);
@@ -50,7 +50,7 @@ function App() {
   const handleAdGenerating = useCallback((data: unknown) => {
     const d = data as { ad: Ad };
     setSkeletonCount((c) => Math.max(0, c - 1));
-    setPendingStatus((prev) => new Map(prev).set(d.ad.id, 'generating'));
+    setPendingStatus((prev) => new Map(prev).set(d.ad.id, { status: 'generating' }));
     setPending((prev) => {
       if (prev.some((a) => a.ad.id === d.ad.id)) return prev;
       return [
@@ -77,9 +77,9 @@ function App() {
   }, []);
 
   const handleAdEvaluating = useCallback((data: unknown) => {
-    const d = data as { ad: Ad };
+    const d = data as { ad: Ad; cycle?: number };
     setSkeletonCount((c) => Math.max(0, c - 1));
-    setPendingStatus((prev) => new Map(prev).set(d.ad.id, 'evaluating'));
+    setPendingStatus((prev) => new Map(prev).set(d.ad.id, { status: 'evaluating', cycle: d.cycle }));
     setPending((prev) => {
       if (prev.some((a) => a.ad.id === d.ad.id)) return prev;
       return [
@@ -87,6 +87,11 @@ function App() {
         { ad: d.ad, evaluations: [], accepted: false, cyclesUsed: 0 },
       ];
     });
+  }, []);
+
+  const handleAdImproving = useCallback((data: unknown) => {
+    const d = data as { ad: Ad; cycle?: number };
+    setPendingStatus((prev) => new Map(prev).set(d.ad.id, { status: 'improving', cycle: d.cycle }));
   }, []);
 
   const handlePipelineComplete = useCallback((data: unknown) => {
@@ -113,6 +118,7 @@ function App() {
     'round:start': handleRoundStart,
     'ad:generating': handleAdGenerating,
     'ad:evaluating': handleAdEvaluating,
+    'ad:improving': handleAdImproving,
     'ad:accepted': handleAdAccepted,
     'ad:rejected': handleAdRejected,
     'pipeline:complete': handlePipelineComplete,

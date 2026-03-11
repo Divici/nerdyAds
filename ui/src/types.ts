@@ -95,7 +95,13 @@ export interface Brief {
 }
 
 /** Lifecycle status of an ad in the generation pipeline */
-export type AdStatus = 'generating' | 'evaluating' | 'improving' | 'accepted' | 'rejected';
+export type AdStatusType = 'generating' | 'evaluating' | 'improving' | 'accepted' | 'rejected';
+
+export interface AdStatus {
+  status: AdStatusType;
+  /** Current edit cycle (1-based), set during improving/re-evaluating */
+  cycle?: number;
+}
 
 // SSE event types
 export type SSEEventType =
@@ -114,6 +120,7 @@ export interface SSEEvent {
   data: {
     briefId?: string;
     round?: number;
+    cycle?: number;
     ad?: Ad;
     adWithHistory?: AdWithHistory;
     evaluation?: Evaluation;

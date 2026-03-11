@@ -83,7 +83,7 @@ describe('API server', () => {
     it('returns runId for valid brief', async () => {
       const res = await request(app)
         .post('/api/generate')
-        .send({ briefId: 'brief-001' });
+        .send({ briefId: 'student-aspire' });
       expect(res.status).toBe(200);
       expect(res.body).toHaveProperty('runId');
       expect(res.body).toHaveProperty('briefCount', 1);
