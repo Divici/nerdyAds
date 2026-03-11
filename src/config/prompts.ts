@@ -119,7 +119,7 @@ Evaluate this ad across all 5 dimensions. Be specific in your rationales — ref
 // ── Few-Shot Examples ─────────────────────────────────────────────
 
 export interface FewShotExample {
-  tier: 'strong' | 'weak';
+  tier: 'strong' | 'medium' | 'weak';
   primaryText: string;
   headline: string;
   description: string;

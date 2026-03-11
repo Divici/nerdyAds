@@ -14,21 +14,31 @@ const strongExample: FewShotExample = {
   tierRationale: 'Longest-running ad with proven messaging.',
 };
 
+const mediumExample: FewShotExample = {
+  tier: 'medium',
+  primaryText: 'Your child isn\'t struggling with the material—they\'re struggling with the test.',
+  headline: 'GPA Doesn\'t Match SAT Score?',
+  description: 'SAT prep that works.',
+  ctaButton: 'Learn more',
+  tierRationale: 'Has the core hook but lacks structured format and specific differentiators.',
+};
+
 const weakExample: FewShotExample = {
   tier: 'weak',
-  primaryText: 'We help with SAT prep.',
-  headline: 'SAT Tutoring',
+  primaryText: 'Improve your SAT score with expert tutoring.',
+  headline: 'SAT Tutoring Available Now',
   description: 'Tutoring available.',
   ctaButton: 'Learn more',
-  tierRationale: 'Generic messaging with no hook or specificity.',
+  tierRationale: 'Generic messaging with no hook, no specificity, could be any brand.',
 };
 
 describe('buildWriterFewShotSection', () => {
-  it('formats strong and weak examples with tier labels', () => {
-    const section = buildWriterFewShotSection([strongExample, weakExample]);
+  it('formats strong, medium, and weak examples with tier labels', () => {
+    const section = buildWriterFewShotSection([strongExample, mediumExample, weakExample]);
 
     expect(section).toContain('## Quality Reference Examples');
     expect(section).toContain('STRONG');
+    expect(section).toContain('MEDIUM');
     expect(section).toContain('WEAK');
   });
 
@@ -57,10 +67,11 @@ describe('buildWriterUserPrompt with few-shot', () => {
   };
 
   it('includes few-shot section when examples provided', () => {
-    const prompt = buildWriterUserPrompt(brief, 3, undefined, [strongExample, weakExample]);
+    const prompt = buildWriterUserPrompt(brief, 3, undefined, [strongExample, mediumExample, weakExample]);
 
     expect(prompt).toContain('Quality Reference Examples');
     expect(prompt).toContain('STRONG');
+    expect(prompt).toContain('MEDIUM');
     expect(prompt).toContain('WEAK');
   });
 

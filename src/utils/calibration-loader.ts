@@ -58,14 +58,16 @@ export async function loadCalibrationAnchors(
 
 /**
  * Load few-shot examples for the writer prompt.
- * Picks 1 strong + 1 weak ad from the reference set.
+ * Picks 1 strong + 1 medium + 1 weak ad from the reference set.
+ * Skips weak ads with empty primary text (image-dependent, not useful as copy examples).
  */
 export async function loadWriterFewShotExamples(): Promise<FewShotExample[]> {
   const raw = await readFile(REF_SET_PATH, 'utf8');
   const refAds: ReferenceAd[] = JSON.parse(raw);
 
   const strong = refAds.find((a) => a.copy_tier === 'strong');
-  const weak = refAds.find((a) => a.copy_tier === 'weak');
+  const medium = refAds.find((a) => a.copy_tier === 'medium');
+  const weak = refAds.find((a) => a.copy_tier === 'weak' && a.primary_text.trim().length > 0);
 
   const examples: FewShotExample[] = [];
 
@@ -80,10 +82,21 @@ export async function loadWriterFewShotExamples(): Promise<FewShotExample[]> {
     });
   }
 
+  if (medium) {
+    examples.push({
+      tier: 'medium',
+      primaryText: medium.primary_text,
+      headline: medium.headline,
+      description: medium.description || '',
+      ctaButton: medium.cta_button || 'Learn more',
+      tierRationale: medium.tier_rationale || 'Adequate but generic.',
+    });
+  }
+
   if (weak) {
     examples.push({
       tier: 'weak',
-      primaryText: weak.primary_text || '(no copy)',
+      primaryText: weak.primary_text,
       headline: weak.headline,
       description: weak.description || '',
       ctaButton: weak.cta_button || 'Learn more',
