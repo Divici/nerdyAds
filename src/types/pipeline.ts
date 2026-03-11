@@ -7,6 +7,8 @@ export const AdWithHistorySchema = z.object({
   evaluations: z.array(EvaluationSchema),
   accepted: z.boolean(),
   cyclesUsed: z.number().int().nonnegative(),
+  /** All ad versions: index 0 = original, index N = after Nth edit cycle */
+  adVersions: z.array(AdSchema).optional(),
 });
 
 export type AdWithHistory = z.infer<typeof AdWithHistorySchema>;

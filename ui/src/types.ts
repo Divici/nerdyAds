@@ -50,6 +50,8 @@ export interface AdWithHistory {
   evaluations: Evaluation[];
   accepted: boolean;
   cyclesUsed: number;
+  /** All ad versions: index 0 = original, index N = after Nth edit cycle */
+  adVersions?: Ad[];
 }
 
 export interface BatchMetrics {

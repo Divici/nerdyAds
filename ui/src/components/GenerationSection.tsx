@@ -91,7 +91,7 @@ export function GenerationSection({
   const selectedBriefData = briefs.find((b) => b.id === selectedBrief);
 
   const briefButtonLabel = selectedBrief
-    ? `${selectedBriefData?.id} — ${AUDIENCE_LABELS[selectedBriefData?.targetAudience ?? ''] ?? selectedBriefData?.targetAudience} / ${ANGLE_LABELS[selectedBriefData?.emotionalAngle ?? ''] ?? selectedBriefData?.emotionalAngle}`
+    ? `${AUDIENCE_LABELS[selectedBriefData?.targetAudience ?? ''] ?? selectedBriefData?.targetAudience} / ${ANGLE_LABELS[selectedBriefData?.emotionalAngle ?? ''] ?? selectedBriefData?.emotionalAngle}`
     : `All Briefs (${briefs.length})`;
 
   return (
@@ -143,7 +143,10 @@ export function GenerationSection({
                     onClick={() => { setSelectedBrief(b.id); setDropdownOpen(false); }}
                     className={`w-full text-left px-4 py-3 hover:bg-vt-light-blue/50 transition-colors border-b border-gray-100 last:border-b-0 ${selectedBrief === b.id ? 'bg-vt-light-blue/30' : ''}`}
                   >
-                    <span className="text-sm font-medium text-vt-dark">{b.id}</span>
+                    <span className="text-sm font-medium text-vt-dark">
+                      {AUDIENCE_LABELS[b.targetAudience] ?? b.targetAudience} / {ANGLE_LABELS[b.emotionalAngle] ?? b.emotionalAngle}
+                    </span>
+                    <span className="text-xs text-gray-400 ml-2">{GOAL_LABELS[b.campaignGoal] ?? b.campaignGoal}</span>
                     <div className="mt-1.5">
                       <BriefPreview brief={b} />
                     </div>

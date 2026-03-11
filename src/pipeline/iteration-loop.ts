@@ -24,12 +24,14 @@ export async function iterateAd(
   onEvent?: PipelineEventCallback,
 ): Promise<AdWithHistory> {
   const evaluations: Evaluation[] = [];
+  const adVersions: Ad[] = [];
   let currentAd = ad;
   let cyclesUsed = 0;
   const emit = onEvent ?? (() => {});
   const briefId = brief?.id ?? 'unknown';
 
   // Initial evaluation
+  adVersions.push(currentAd);
   emit({ type: 'ad:evaluating', briefId, ad: currentAd });
   const firstEval = await deps.evaluate(currentAd, brief);
   evaluations.push(firstEval);
@@ -39,7 +41,7 @@ export async function iterateAd(
       adId: currentAd.id,
       score: firstEval.weightedScore,
     });
-    return { ad: currentAd, evaluations, accepted: true, cyclesUsed: 0 };
+    return { ad: currentAd, evaluations, accepted: true, cyclesUsed: 0, adVersions };
   }
 
   // Improvement cycles
@@ -47,6 +49,7 @@ export async function iterateAd(
     const lastEval = evaluations[evaluations.length - 1];
     emit({ type: 'ad:improving', briefId, ad: currentAd, evaluation: lastEval, cycle: cycle + 1 });
     currentAd = await deps.improve(currentAd, lastEval, brief);
+    adVersions.push(currentAd);
     cyclesUsed++;
 
     emit({ type: 'ad:evaluating', briefId, ad: currentAd, cycle: cycle + 1 });
@@ -59,7 +62,7 @@ export async function iterateAd(
         score: evaluation.weightedScore,
         cyclesUsed,
       });
-      return { ad: currentAd, evaluations, accepted: true, cyclesUsed };
+      return { ad: currentAd, evaluations, accepted: true, cyclesUsed, adVersions };
     }
   }
 
@@ -69,5 +72,5 @@ export async function iterateAd(
     cyclesUsed,
   });
 
-  return { ad: currentAd, evaluations, accepted: false, cyclesUsed };
+  return { ad: currentAd, evaluations, accepted: false, cyclesUsed, adVersions };
 }

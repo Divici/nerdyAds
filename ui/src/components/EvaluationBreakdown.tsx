@@ -1,4 +1,5 @@
-import type { AdWithHistory } from '../types.ts';
+import { useState } from 'react';
+import type { AdWithHistory, Ad } from '../types.ts';
 import { DimensionBar } from './DimensionBar.tsx';
 import { ScoreBadge } from './ScoreBadge.tsx';
 
@@ -6,9 +7,27 @@ interface EvaluationBreakdownProps {
   adWithHistory: AdWithHistory;
 }
 
+function MiniAdPreview({ ad }: { ad: Ad }) {
+  return (
+    <div className="bg-white rounded-md p-3 border border-gray-200 mt-2 space-y-1.5">
+      <p className="text-xs text-vt-dark leading-snug">{ad.primaryText}</p>
+      <div className="flex items-center justify-between">
+        <div className="min-w-0 mr-2">
+          <p className="text-xs font-bold text-vt-text truncate">{ad.headline}</p>
+          <p className="text-[10px] text-gray-400 truncate">{ad.description}</p>
+        </div>
+        <span className="bg-vt-primary/10 text-vt-primary text-[10px] font-button px-2 py-0.5 rounded whitespace-nowrap">
+          {ad.ctaButton}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export function EvaluationBreakdown({ adWithHistory }: EvaluationBreakdownProps) {
-  const { ad, evaluations, accepted, cyclesUsed } = adWithHistory;
+  const { ad, evaluations, accepted, cyclesUsed, adVersions } = adWithHistory;
   const lastEval = evaluations[evaluations.length - 1];
+  const [expandedCycle, setExpandedCycle] = useState<number | null>(null);
 
   return (
     <div className="space-y-6">
@@ -78,24 +97,43 @@ export function EvaluationBreakdown({ adWithHistory }: EvaluationBreakdownProps)
             Iteration History
           </h3>
           <div className="space-y-2">
-            {evaluations.map((evalItem, i) => (
-              <div
-                key={i}
-                className="flex items-center justify-between text-xs bg-gray-50 rounded-md px-3 py-2"
-              >
-                <span className="text-gray-500">
-                  {i === 0 ? 'Initial' : `Cycle ${i}`}
-                </span>
-                <div className="flex gap-3">
-                  {evalItem.scores.map((s) => (
-                    <span key={s.dimension} className="text-gray-600">
-                      {s.dimension.slice(0, 3)}: {s.score.toFixed(1)}
+            {evaluations.map((evalItem, i) => {
+              const isExpanded = expandedCycle === i;
+              const versionAd = adVersions?.[i];
+              const hasVersion = !!versionAd;
+
+              return (
+                <div key={i}>
+                  <button
+                    type="button"
+                    onClick={() => hasVersion && setExpandedCycle(isExpanded ? null : i)}
+                    className={`w-full flex items-center justify-between text-xs rounded-md px-3 py-2 transition-colors ${
+                      isExpanded ? 'bg-vt-light-blue/50 ring-1 ring-vt-accent/20' : 'bg-gray-50 hover:bg-gray-100'
+                    } ${hasVersion ? 'cursor-pointer' : 'cursor-default'}`}
+                  >
+                    <span className="text-gray-500 flex items-center gap-1.5">
+                      {i === 0 ? 'Initial' : `Cycle ${i}`}
+                      {hasVersion && (
+                        <svg className={`w-3 h-3 text-gray-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      )}
                     </span>
-                  ))}
+                    <div className="flex gap-3">
+                      {evalItem.scores.map((s) => (
+                        <span key={s.dimension} className="text-gray-600">
+                          {s.dimension.slice(0, 3)}: {s.score.toFixed(1)}
+                        </span>
+                      ))}
+                    </div>
+                    <ScoreBadge score={evalItem.weightedScore} size="sm" />
+                  </button>
+                  {isExpanded && versionAd && (
+                    <MiniAdPreview ad={versionAd} />
+                  )}
                 </div>
-                <ScoreBadge score={evalItem.weightedScore} size="sm" />
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
