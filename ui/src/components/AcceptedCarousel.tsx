@@ -79,7 +79,7 @@ export function AcceptedCarousel({ ads, onAdClick, onViewAll }: AcceptedCarousel
           <button
             onClick={() => scroll('left')}
             disabled={!canScrollLeft}
-            className="absolute -left-5 z-20 w-10 h-10 rounded-full bg-white border border-gray-200/60 shadow-md flex items-center justify-center hover:bg-gray-50 text-vt-text text-xl transition-colors disabled:opacity-0 disabled:pointer-events-none"
+            className="absolute -left-5 z-20 w-10 h-10 rounded-full bg-white border border-gray-200/60 shadow-md flex items-center justify-center hover:bg-gray-50 text-vt-text text-xl transition-opacity disabled:opacity-30"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -125,7 +125,7 @@ export function AcceptedCarousel({ ads, onAdClick, onViewAll }: AcceptedCarousel
           <button
             onClick={() => scroll('right')}
             disabled={!canScrollRight}
-            className="absolute -right-5 z-20 w-10 h-10 rounded-full bg-white border border-gray-200/60 shadow-md flex items-center justify-center hover:bg-gray-50 text-vt-text text-xl transition-colors disabled:opacity-0 disabled:pointer-events-none"
+            className="absolute -right-5 z-20 w-10 h-10 rounded-full bg-white border border-gray-200/60 shadow-md flex items-center justify-center hover:bg-gray-50 text-vt-text text-xl transition-opacity disabled:opacity-30"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />

@@ -47,17 +47,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .styled-scrollbar::-webkit-scrollbar {
-  height: 6px;
+  height: 10px;
 }
 
 .styled-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 3px;
+  background: rgba(212, 209, 236, 0.3);
+  border-radius: 5px;
 }
 
 .styled-scrollbar::-webkit-scrollbar-thumb {
-  background: var(--color-vt-lavender);
-  border-radius: 3px;
+  background: rgba(212, 209, 236, 0.8);
+  border-radius: 5px;
 }
 
 .styled-scrollbar::-webkit-scrollbar-thumb:hover {
