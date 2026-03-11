@@ -15,6 +15,7 @@ import { logger } from '../utils/logger.js';
 import { createTrace, withTrace, flush as flushLangfuse } from '../utils/langfuse.js';
 import { MAX_CYCLES, TARGET_ACCEPTED_PER_BRIEF, BATCH_SIZE, MAX_GENERATION_ROUNDS } from '../config/thresholds.js';
 import type { CalibrationAnchor, FewShotExample } from '../config/prompts.js';
+import { seedOffsetFromString } from '../utils/hash.js';
 
 export interface OrchestratorOptions {
   /** Competitor patterns from the researcher agent. */
@@ -50,6 +51,8 @@ export async function processBrief(
     tags: ['pipeline', `brief:${brief.id}`],
   });
 
+  const runId = options.runId ?? randomUUID();
+  const offset = seedOffsetFromString(runId);
   const writer = new WriterAgent();
   const evaluator = new EvaluatorAgent(options.evalModel);
   const editor = new EditorAgent();
@@ -57,8 +60,8 @@ export async function processBrief(
 
   const result = await withTrace(trace, () =>
     runContinuousBatch(brief, {
-      generateBatch: (b, count, patterns, round) =>
-        writer.generateBatch(b, count, patterns, options.fewShotExamples, round),
+      generateBatch: (b, count, patterns, round, seedOffset) =>
+        writer.generateBatch(b, count, patterns, options.fewShotExamples, round, seedOffset),
       evaluate: (ad, b) => evaluator.evaluate(ad, b, options.calibrationAnchors),
       improve: (ad, evaluation, b) => editor.improve(ad, evaluation, b),
       checkThreshold: (score, dimensionScores) => {
@@ -71,6 +74,7 @@ export async function processBrief(
       targetAccepted: TARGET_ACCEPTED_PER_BRIEF,
       batchSize: BATCH_SIZE,
       maxRounds: MAX_GENERATION_ROUNDS,
+      seedOffset: offset,
     }),
   );
 
@@ -89,6 +93,7 @@ export async function processAllBriefs(
   const startedAt = new Date().toISOString();
   const outputDir = options.outputDir ?? 'data/output';
 
+  const offset = seedOffsetFromString(runId);
   const writer = new WriterAgent();
   const evaluator = new EvaluatorAgent(options.evalModel);
   const editor = new EditorAgent();
@@ -113,8 +118,8 @@ export async function processAllBriefs(
 
     const batchResult = await withTrace(briefTrace, () =>
       runContinuousBatch(brief, {
-        generateBatch: (b, count, patterns, round) =>
-          writer.generateBatch(b, count, patterns, options.fewShotExamples, round),
+        generateBatch: (b, count, patterns, round, seedOffset) =>
+          writer.generateBatch(b, count, patterns, options.fewShotExamples, round, seedOffset),
         evaluate: (ad, b) => evaluator.evaluate(ad, b, options.calibrationAnchors),
         improve: (ad, evaluation, b) => editor.improve(ad, evaluation, b),
         checkThreshold: (score, dimensionScores) => {
@@ -127,6 +132,7 @@ export async function processAllBriefs(
         targetAccepted: TARGET_ACCEPTED_PER_BRIEF,
         batchSize: BATCH_SIZE,
         maxRounds: MAX_GENERATION_ROUNDS,
+        seedOffset: offset,
       }),
     );
 

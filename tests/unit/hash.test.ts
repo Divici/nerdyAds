@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { hashPrompt } from '@utils/hash.js';
+import { hashPrompt, seedOffsetFromString } from '@utils/hash.js';
 
 describe('hashPrompt', () => {
   it('returns a 64-character hex string (SHA-256)', () => {
@@ -26,5 +26,25 @@ describe('hashPrompt', () => {
   it('handles unicode content', () => {
     const result = hashPrompt('SAT prep — boost your score! 🎯');
     expect(result).toMatch(/^[a-f0-9]{64}$/);
+  });
+});
+
+describe('seedOffsetFromString', () => {
+  it('returns a positive integer', () => {
+    const result = seedOffsetFromString('test-run-id');
+    expect(Number.isInteger(result)).toBe(true);
+    expect(result).toBeGreaterThan(0);
+  });
+
+  it('is deterministic — same input produces same offset', () => {
+    const a = seedOffsetFromString('run-abc-123');
+    const b = seedOffsetFromString('run-abc-123');
+    expect(a).toBe(b);
+  });
+
+  it('produces different offsets for different inputs', () => {
+    const a = seedOffsetFromString('run-1');
+    const b = seedOffsetFromString('run-2');
+    expect(a).not.toBe(b);
   });
 });

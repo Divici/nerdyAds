@@ -16,6 +16,7 @@ import { classifyFailure } from '../evaluate/failure-taxonomy.js';
 import { saveSnapshot } from '../utils/snapshot.js';
 import { logger } from '../utils/logger.js';
 import { createTrace, withTrace, flush as flushLangfuse } from '../utils/langfuse.js';
+import { seedOffsetFromString } from '../utils/hash.js';
 import {
   MAX_CYCLES,
   TARGET_ACCEPTED_PER_BRIEF,
@@ -156,6 +157,7 @@ export function createApp() {
 
   async function runPipelineWithEvents(runId: string, briefs: Brief[]) {
     const startedAt = new Date().toISOString();
+    const offset = seedOffsetFromString(runId);
     const writer = new WriterAgent();
     const evaluator = new EvaluatorAgent();
     const editor = new EditorAgent();
@@ -188,8 +190,8 @@ export function createApp() {
 
       const batchResult = await withTrace(briefTrace, () =>
         runContinuousBatch(brief, {
-          generateBatch: (b, count, patterns, round) =>
-            writer.generateBatch(b, count, patterns, fewShotExamples, round),
+          generateBatch: (b, count, patterns, round, seedOffset) =>
+            writer.generateBatch(b, count, patterns, fewShotExamples, round, seedOffset),
           evaluate: (ad, b) => evaluator.evaluate(ad, b, calibrationAnchors),
           improve: (ad, evaluation, b) => editor.improve(ad, evaluation, b),
           checkThreshold: (score, dimensionScores) => {
@@ -202,6 +204,7 @@ export function createApp() {
           targetAccepted: TARGET_ACCEPTED_PER_BRIEF,
           batchSize: BATCH_SIZE,
           maxRounds: MAX_GENERATION_ROUNDS,
+          seedOffset: offset,
           onEvent,
         }),
       );

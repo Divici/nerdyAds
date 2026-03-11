@@ -193,7 +193,17 @@ describe('WriterAgent', () => {
     expect(ads[1].metadata.costUsd).toBeCloseTo(0.0005, 6);
   });
 
-  it('varies seed by round number when round is provided', async () => {
+  it('varies seed by round and seedOffset when both provided', async () => {
+    mockCallGemini.mockResolvedValueOnce(makeMockAdResponse([MOCK_ADS_RAW[0]]));
+
+    await writer.generateAd(MOCK_BRIEF, undefined, undefined, 3, 1000);
+
+    const [, , , options] = mockCallGemini.mock.calls[0];
+    // DEFAULT_SEED (42) + seedOffset (1000) + round (3) = 1045
+    expect(options?.seed).toBe(1045);
+  });
+
+  it('varies seed by round only when no seedOffset provided', async () => {
     mockCallGemini.mockResolvedValueOnce(makeMockAdResponse([MOCK_ADS_RAW[0]]));
 
     await writer.generateAd(MOCK_BRIEF, undefined, undefined, 3);
@@ -203,7 +213,7 @@ describe('WriterAgent', () => {
     expect(options?.seed).toBe(45);
   });
 
-  it('uses default seed when no round is provided', async () => {
+  it('uses default seed when no round or seedOffset is provided', async () => {
     mockCallGemini.mockResolvedValueOnce(makeMockAdResponse([MOCK_ADS_RAW[0]]));
 
     await writer.generateAd(MOCK_BRIEF);

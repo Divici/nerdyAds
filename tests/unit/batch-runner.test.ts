@@ -204,4 +204,21 @@ describe('runContinuousBatch', () => {
     expect(generateBatch.mock.calls[0][3]).toBe(1);
     expect(generateBatch.mock.calls[1][3]).toBe(2);
   });
+
+  it('passes seedOffset to generateBatch when provided', async () => {
+    const generateBatch = vi.fn(async (_brief: Brief, count: number, _patterns?: unknown, _round?: number, _seedOffset?: number) =>
+      Array.from({ length: count }, () => makeAd()),
+    );
+    const deps = makeDeps({
+      generateBatch,
+      batchSize: 3,
+      targetAccepted: 3,
+      seedOffset: 9999,
+    });
+
+    await runContinuousBatch(BRIEF, deps);
+
+    expect(generateBatch).toHaveBeenCalledTimes(1);
+    expect(generateBatch.mock.calls[0][4]).toBe(9999);
+  });
 });

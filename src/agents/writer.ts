@@ -23,8 +23,8 @@ export class WriterAgent {
   /**
    * Generate a single ad from a brief using Gemini Flash.
    */
-  async generateAd(brief: Brief, patterns?: CompetitorPattern, fewShotExamples?: FewShotExample[], round?: number): Promise<Ad> {
-    const ads = await this.generateRaw(brief, 1, patterns, fewShotExamples, round);
+  async generateAd(brief: Brief, patterns?: CompetitorPattern, fewShotExamples?: FewShotExample[], round?: number, seedOffset?: number): Promise<Ad> {
+    const ads = await this.generateRaw(brief, 1, patterns, fewShotExamples, round, seedOffset);
     return this.toAd(ads[0], brief, ads[0]._metadata);
   }
 
@@ -32,8 +32,8 @@ export class WriterAgent {
    * Generate a batch of ads from a brief.
    * Throws if the model returns fewer ads than requested.
    */
-  async generateBatch(brief: Brief, count: number, patterns?: CompetitorPattern, fewShotExamples?: FewShotExample[], round?: number): Promise<Ad[]> {
-    const ads = await this.generateRaw(brief, count, patterns, fewShotExamples, round);
+  async generateBatch(brief: Brief, count: number, patterns?: CompetitorPattern, fewShotExamples?: FewShotExample[], round?: number, seedOffset?: number): Promise<Ad[]> {
+    const ads = await this.generateRaw(brief, count, patterns, fewShotExamples, round, seedOffset);
 
     if (ads.length < count) {
       throw new Error(
@@ -52,14 +52,16 @@ export class WriterAgent {
     patterns?: CompetitorPattern,
     fewShotExamples?: FewShotExample[],
     round?: number,
+    seedOffset?: number,
   ): Promise<Array<z.infer<typeof WriterAdSchema> & { _metadata: { model: string; seed: number; promptHash: string; tokensIn: number; tokensOut: number; costUsd: number; generatedAt: string } }>> {
     const userPrompt = buildWriterUserPrompt(brief, count, patterns, fewShotExamples);
 
-    logger.debug('Generating ads', { briefId: brief.id, count, round });
+    logger.debug('Generating ads', { briefId: brief.id, count, round, seedOffset });
 
+    const seed = round != null ? DEFAULT_SEED + (seedOffset ?? 0) + round : undefined;
     const result = await callGemini('flash', WRITER_SYSTEM_PROMPT, userPrompt, {
       jsonMode: true,
-      ...(round != null ? { seed: DEFAULT_SEED + round } : {}),
+      ...(seed != null ? { seed } : {}),
     });
 
     const parsed = this.parseResponse(result.text);
