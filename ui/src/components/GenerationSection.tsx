@@ -104,11 +104,7 @@ export function GenerationSection({
       <div className="flex items-center justify-between mb-5">
         <div>
           <h2 className="text-lg font-heading font-semibold text-vt-text">Generate Ads</h2>
-          <p className="text-sm text-gray-400">
-            {generating
-              ? `Round ${currentRound} — generating and evaluating...`
-              : 'Select a brief and generate ad copy'}
-          </p>
+          <p className="text-sm text-gray-400">Select a brief and generate ad copy</p>
         </div>
       </div>
 
@@ -176,54 +172,55 @@ export function GenerationSection({
               'Generate'
             )}
           </button>
+        </div>
 
-          {/* Mode toggle */}
-          <div className="relative flex items-center">
-            <div className="flex rounded-full border border-gray-200 overflow-hidden">
-              <button
-                type="button"
-                onClick={() => !generating && onModeChange('quick')}
-                disabled={generating}
-                className={`text-xs font-button font-medium px-3 py-1.5 transition-colors disabled:opacity-50 ${
-                  mode === 'quick'
-                    ? 'bg-vt-text text-white'
-                    : 'text-gray-400 hover:text-vt-text'
-                }`}
-              >
-                Quick
-              </button>
-              <button
-                type="button"
-                onClick={() => !generating && onModeChange('quality')}
-                disabled={generating}
-                className={`text-xs font-button font-medium px-3 py-1.5 transition-colors disabled:opacity-50 ${
-                  mode === 'quality'
-                    ? 'bg-vt-text text-white'
-                    : 'text-gray-400 hover:text-vt-text'
-                }`}
-              >
-                Quality
-              </button>
-            </div>
+        {/* Mode toggle — below controls row */}
+        <div className="relative flex items-center justify-start mt-3 pt-3 border-t border-gray-100">
+          <span className="text-xs text-gray-400 mr-2">Mode</span>
+          <div className="flex rounded-full border border-gray-200 overflow-hidden">
             <button
               type="button"
-              onMouseEnter={() => setModeTooltipOpen(true)}
-              onMouseLeave={() => setModeTooltipOpen(false)}
-              className="ml-1.5 text-gray-300 hover:text-gray-500 transition-colors"
+              onClick={() => !generating && onModeChange('quick')}
+              disabled={generating}
+              className={`text-xs font-button font-medium px-3 py-1.5 transition-colors disabled:opacity-50 ${
+                mode === 'quick'
+                  ? 'bg-vt-text text-white'
+                  : 'text-gray-400 hover:text-vt-text'
+              }`}
             >
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+              Quick
             </button>
-            {modeTooltipOpen && (
-              <div className="absolute right-0 bottom-full mb-2 w-64 bg-gray-800 text-white text-xs rounded-lg p-3 shadow-lg z-40">
-                <p className="font-medium mb-1.5">Generation Modes</p>
-                <p className="mb-1"><span className="font-medium text-blue-300">Quick:</span> Flash evaluator, 7.5 threshold. Fast iteration for testing.</p>
-                <p><span className="font-medium text-amber-300">Quality:</span> Pro evaluator, 8.0 threshold. Slower but stricter scoring for final runs.</p>
-                <div className="absolute right-3 top-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800" />
-              </div>
-            )}
+            <button
+              type="button"
+              onClick={() => !generating && onModeChange('quality')}
+              disabled={generating}
+              className={`text-xs font-button font-medium px-3 py-1.5 transition-colors disabled:opacity-50 ${
+                mode === 'quality'
+                  ? 'bg-vt-text text-white'
+                  : 'text-gray-400 hover:text-vt-text'
+              }`}
+            >
+              Quality
+            </button>
           </div>
+          <button
+            type="button"
+            onMouseEnter={() => setModeTooltipOpen(true)}
+            onMouseLeave={() => setModeTooltipOpen(false)}
+            className="ml-2 w-5 h-5 rounded-full bg-gray-200 text-gray-500 hover:bg-vt-accent hover:text-white transition-colors flex items-center justify-center"
+          >
+            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </button>
+          {modeTooltipOpen && (
+            <div className="absolute left-0 bottom-full mb-2 w-64 bg-gray-800 text-white text-xs rounded-lg p-3 shadow-lg z-40">
+              <p className="font-medium mb-1.5">Generation Modes</p>
+              <p className="mb-1"><span className="font-medium text-blue-300">Quick:</span> Flash evaluator, 7.5 threshold. Fast iteration for testing.</p>
+              <p><span className="font-medium text-amber-300">Quality:</span> Pro evaluator, 8.0 threshold. Slower but stricter scoring for final runs.</p>
+              <div className="absolute left-6 top-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800" />
+            </div>
+          )}
         </div>
 
         {/* Selected brief preview */}
@@ -233,6 +230,13 @@ export function GenerationSection({
           </div>
         )}
       </div>
+
+      {/* Generation status — centered pulsing text above cards */}
+      {generating && (
+        <p className="text-center text-sm font-medium text-vt-accent animate-pulse mb-4">
+          Round {currentRound} — generating and evaluating...
+        </p>
+      )}
 
       {/* Card dealing area */}
       {(generating || pendingAds.length > 0) && (
