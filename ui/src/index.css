@@ -40,6 +40,10 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
 }
 
+button:not(:disabled) {
+  cursor: pointer;
+}
+
 /* Styled scrollbars */
 .styled-scrollbar {
   scrollbar-width: thin;
