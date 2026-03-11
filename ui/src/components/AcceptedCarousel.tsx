@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import type { AdWithHistory } from '../types.ts';
 import { AdCard } from './AdCard.tsx';
 
@@ -10,6 +10,28 @@ interface AcceptedCarouselProps {
 
 export function AcceptedCarousel({ ads, onAdClick, onViewAll }: AcceptedCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const updateScrollState = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 0);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 1);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    updateScrollState();
+    el.addEventListener('scroll', updateScrollState, { passive: true });
+    const ro = new ResizeObserver(updateScrollState);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener('scroll', updateScrollState);
+      ro.disconnect();
+    };
+  }, [ads.length, updateScrollState]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -36,13 +58,15 @@ export function AcceptedCarousel({ ads, onAdClick, onViewAll }: AcceptedCarousel
           <div className="flex items-center gap-2">
             <button
               onClick={() => scroll('left')}
-              className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 text-vt-text transition-colors"
+              disabled={!canScrollLeft}
+              className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 text-vt-text transition-colors disabled:opacity-30 disabled:cursor-default"
             >
               &#8249;
             </button>
             <button
               onClick={() => scroll('right')}
-              className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 text-vt-text transition-colors"
+              disabled={!canScrollRight}
+              className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 text-vt-text transition-colors disabled:opacity-30 disabled:cursor-default"
             >
               &#8250;
             </button>
@@ -66,20 +90,39 @@ export function AcceptedCarousel({ ads, onAdClick, onViewAll }: AcceptedCarousel
           </div>
         </div>
       ) : (
-        <div
-          ref={scrollRef}
-          className="flex gap-4 overflow-x-auto pb-4 scroll-smooth"
-          style={{ scrollbarWidth: 'thin' }}
-        >
-          {ads.map((adh, i) => (
-            <AdCard
-              key={adh.ad.id}
-              adWithHistory={adh}
-              onClick={() => onAdClick(adh)}
-              index={i}
-              variant="default"
-            />
-          ))}
+        <div className="relative">
+          {/* Left fade */}
+          <div
+            className="pointer-events-none absolute left-0 top-0 bottom-4 w-12 z-10 rounded-l-xl transition-opacity duration-200"
+            style={{
+              background: 'linear-gradient(to right, var(--color-vt-light), transparent)',
+              opacity: canScrollLeft ? 1 : 0,
+            }}
+          />
+          {/* Right fade */}
+          <div
+            className="pointer-events-none absolute right-0 top-0 bottom-4 w-12 z-10 rounded-r-xl transition-opacity duration-200"
+            style={{
+              background: 'linear-gradient(to left, var(--color-vt-light), transparent)',
+              opacity: canScrollRight ? 1 : 0,
+            }}
+          />
+
+          <div
+            ref={scrollRef}
+            className="flex gap-4 overflow-x-auto pb-4 scroll-smooth"
+            style={{ scrollbarWidth: 'thin' }}
+          >
+            {ads.map((adh, i) => (
+              <AdCard
+                key={adh.ad.id}
+                adWithHistory={adh}
+                onClick={() => onAdClick(adh)}
+                index={i}
+                variant="default"
+              />
+            ))}
+          </div>
         </div>
       )}
     </section>
