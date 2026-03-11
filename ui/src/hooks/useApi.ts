@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import type { Brief, PipelineResult } from '../types.ts';
+import type { Brief, PipelineResult, GenerationMode } from '../types.ts';
 
 const API_BASE = '/api';
 
@@ -22,13 +22,13 @@ export function useApi() {
   }, []);
 
   const startGeneration = useCallback(
-    async (briefId?: string): Promise<{ runId: string; briefCount: number }> => {
+    async (briefId?: string, mode?: GenerationMode): Promise<{ runId: string; briefCount: number }> => {
       setLoading(true);
       try {
         const res = await fetch(`${API_BASE}/generate`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ briefId }),
+          body: JSON.stringify({ briefId, mode: mode ?? 'quick' }),
         });
         return res.json();
       } finally {

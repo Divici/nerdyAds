@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { Brief, AdWithHistory, PipelineResult, Ad, AdStatus } from './types.ts';
+import type { Brief, AdWithHistory, PipelineResult, Ad, AdStatus, GenerationMode } from './types.ts';
 import { useApi } from './hooks/useApi.ts';
 import { useSSE } from './hooks/useSSE.ts';
 import { Header } from './components/Header.tsx';
@@ -31,6 +31,7 @@ function App() {
   const [viewAllOpen, setViewAllOpen] = useState(false);
   const [discardedModalOpen, setDiscardedModalOpen] = useState(false);
   const [discardedDetailAd, setDiscardedDetailAd] = useState<AdWithHistory | null>(null);
+  const [mode, setMode] = useState<GenerationMode>('quick');
 
   const { fetchBriefs, startGeneration } = useApi();
 
@@ -132,7 +133,7 @@ function App() {
       setPending([]);
       setSkeletonCount(3);
       try {
-        const { runId } = await startGeneration(briefId);
+        const { runId } = await startGeneration(briefId, mode);
         setActiveRunId(runId);
       } catch (err) {
         console.error('Failed to start generation:', err);
@@ -140,7 +141,7 @@ function App() {
         setSkeletonCount(0);
       }
     },
-    [startGeneration],
+    [startGeneration, mode],
   );
 
   return (
@@ -164,6 +165,8 @@ function App() {
               pendingAds={pending}
               pendingStatus={pendingStatus}
               skeletonCount={skeletonCount}
+              mode={mode}
+              onModeChange={setMode}
             />
 
             <DiscardedSection ads={rejected} onViewDiscarded={() => setDiscardedModalOpen(true)} />

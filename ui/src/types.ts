@@ -96,6 +96,9 @@ export interface Brief {
   constraints?: string[];
 }
 
+/** Pipeline generation mode — controls evaluator model and score threshold */
+export type GenerationMode = 'quick' | 'quality';
+
 /** Lifecycle status of an ad in the generation pipeline */
 export type AdStatusType = 'generating' | 'evaluating' | 'improving' | 'accepted' | 'rejected';
 

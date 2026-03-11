@@ -93,7 +93,7 @@ export function createApp() {
 
   // ── POST /api/generate ───────────────────────────────────────
   app.post('/api/generate', async (req, res) => {
-    const { briefId } = req.body;
+    const { briefId, mode = 'quick' } = req.body;
     const runId = randomUUID();
 
     try {
@@ -112,7 +112,7 @@ export function createApp() {
       res.json({ runId, briefCount: briefs.length });
 
       // Run pipeline in background — events streamed via SSE
-      runPipelineWithEvents(runId, briefs).catch((err) => {
+      runPipelineWithEvents(runId, briefs, mode as 'quick' | 'quality').catch((err) => {
         const stack = err instanceof Error ? err.stack : String(err);
         logger.error('Pipeline error', { runId, error: String(err), stack });
         sendSSE(runId, { type: 'pipeline:error', data: { error: String(err) } });
@@ -155,13 +155,18 @@ export function createApp() {
     }
   }
 
-  async function runPipelineWithEvents(runId: string, briefs: Brief[]) {
+  async function runPipelineWithEvents(runId: string, briefs: Brief[], mode: 'quick' | 'quality' = 'quick') {
     const startedAt = new Date().toISOString();
     const offset = seedOffsetFromString(runId);
+
+    // Mode presets: quick = flash eval + 7.5, quality = pro eval + 8.0
+    const evalModel = mode === 'quality' ? 'pro' : 'flash';
+    const threshold = mode === 'quality' ? 8.0 : undefined; // undefined = default 7.5
+
     const writer = new WriterAgent();
-    const evaluator = new EvaluatorAgent();
+    const evaluator = new EvaluatorAgent(evalModel);
     const editor = new EditorAgent();
-    const ratchet = new QualityRatchet();
+    const ratchet = new QualityRatchet(threshold);
     const tracker = new MetricsTracker();
 
     // Load calibration anchors and few-shot examples from reference set
@@ -184,7 +189,7 @@ export function createApp() {
 
       const briefTrace = createTrace({
         name: 'process-brief',
-        metadata: { runId, briefId: brief.id, evalModel: 'pro', phase: 'ui-pipeline' },
+        metadata: { runId, briefId: brief.id, evalModel, mode, phase: 'ui-pipeline' },
         tags: ['pipeline', `brief:${brief.id}`, `run:${runId}`],
       });
 

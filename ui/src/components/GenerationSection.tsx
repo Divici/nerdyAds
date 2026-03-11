@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import type { Brief, AdWithHistory, AdStatus } from '../types.ts';
+import type { Brief, AdWithHistory, AdStatus, GenerationMode } from '../types.ts';
 import { AdCard, AdCardSkeleton } from './AdCard.tsx';
 
 const AUDIENCE_LABELS: Record<string, string> = {
@@ -58,6 +58,8 @@ interface GenerationSectionProps {
   /** Status per ad ID for in-progress cards */
   pendingStatus: Map<string, AdStatus>;
   skeletonCount: number;
+  mode: GenerationMode;
+  onModeChange: (mode: GenerationMode) => void;
 }
 
 export function GenerationSection({
@@ -68,10 +70,13 @@ export function GenerationSection({
   pendingAds,
   pendingStatus,
   skeletonCount,
+  mode,
+  onModeChange,
 }: GenerationSectionProps) {
   const [selectedBrief, setSelectedBrief] = useState<string>('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [modeTooltipOpen, setModeTooltipOpen] = useState(false);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -156,20 +161,55 @@ export function GenerationSection({
             )}
           </div>
 
-          <button
-            onClick={handleGenerate}
-            disabled={generating}
-            className="bg-vt-primary text-white font-button font-medium text-sm px-6 py-2 rounded-lg hover:bg-vt-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
-          >
-            {generating ? (
-              <span className="flex items-center gap-2">
-                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                Generating...
-              </span>
-            ) : (
-              'Generate'
-            )}
-          </button>
+          <div className="flex flex-col items-end gap-1.5">
+            <button
+              onClick={handleGenerate}
+              disabled={generating}
+              className="bg-vt-primary text-white font-button font-medium text-sm px-6 py-2 rounded-lg hover:bg-vt-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+            >
+              {generating ? (
+                <span className="flex items-center gap-2">
+                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Generating...
+                </span>
+              ) : (
+                'Generate'
+              )}
+            </button>
+
+            {/* Mode selector */}
+            <div className="flex items-center gap-1.5">
+              <select
+                value={mode}
+                onChange={(e) => onModeChange(e.target.value as GenerationMode)}
+                disabled={generating}
+                className="text-xs text-gray-500 bg-transparent border-none outline-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 pr-1"
+              >
+                <option value="quick">Quick Mode</option>
+                <option value="quality">Quality Mode</option>
+              </select>
+              <div className="relative">
+                <button
+                  type="button"
+                  onMouseEnter={() => setModeTooltipOpen(true)}
+                  onMouseLeave={() => setModeTooltipOpen(false)}
+                  className="text-gray-300 hover:text-gray-500 transition-colors"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </button>
+                {modeTooltipOpen && (
+                  <div className="absolute right-0 bottom-full mb-2 w-64 bg-gray-800 text-white text-xs rounded-lg p-3 shadow-lg z-40">
+                    <p className="font-medium mb-1.5">Generation Modes</p>
+                    <p className="mb-1"><span className="font-medium text-blue-300">Quick:</span> Flash evaluator, 7.5 threshold. Fast iteration for testing.</p>
+                    <p><span className="font-medium text-amber-300">Quality:</span> Pro evaluator, 8.0 threshold. Slower but stricter scoring for final runs.</p>
+                    <div className="absolute right-3 top-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800" />
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Selected brief preview */}
