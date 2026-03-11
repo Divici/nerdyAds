@@ -6,6 +6,7 @@ import type { PipelineEventCallback } from '../pipeline/batch-runner.js';
 import type { Brief } from '../types/brief.js';
 import type { CalibrationAnchor, FewShotExample } from '../config/prompts.js';
 import { WriterAgent } from '../agents/writer.js';
+import { loadCalibrationAnchors, loadWriterFewShotExamples } from '../utils/calibration-loader.js';
 import { EvaluatorAgent } from '../agents/evaluator.js';
 import { EditorAgent } from '../agents/editor.js';
 import { QualityRatchet } from '../evaluate/threshold.js';
@@ -160,18 +161,15 @@ export function createApp() {
     const ratchet = new QualityRatchet();
     const tracker = new MetricsTracker();
 
-    // Load calibration anchors and few-shot examples
+    // Load calibration anchors and few-shot examples from reference set
     let calibrationAnchors: CalibrationAnchor[] | undefined;
     let fewShotExamples: FewShotExample[] | undefined;
     try {
-      const anchorsRaw = await readFile(join(DATA_DIR, 'calibration', 'strong.json'), 'utf-8');
-      const weakRaw = await readFile(join(DATA_DIR, 'calibration', 'weak.json'), 'utf-8');
-      calibrationAnchors = [
-        ...JSON.parse(anchorsRaw).map((a: unknown) => ({ tier: 'strong', ad: a })),
-        ...JSON.parse(weakRaw).map((a: unknown) => ({ tier: 'weak', ad: a })),
-      ];
+      calibrationAnchors = await loadCalibrationAnchors();
+      fewShotExamples = await loadWriterFewShotExamples();
     } catch {
-      // Calibration files optional
+      // Calibration files optional — pipeline runs without them
+      logger.warn('Could not load calibration anchors or few-shot examples');
     }
 
     const briefResults = [];
