@@ -2,6 +2,7 @@ import type { Ad } from '../types/ad.js';
 import type { Evaluation, DimensionScore } from '../types/evaluation.js';
 import type { Brief } from '../types/brief.js';
 import type { AdWithHistory } from '../types/pipeline.js';
+import type { PipelineEventCallback } from './batch-runner.js';
 import { logger } from '../utils/logger.js';
 
 /** Dependency injection interface for testability. */
@@ -20,12 +21,16 @@ export async function iterateAd(
   ad: Ad,
   deps: IterationDeps,
   brief?: Brief,
+  onEvent?: PipelineEventCallback,
 ): Promise<AdWithHistory> {
   const evaluations: Evaluation[] = [];
   let currentAd = ad;
   let cyclesUsed = 0;
+  const emit = onEvent ?? (() => {});
+  const briefId = brief?.id ?? 'unknown';
 
   // Initial evaluation
+  emit({ type: 'ad:evaluating', briefId, ad: currentAd });
   const firstEval = await deps.evaluate(currentAd, brief);
   evaluations.push(firstEval);
 
@@ -40,9 +45,11 @@ export async function iterateAd(
   // Improvement cycles
   for (let cycle = 0; cycle < deps.maxCycles; cycle++) {
     const lastEval = evaluations[evaluations.length - 1];
+    emit({ type: 'ad:improving', briefId, ad: currentAd, evaluation: lastEval });
     currentAd = await deps.improve(currentAd, lastEval, brief);
     cyclesUsed++;
 
+    emit({ type: 'ad:evaluating', briefId, ad: currentAd });
     const evaluation = await deps.evaluate(currentAd, brief);
     evaluations.push(evaluation);
 

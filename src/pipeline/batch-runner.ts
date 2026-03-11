@@ -57,6 +57,25 @@ export async function runBatch(
 
 // ── Continuous Batch Runner ──────────────────────────────────────
 
+export type PipelineEventType =
+  | 'round:start'
+  | 'ad:generating'
+  | 'ad:evaluating'
+  | 'ad:accepted'
+  | 'ad:rejected'
+  | 'ad:improving';
+
+export interface PipelineEvent {
+  type: PipelineEventType;
+  briefId: string;
+  round?: number;
+  ad?: Ad;
+  adWithHistory?: AdWithHistory;
+  evaluation?: Evaluation;
+}
+
+export type PipelineEventCallback = (event: PipelineEvent) => void;
+
 export interface ContinuousBatchDeps {
   generateBatch: (brief: Brief, count: number, patterns?: CompetitorPattern) => Promise<Ad[]>;
   evaluate: (ad: Ad, brief?: Brief) => Promise<Evaluation>;
@@ -67,6 +86,8 @@ export interface ContinuousBatchDeps {
   targetAccepted: number;
   batchSize: number;
   maxRounds: number;
+  /** Optional callback for streaming pipeline events to UI. */
+  onEvent?: PipelineEventCallback;
 }
 
 export interface ContinuousBatchResult {
@@ -105,21 +126,32 @@ export async function runContinuousBatch(
     maxRounds: deps.maxRounds,
   });
 
+  const emit = deps.onEvent ?? (() => {});
+
   while (accepted.length < deps.targetAccepted && round < deps.maxRounds) {
     round++;
+    emit({ type: 'round:start', briefId: brief.id, round });
+
     const batch = await deps.generateBatch(brief, deps.batchSize, deps.patterns);
     totalGenerated += batch.length;
 
+    // Emit generating events for each ad
+    for (const ad of batch) {
+      emit({ type: 'ad:generating', briefId: brief.id, round, ad });
+    }
+
     // Process ads concurrently within each round
     const results = await Promise.all(
-      batch.map((ad) => iterateAd(ad, iterationDeps, brief)),
+      batch.map((ad) => iterateAd(ad, iterationDeps, brief, emit)),
     );
 
     for (const result of results) {
       if (result.accepted) {
+        emit({ type: 'ad:accepted', briefId: brief.id, round, adWithHistory: result });
         accepted.push(result);
         if (accepted.length >= deps.targetAccepted) break;
       } else {
+        emit({ type: 'ad:rejected', briefId: brief.id, round, adWithHistory: result });
         rejected.push(result);
       }
     }

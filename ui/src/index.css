@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600;700&family=Lato:wght@300;400;700&family=Montserrat:wght@500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* VT Color Palette */
+  --color-vt-primary: #e1245a;
+  --color-vt-primary-hover: #b91947;
+  --color-vt-text: #20205F;
+  --color-vt-dark: #153154;
+  --color-vt-accent: #007ac0;
+  --color-vt-lavender: #d4d1ec;
+  --color-vt-light: #f9f9f9;
+  --color-vt-light-blue: #e7f2f7;
+  --color-vt-navy: #181a2e;
+
+  /* Scores */
+  --color-score-good: #22c55e;
+  --color-score-mid: #eab308;
+  --color-score-bad: #ef4444;
+
+  /* Fonts */
+  --font-heading: 'Poppins', system-ui, sans-serif;
+  --font-body: 'Lato', system-ui, sans-serif;
+  --font-button: 'Montserrat', system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--color-vt-text);
+  background-color: var(--color-vt-light);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}

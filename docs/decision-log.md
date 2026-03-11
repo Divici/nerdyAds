@@ -873,3 +873,40 @@ Our previous calibration (Phase 7) used only synthetic ads we wrote ourselves. T
 **Tradeoff:** Slightly higher cost per accepted ad (more generations needed), but the story is stronger: the system demonstrates judgment by rejecting work. The `costPerAcceptedAd` metric makes this visible.
 
 **Expected outcomes:** 40-60% acceptance rate, 60+ accepted ads, visible iteration history on rejected ads.
+
+---
+
+### D-032: UI Architecture — Live Generation with SSE Streaming
+
+**Date:** 2025-03-11
+**Phase:** 10 (Demo UI)
+
+**Decision:** Build a live-generation UI with Server-Sent Events (SSE) streaming instead of a read-only JSON viewer.
+
+**What was considered:**
+1. **Read-only JSON viewer** (original plan) — load pipeline-result.json, display in React. Simple but static.
+2. **Live generation with WebSocket** — full duplex communication. Overkill for one-directional updates.
+3. **Live generation with SSE** — server pushes events as ads are generated/evaluated/accepted/rejected. Client renders in real-time with card-dealing animations. ← Chosen.
+
+**Architecture:**
+- Express API server (`src/server/api.ts`) with 4 endpoints: `/api/briefs`, `/api/runs`, `/api/runs/:runId`, `/api/generate`
+- SSE stream at `/api/generate/:runId/stream` pushes events: `round:start`, `ad:generating`, `ad:evaluating`, `ad:accepted`, `ad:rejected`, `pipeline:complete`
+- Event callback system added to `runContinuousBatch()` via optional `onEvent` parameter — zero breaking changes to existing pipeline code
+- Vite dev server proxies `/api` to Express on port 3001
+- Previous runs tab loads from `data/output/` for historical viewing
+
+**UI Design:**
+- 3 tabs: Campaign (live generation), Insights (charts/metrics), Previous Runs (historical data)
+- Campaign tab: accepted carousel (horizontal scroll) → generation area (brief dropdown + generate button) → discarded section (flipped card backs)
+- Cards styled as Meta ad format (brand header, primary text, image placeholder, headline, description, CTA button)
+- Framer Motion animations: poker-card dealing (staggered entrance), flip animation for rejected cards
+- VT brand styling: Poppins/Lato/Montserrat fonts, `#e1245a` primary CTA, `#20205F` text, `#181a2e` navy
+
+**Why SSE over WebSocket:**
+- One-directional (server → client) — SSE is simpler and sufficient
+- Auto-reconnect built into the browser EventSource API
+- No additional library needed (native browser support)
+
+**Tradeoff:** The UI now requires running both the API server and Vite dev server (`npm run ui:dev`). Slightly more complex setup than a static viewer, but the live generation UX is far more compelling for demo purposes.
+
+**Test coverage:** 9 new API tests via supertest (215 total passing).

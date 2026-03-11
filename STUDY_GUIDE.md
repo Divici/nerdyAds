@@ -332,11 +332,47 @@ The evaluator is built first (Phase 4) because the brief's highest-weighted cate
   - Results: Max non-targeted drop = 0
 
 ### Test Coverage
-- 183 unit/integration tests passing across 18 test files
+- 215 unit/integration tests passing across 21 test files
 - 11 eval tests passing across 5 eval files (hit real API, ~2 min total)
-- Unit tests: scoring, threshold, ratchet, confidence, failure taxonomy, rate limiter, cost, hash, snapshot, config, agents (mocked), langfuse, gemini-langfuse
+- Unit tests: scoring, threshold, ratchet, confidence, failure taxonomy, rate limiter, cost, hash, snapshot, config, agents (mocked), langfuse, gemini-langfuse, API server
 - Integration tests: mocked pipeline scenarios (pass first try, improve then pass, fail all cycles, ratchet increase)
 - Evals: calibration ranking, consistency, dimension independence, improvement verification, regression check
+
+## Phase 10: Demo UI
+
+### What It Does
+A live-generation UI that lets you watch ads being created, evaluated, and accepted/rejected in real-time. Styled to match the Varsity Tutors website.
+
+### How It Works
+1. Express API server wraps the pipeline with SSE (Server-Sent Events) streaming
+2. User selects a brief from dropdown and clicks "Generate"
+3. Pipeline runs in background, emitting events as each ad is generated/evaluated
+4. React frontend receives events via EventSource and animates cards in:
+   - 3 skeleton cards appear (poker-deal animation)
+   - Skeletons fill in as ads are evaluated
+   - Accepted ads slide up to the carousel; rejected cards flip face-down and move to discarded section
+5. Insights tab shows aggregate charts (radar, bar, line) with Recharts
+6. Previous Runs tab loads historical pipeline-result.json files
+
+### Key Architecture Decision: SSE Over WebSocket
+- SSE is simpler — one-directional (server → client), which is all we need
+- Browser's EventSource API handles auto-reconnect
+- No extra library needed (native browser support)
+- The pipeline's `onEvent` callback was added as an optional parameter to `runContinuousBatch()` — zero breaking changes
+
+### Components
+- **AdCard** — Meta ad format (brand header, primary text, image placeholder, headline, CTA). Score badge color-coded.
+- **AcceptedCarousel** — Horizontal scrollable row with arrow navigation and "View All" modal
+- **GenerationSection** — Brief dropdown + generate button + card dealing area with skeletons
+- **DiscardedSection** — Row of face-down cards with count badge; click opens modal with full details
+- **InsightsTab** — Summary cards, radar chart (dimension avgs), bar chart (per-brief), line chart (quality trend with threshold line), cost metrics
+- **EvaluationBreakdown** — Modal showing full ad preview + 5 dimension bars with rationales + iteration history
+- **PreviousRunsTab** — Clickable list of past runs with expandable ad grids
+
+### VT Branding
+- Colors: `#e1245a` (primary CTA), `#20205F` (text), `#181a2e` (navy), `#d4d1ec` (lavender)
+- Fonts: Poppins (headings), Lato (body), Montserrat (buttons)
+- Score colors: green ≥7.5, yellow 6-7.5, red <6
 
 ---
 
@@ -348,6 +384,7 @@ The evaluator is built first (Phase 4) because the brief's highest-weighted cate
 | Generation | Gemini 2.5 Flash | Cheap exploratory generation (thinking model) |
 | Evaluation | Gemini 2.5 Pro | Strong judgment for scoring (thinking model) |
 | Observability | Langfuse | Cost tracking, trace logging |
-| Frontend | Vite + React | Lightweight demo viewer |
+| Frontend | Vite + React + Tailwind + Framer Motion + Recharts | Live generation UI with VT branding |
+| API Server | Express with SSE | Real-time streaming of pipeline events |
 | Testing | Vitest (likely) | Fast, TS-native |
 | Image gen (v2) | Imagen via Gemini API | Placeholder, not on critical path |
