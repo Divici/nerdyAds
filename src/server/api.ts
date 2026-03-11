@@ -112,7 +112,8 @@ export function createApp() {
 
       // Run pipeline in background — events streamed via SSE
       runPipelineWithEvents(runId, briefs).catch((err) => {
-        logger.error('Pipeline error', { runId, error: String(err) });
+        const stack = err instanceof Error ? err.stack : String(err);
+        logger.error('Pipeline error', { runId, error: String(err), stack });
         sendSSE(runId, { type: 'pipeline:error', data: { error: String(err) } });
       });
     } catch (err) {
