@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import type { Brief, AdWithHistory, AdStatus, GenerationMode } from '../types.ts';
 import { AdCard, AdCardSkeleton } from './AdCard.tsx';
+import { useHorizontalScroll } from '../hooks/useHorizontalScroll.ts';
 
 const AUDIENCE_LABELS: Record<string, string> = {
   student: 'Students',
@@ -76,6 +77,8 @@ export function GenerationSection({
   const [selectedBrief, setSelectedBrief] = useState<string>('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
+  useHorizontalScroll(cardsRef);
   const [modeTooltipOpen, setModeTooltipOpen] = useState(false);
 
   // Close dropdown on outside click
@@ -240,7 +243,7 @@ export function GenerationSection({
 
       {/* Card dealing area */}
       {(generating || pendingAds.length > 0) && (
-        <div className="flex gap-4 overflow-x-auto pb-4 styled-scrollbar">
+        <div ref={cardsRef} className="flex gap-4 overflow-x-auto pb-4 styled-scrollbar">
           <AnimatePresence mode="popLayout">
             {pendingAds.map((adh, i) => (
               <AdCard key={adh.ad.id} adWithHistory={adh} index={i} status={pendingStatus.get(adh.ad.id)} />

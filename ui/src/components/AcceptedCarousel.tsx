@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 import type { AdWithHistory } from '../types.ts';
 import { AdCard } from './AdCard.tsx';
+import { useHorizontalScroll } from '../hooks/useHorizontalScroll.ts';
 
 interface AcceptedCarouselProps {
   ads: AdWithHistory[];
@@ -10,6 +11,7 @@ interface AcceptedCarouselProps {
 
 export function AcceptedCarousel({ ads, onAdClick, onViewAll }: AcceptedCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  useHorizontalScroll(scrollRef);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
