@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
+  EVALUATOR_SYSTEM_PROMPT,
   buildWriterFewShotSection,
   buildWriterUserPrompt,
   type FewShotExample,
@@ -31,6 +32,20 @@ const weakExample: FewShotExample = {
   ctaButton: 'Learn more',
   tierRationale: 'Generic messaging with no hook, no specificity, could be any brand.',
 };
+
+describe('EVALUATOR_SYSTEM_PROMPT', () => {
+  it('includes cohesion/logical flow in Clarity criteria', () => {
+    expect(EVALUATOR_SYSTEM_PROMPT.toLowerCase()).toMatch(/cohesion|logical flow|sentence.*connect/);
+  });
+
+  it('includes scoring guidance for cohesion penalties', () => {
+    expect(EVALUATOR_SYSTEM_PROMPT.toLowerCase()).toMatch(/cohesion|logical flow/);
+    // Should appear in a guidance/rubric section, not just the dimension definition
+    const clarityGuidanceMatch = EVALUATOR_SYSTEM_PROMPT.match(/### Clarity[\s\S]*?(?=###|$)/);
+    expect(clarityGuidanceMatch).not.toBeNull();
+    expect(clarityGuidanceMatch![0].toLowerCase()).toMatch(/cohesion|logical flow|sentence/);
+  });
+});
 
 describe('buildWriterFewShotSection', () => {
   it('formats strong, medium, and weak examples with tier labels', () => {
