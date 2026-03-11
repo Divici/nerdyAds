@@ -910,3 +910,37 @@ Our previous calibration (Phase 7) used only synthetic ads we wrote ourselves. T
 **Tradeoff:** The UI now requires running both the API server and Vite dev server (`npm run ui:dev`). Slightly more complex setup than a static viewer, but the live generation UX is far more compelling for demo purposes.
 
 **Test coverage:** 9 new API tests via supertest (215 total passing).
+
+---
+
+### D-033: Quick/Quality Mode Toggle — User-Selectable Evaluator Strictness
+
+**Date:** 2026-03-11
+**Phase:** 10 (Demo UI)
+
+**Context:** After switching the evaluator from Gemini Pro to Flash for speed (D-027), no ads were getting discarded — Flash scores too generously at the 7.5 threshold. Needed a way to let the user choose between fast iteration and strict quality filtering.
+
+**Decision:** Add a UI toggle with two presets:
+- **Quick Mode** (default): Flash evaluator + 7.5 threshold. Fast iteration for testing and development.
+- **Quality Mode:** Pro evaluator + 8.0 threshold. Slower but stricter scoring for final production runs.
+
+**Implementation:**
+- `GenerationMode` type (`'quick' | 'quality'`) added to UI types
+- Native `<select>` dropdown under the Generate button with `?` tooltip explaining differences
+- Mode sent via POST body to `/api/generate`, threaded through to `EvaluatorAgent` constructor and `QualityRatchet` constructor
+- Langfuse traces tagged with `evalModel` and `mode` for comparing run characteristics
+
+**Why not just raise Flash threshold:**
+Flash doesn't just shift scores up — it's less discriminating. Raising the threshold to 8.0 on Flash would result in inflated 8.5s instead of inflated 7.8s. The scores have less variance between genuinely good and mediocre ads. Pro is fundamentally better at evaluation, so the mode toggle gives users the real tradeoff: speed vs. quality judgment.
+
+**Alternatives considered:**
+- Always use Pro for eval (original D-003 approach): too slow for iterative development/demo
+- Auto-detect based on brief count (>5 → quality): opaque, removes user control
+- Three modes (quick/balanced/strict): over-engineered for current needs
+
+**Tradeoffs:**
+- Pro: User controls the speed/quality tradeoff explicitly
+- Pro: Quick mode is great for demos and testing; Quality mode for final output
+- Pro: Clean implementation — only 2 config values change between modes
+- Con: Users might not understand which mode to pick (mitigated by tooltip)
+- Con: Quick mode output may look artificially good (high acceptance, high scores) if users don't realize the evaluator is lenient
