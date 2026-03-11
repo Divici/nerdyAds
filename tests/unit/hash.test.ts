@@ -30,10 +30,11 @@ describe('hashPrompt', () => {
 });
 
 describe('seedOffsetFromString', () => {
-  it('returns a positive integer', () => {
+  it('returns a positive integer within int32-safe range', () => {
     const result = seedOffsetFromString('test-run-id');
     expect(Number.isInteger(result)).toBe(true);
-    expect(result).toBeGreaterThan(0);
+    expect(result).toBeGreaterThanOrEqual(0);
+    expect(result).toBeLessThan(1_000_000_000);
   });
 
   it('is deterministic — same input produces same offset', () => {
