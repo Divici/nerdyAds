@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { runBatch, type BatchRunnerDeps } from '../../src/pipeline/batch-runner.js';
+import { runBatch, type BatchRunnerDeps, runContinuousBatch, type ContinuousBatchDeps } from '../../src/pipeline/batch-runner.js';
 import { iterateAd, type IterationDeps } from '../../src/pipeline/iteration-loop.js';
 import { MetricsTracker } from '../../src/metrics/tracker.js';
 import { QualityRatchet } from '../../src/evaluate/threshold.js';
@@ -66,7 +66,7 @@ describe('Pipeline Integration: pass first try', () => {
       generateBatch: vi.fn().mockResolvedValue([makeAd('a1'), makeAd('a2')]),
       evaluate: vi.fn().mockResolvedValue(makeEval(8.5)),
       improve: vi.fn(),
-      checkThreshold: (score) => score >= 7.0,
+      checkThreshold: (score) => score >= 7.5,
       maxCycles: 3,
     };
 
@@ -90,7 +90,7 @@ describe('Pipeline Integration: improve then pass', () => {
         .mockResolvedValueOnce(makeEval(5.0, 'a1'))  // first eval fails
         .mockResolvedValueOnce(makeEval(8.0, 'a1')), // second eval passes
       improve: vi.fn().mockResolvedValue(makeAd('a1', 1)),
-      checkThreshold: (score) => score >= 7.0,
+      checkThreshold: (score) => score >= 7.5,
       maxCycles: 3,
     };
 
@@ -138,13 +138,13 @@ describe('Pipeline Integration: ratchet increases threshold', () => {
     ratchet.record(9.0);
     ratchet.record(9.5);
     ratchet.record(9.0);
-    // Running avg = 9.167, ratchet threshold = max(7.0, 9.167 - 0.5) = 8.667
+    // Running avg = 9.167, ratchet threshold = max(7.5, 9.167 - 0.5) = 8.667
 
     const threshold = ratchet.getThreshold();
     expect(threshold).toBeGreaterThan(8.0);
 
-    // A score of 7.5 would normally pass the base threshold (7.0)
-    // but should fail the ratcheted threshold
+    // A score of 7.5 would normally pass the base threshold (7.5)
+    // but should fail the ratcheted threshold (~8.67)
     expect(ratchet.check(7.5)).toBe(false);
 
     // A score of 9.0 should still pass
@@ -203,7 +203,7 @@ describe('Pipeline Integration: metrics tracking', () => {
       improve: vi.fn().mockImplementation((ad: Ad) =>
         Promise.resolve(makeAd(ad.id, ad.version + 1)),
       ),
-      checkThreshold: (score) => score >= 7.0,
+      checkThreshold: (score) => score >= 7.5,
       maxCycles: 3,
     };
 
@@ -226,5 +226,64 @@ describe('Pipeline Integration: metrics tracking', () => {
     expect(summary.totalAdsGenerated).toBe(3);
     expect(summary.totalAdsAccepted).toBe(2); // a1 and a2 accepted
     expect(summary.acceptanceRate).toBeCloseTo(2 / 3, 4);
+  });
+});
+
+// ── Continuous batch integration ────────────────────────────────────────
+
+describe('Pipeline Integration: continuous batch', () => {
+  it('generates multiple rounds until target accepted count is reached', async () => {
+    let adIndex = 0;
+    const deps: ContinuousBatchDeps = {
+      generateBatch: vi.fn(async (_b, count) => {
+        return Array.from({ length: count }, () => makeAd(`ad-${++adIndex}`));
+      }),
+      evaluate: vi.fn().mockResolvedValue(makeEval(8.5)),
+      improve: vi.fn(),
+      checkThreshold: (score) => score >= 7.5,
+      maxCycles: 3,
+      targetAccepted: 6,
+      batchSize: 3,
+      maxRounds: 10,
+    };
+
+    const result = await runContinuousBatch(brief, deps);
+
+    expect(result.accepted.length).toBe(6);
+    expect(result.rejected.length).toBe(0);
+    expect(result.roundsUsed).toBe(2);
+    expect(result.totalGenerated).toBe(6);
+    expect(result.briefId).toBe('brief-1');
+  });
+
+  it('tracks rejected ads with full history in continuous batch', async () => {
+    let adIndex = 0;
+    const deps: ContinuousBatchDeps = {
+      generateBatch: vi.fn(async (_b, count) => {
+        return Array.from({ length: count }, () => makeAd(`ad-${++adIndex}`));
+      }),
+      evaluate: vi.fn().mockResolvedValue(makeEval(4.0)),
+      improve: vi.fn().mockImplementation((ad: Ad) =>
+        Promise.resolve(makeAd(ad.id, ad.version + 1)),
+      ),
+      checkThreshold: () => false,
+      maxCycles: 3,
+      targetAccepted: 6,
+      batchSize: 2,
+      maxRounds: 2,
+    };
+
+    const result = await runContinuousBatch(brief, deps);
+
+    expect(result.accepted.length).toBe(0);
+    expect(result.rejected.length).toBe(4); // 2 batches × 2 ads
+    expect(result.roundsUsed).toBe(2);
+    expect(result.totalGenerated).toBe(4);
+    // Each rejected ad should have evaluation history
+    for (const rej of result.rejected) {
+      expect(rej.accepted).toBe(false);
+      expect(rej.evaluations.length).toBe(4); // 1 initial + 3 improvement evals
+      expect(rej.cyclesUsed).toBe(3);
+    }
   });
 });

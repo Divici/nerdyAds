@@ -116,6 +116,38 @@ Evaluate this ad across all 5 dimensions. Be specific in your rationales — ref
   return prompt;
 }
 
+// ── Few-Shot Examples ─────────────────────────────────────────────
+
+export interface FewShotExample {
+  tier: 'strong' | 'weak';
+  primaryText: string;
+  headline: string;
+  description: string;
+  ctaButton: string;
+  tierRationale: string;
+}
+
+/**
+ * Formats few-shot examples into a prompt section for the writer.
+ */
+export function buildWriterFewShotSection(examples: FewShotExample[]): string {
+  if (examples.length === 0) return '';
+
+  let section = `## Quality Reference Examples\n`;
+  section += `Study these examples to calibrate your output quality:\n\n`;
+
+  for (const ex of examples) {
+    section += `### ${ex.tier.toUpperCase()} Example\n`;
+    section += `- **Primary Text:** "${ex.primaryText}"\n`;
+    section += `- **Headline:** "${ex.headline}"\n`;
+    section += `- **Description:** "${ex.description}"\n`;
+    section += `- **CTA Button:** "${ex.ctaButton}"\n`;
+    section += `- **Why ${ex.tier}:** ${ex.tierRationale}\n\n`;
+  }
+
+  return section;
+}
+
 // ── Writer Prompts ────────────────────────────────────────────────
 
 export const WRITER_SYSTEM_PROMPT = `You are an expert Facebook/Instagram ad copywriter for Varsity Tutors, a premium SAT test prep service.
@@ -177,6 +209,7 @@ export function buildWriterUserPrompt(
   brief: Brief,
   count: number,
   patterns?: CompetitorPattern,
+  fewShotExamples?: FewShotExample[],
 ): string {
   let prompt = `## Campaign Brief
 - **Target Audience:** ${brief.targetAudience}
@@ -198,6 +231,10 @@ Use these patterns as inspiration (do NOT copy — differentiate for Varsity Tut
 - **CTA Styles:** ${patterns.ctaStyles.join(', ')}
 - **Structural Patterns:** ${patterns.structuralPatterns.join('; ')}
 - **Common Phrases (avoid copying):** ${patterns.commonPhrases.join(', ')}`;
+  }
+
+  if (fewShotExamples && fewShotExamples.length > 0) {
+    prompt += '\n\n' + buildWriterFewShotSection(fewShotExamples);
   }
 
   prompt += `

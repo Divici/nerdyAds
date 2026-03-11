@@ -4,10 +4,12 @@
 An autonomous ad generation engine for Varsity Tutors (Nerdy) SAT test prep campaigns on Facebook/Instagram. It generates ad copy, evaluates quality across 5 dimensions, iterates to improve weak ads, and tracks performance per token spent.
 
 ## Current Status
-- **Phase:** Phase 9 complete (Evals suite). Phase 10 (Demo UI) is next.
+- **Phase:** Pipeline restructure complete (continuous small-batch generation). Phase 10 (Demo UI) is next.
+- **Pipeline mode:** Continuous small-batch — generates 3 ads/round, targets 6 accepted/brief, max 10 rounds, threshold 7.5, per-dimension floor 6.0
 - **Key docs to read first:**
   - `docs/implementation-plan.md` — 12-phase build plan with Phases 8.5 and 8.7 added
-  - `docs/decision-log.md` — 30 decisions with full rationale (D-030 covers Langfuse integration)
+  - `docs/pipeline-restructure-plan.md` — continuous batch pipeline design
+  - `docs/decision-log.md` — 31 decisions with full rationale (D-031 covers pipeline restructure)
   - `data/reference/competitor_ads.json` — 65+ ads (41 Varsity Tutors + Princeton Review, Chegg, Kaplan) with longevity data
 
 ## Reference Ads — Now Available (partially resolves D-018)
@@ -36,7 +38,7 @@ We now have 41 real Varsity Tutors ads from Meta Ad Library with longevity data 
 - **Editor** (Flash) — targeted improvement of weak dimensions
 - **Evaluator** (Pro) — scores 5 dimensions with rationales + confidence
 
-Pipeline flow: Brief → Writer generates batch of 5-8 → Evaluator scores → Pass (≥7.0) → Library | Fail → Editor improves → Re-evaluate → Max 3 cycles → Accept or reject
+Pipeline flow: Brief → Writer generates batch of 3 (with few-shot examples) → Evaluator scores → Pass (≥7.5, all dims ≥6) → Accepted | Fail → Editor improves → Re-evaluate → Max 3 cycles → Accept or discard → Loop until 6 accepted or 10 rounds
 
 ## Key Design Decisions (summary)
 - Evaluator-led architecture (build evaluator first)

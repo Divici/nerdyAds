@@ -10,6 +10,10 @@ import {
   RATCHET_BUFFER,
   MIN_SCORE,
   MAX_SCORE,
+  MIN_DIMENSION_SCORE,
+  TARGET_ACCEPTED_PER_BRIEF,
+  BATCH_SIZE,
+  MAX_GENERATION_ROUNDS,
 } from '@config/thresholds.js';
 import {
   MODELS,
@@ -44,8 +48,8 @@ describe('Dimension weights', () => {
 });
 
 describe('Thresholds', () => {
-  it('QUALITY_THRESHOLD is 7.0', () => {
-    expect(QUALITY_THRESHOLD).toBe(7.0);
+  it('QUALITY_THRESHOLD is 7.5', () => {
+    expect(QUALITY_THRESHOLD).toBe(7.5);
   });
 
   it('MAX_CYCLES is 3', () => {
@@ -59,6 +63,22 @@ describe('Thresholds', () => {
   it('MIN_SCORE is 1 and MAX_SCORE is 10', () => {
     expect(MIN_SCORE).toBe(1);
     expect(MAX_SCORE).toBe(10);
+  });
+
+  it('MIN_DIMENSION_SCORE is 6', () => {
+    expect(MIN_DIMENSION_SCORE).toBe(6);
+  });
+
+  it('TARGET_ACCEPTED_PER_BRIEF is 6', () => {
+    expect(TARGET_ACCEPTED_PER_BRIEF).toBe(6);
+  });
+
+  it('BATCH_SIZE is 3', () => {
+    expect(BATCH_SIZE).toBe(3);
+  });
+
+  it('MAX_GENERATION_ROUNDS is 10', () => {
+    expect(MAX_GENERATION_ROUNDS).toBe(10);
   });
 });
 

@@ -1,8 +1,8 @@
 /**
- * Phase 7: Run the full pipeline on a subset of briefs (first run).
+ * Run the continuous batch pipeline on a subset of briefs.
  * Defaults to the first 3 briefs. Override with --briefs=5 for more.
  *
- * Usage: npx tsx src/scripts/run-pipeline.ts [--briefs=N] [--ads=N] [--threshold=N] [--no-patterns] [--eval-model=flash|pro]
+ * Usage: npx tsx src/scripts/run-pipeline.ts [--briefs=N] [--threshold=N] [--no-patterns] [--no-anchors] [--eval-model=flash|pro]
  */
 import 'dotenv/config';
 import { readFile } from 'node:fs/promises';
@@ -11,7 +11,7 @@ import type { Brief } from '../types/brief.js';
 import type { CompetitorPattern } from '../types/patterns.js';
 import type { ModelRole } from '../utils/gemini-client.js';
 import { processAllBriefs } from '../pipeline/orchestrator.js';
-import { loadCalibrationAnchors } from '../utils/calibration-loader.js';
+import { loadCalibrationAnchors, loadWriterFewShotExamples } from '../utils/calibration-loader.js';
 
 function parseArgInt(name: string, defaultVal: number): number {
   const arg = process.argv.find((a) => a.startsWith(`--${name}=`));
@@ -37,14 +37,13 @@ function hasFlag(name: string): boolean {
 
 async function main() {
   const briefCount = parseArgInt('briefs', 3);
-  const adsPerBrief = parseArgInt('ads', 5);
   const threshold = parseArgFloat('threshold');
   const noPatterns = hasFlag('no-patterns');
   const evalModelArg = process.argv.find((a) => a.startsWith('--eval-model='))?.split('=')[1];
   const evalModel = (evalModelArg === 'flash' || evalModelArg === 'pro') ? evalModelArg as ModelRole : undefined;
 
-  console.log('=== nerdyAds Pipeline ===\n');
-  console.log(`Briefs: ${briefCount}, Ads per brief: ${adsPerBrief}, Threshold: ${threshold ?? '7.0 (default)'}, Patterns: ${noPatterns ? 'DISABLED' : 'enabled'}, Eval model: ${evalModel ?? 'pro (default)'}\n`);
+  console.log('=== nerdyAds Continuous Batch Pipeline ===\n');
+  console.log(`Briefs: ${briefCount}, Threshold: ${threshold ?? '7.5 (default)'}, Patterns: ${noPatterns ? 'DISABLED' : 'enabled'}, Eval model: ${evalModel ?? 'pro (default)'}\n`);
 
   // Load briefs
   const rawBriefs = await readFile(path.resolve('data/briefs.json'), 'utf8');
@@ -75,41 +74,53 @@ async function main() {
   } else {
     try {
       calibrationAnchors = await loadCalibrationAnchors();
-      console.log(`Loaded ${calibrationAnchors.length} calibration anchors from reference set (${calibrationAnchors.filter(a => a.label === 'strong').length} strong, ${calibrationAnchors.filter(a => a.label === 'weak').length} weak)\n`);
+      console.log(`Loaded ${calibrationAnchors.length} calibration anchors (${calibrationAnchors.filter(a => a.label === 'strong').length} strong, ${calibrationAnchors.filter(a => a.label === 'weak').length} weak)\n`);
     } catch {
       console.log('No calibration data found — evaluator will use rubric only\n');
     }
   }
 
+  // Load few-shot examples for writer
+  let fewShotExamples;
+  try {
+    fewShotExamples = await loadWriterFewShotExamples();
+    console.log(`Loaded ${fewShotExamples.length} few-shot examples for writer (${fewShotExamples.map(e => e.tier).join(', ')})\n`);
+  } catch {
+    console.log('No few-shot examples found — writer will use system prompt only\n');
+  }
+
   // Run pipeline
   const result = await processAllBriefs(briefs, {
-    adsPerBrief,
     patterns,
     outputDir: 'data/output',
     threshold,
     evalModel,
     calibrationAnchors,
+    fewShotExamples,
   });
 
   // Results
   console.log('\n=== PIPELINE RESULTS ===');
-  console.log(`Run ID: ${result.runId}`);
+  console.log(`Run ID:             ${result.runId}`);
   console.log(`Total ads generated: ${result.totalAdsGenerated}`);
   console.log(`Total ads accepted:  ${result.totalAdsAccepted}`);
+  console.log(`Total ads rejected:  ${result.totalAdsRejected}`);
   console.log(`Acceptance rate:     ${(result.acceptanceRate * 100).toFixed(1)}%`);
   console.log(`Average score:       ${result.averageScore.toFixed(2)}`);
+  console.log(`Cost per accepted:   $${result.costPerAcceptedAd.toFixed(4)}`);
   console.log(`Total cost:          $${result.totalCostUsd.toFixed(4)}`);
   console.log(`Total tokens:        ${result.totalTokensIn} in, ${result.totalTokensOut} out`);
 
   // Per-brief breakdown
   console.log('\n--- Per-Brief Breakdown ---');
   for (const briefResult of result.briefs ?? []) {
-    const accepted = briefResult.ads?.filter((a) => a.accepted).length ?? 0;
-    const total = briefResult.ads?.length ?? 0;
+    const accepted = briefResult.ads?.length ?? 0;
+    const rejected = briefResult.rejected?.length ?? 0;
+    const rounds = briefResult.roundsUsed ?? 0;
     const avgScore = briefResult.metrics?.averageScore ?? 0;
     const cost = briefResult.metrics?.costUsd ?? 0;
     console.log(
-      `  ${briefResult.briefId}: ${accepted}/${total} accepted, avg score ${avgScore.toFixed(2)}, cost $${cost.toFixed(4)}`,
+      `  ${briefResult.briefId}: ${accepted} accepted, ${rejected} rejected, ${rounds} rounds, avg score ${avgScore.toFixed(2)}, cost $${cost.toFixed(4)}`,
     );
   }
 

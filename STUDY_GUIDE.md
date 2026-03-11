@@ -15,15 +15,18 @@ Think of it like a small internal growth team at a company, except each role (re
 ## How It Works (High Level)
 
 1. A **brief** is created describing the target audience (e.g., anxious parents), campaign goal (awareness or conversion), and emotional angle (e.g., urgency, aspiration)
-2. The **Writer agent** (Gemini Flash) generates a batch of 5-8 ad variants from the brief, using competitor patterns and few-shot examples as context
+2. The **Writer agent** (Gemini Flash) generates a small batch of **3 ads** per round, using competitor patterns and **few-shot examples** (1 strong + 1 weak reference ad) as context
 3. The **Evaluator agent** (Gemini Pro) scores each ad across 5 independent dimensions: Clarity, Value Proposition, CTA, Brand Voice, Emotional Resonance
-4. Ads scoring **7.0+ average** are accepted into the ad library
+4. Ads scoring **7.5+ weighted average** with **all dimensions ≥ 6** are accepted
 5. Ads below threshold go to the **Editor agent**, which reads the evaluation critique, identifies the weakest dimension, and rewrites only what's broken
 6. The improved ad goes back to the Evaluator — up to 3 cycles max
-7. If an ad still fails after 3 cycles, it's rejected and the failure mode is logged
-8. All of this is tracked: scores per cycle, cost per ad, quality gain per token spent
-9. A **quality ratchet** raises the acceptance bar over time as the system proves it can produce better work
-10. A simple **Vite + React UI** lets you browse the ad library, see evaluation breakdowns, and view quality trend charts
+7. If an ad still fails after 3 cycles, it's **discarded** (not kept) — the system replaces it with fresh generations
+8. The loop continues generating new batches of 3 until **6 ads are accepted per brief** (or max 10 rounds)
+9. All of this is tracked: scores per cycle, cost per ad, **cost per accepted ad**, rejected count, rounds used
+10. A **quality ratchet** raises the acceptance bar over time as the system proves it can produce better work
+11. A simple **Vite + React UI** lets you browse the ad library, see evaluation breakdowns, and view quality trend charts
+
+**Key insight:** The continuous batch approach means the system visibly rejects work. Instead of "we generated 50 ads and accepted 48" (which looks like no quality bar), it says "we generated 120 ads, rejected 55, improved 25, and accepted 65" — demonstrating genuine filtering and judgment.
 
 ---
 

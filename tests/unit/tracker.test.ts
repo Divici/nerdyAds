@@ -85,4 +85,30 @@ describe('MetricsTracker', () => {
     expect(metrics.adsGenerated).toBe(0);
     expect(metrics.acceptanceRate).toBe(0);
   });
+
+  it('computes cost per accepted ad', () => {
+    const tracker = new MetricsTracker();
+    tracker.recordAd({ accepted: true, score: 8.0, costUsd: 0.01, tokensIn: 100, tokensOut: 50 });
+    tracker.recordAd({ accepted: false, score: 5.0, costUsd: 0.02, tokensIn: 200, tokensOut: 100 });
+    tracker.recordAd({ accepted: true, score: 7.5, costUsd: 0.01, tokensIn: 100, tokensOut: 50 });
+
+    // totalCost = 0.04, accepted = 2 → costPerAccepted = 0.02
+    expect(tracker.getCostPerAcceptedAd()).toBeCloseTo(0.02, 6);
+  });
+
+  it('returns 0 for cost per accepted when none accepted', () => {
+    const tracker = new MetricsTracker();
+    tracker.recordAd({ accepted: false, score: 4.0, costUsd: 0.01, tokensIn: 100, tokensOut: 50 });
+
+    expect(tracker.getCostPerAcceptedAd()).toBe(0);
+  });
+
+  it('tracks rejected count', () => {
+    const tracker = new MetricsTracker();
+    tracker.recordAd({ accepted: true, score: 8.0, costUsd: 0.01, tokensIn: 100, tokensOut: 50 });
+    tracker.recordAd({ accepted: false, score: 5.0, costUsd: 0.01, tokensIn: 100, tokensOut: 50 });
+    tracker.recordAd({ accepted: false, score: 4.0, costUsd: 0.01, tokensIn: 100, tokensOut: 50 });
+
+    expect(tracker.getRejectedCount()).toBe(2);
+  });
 });

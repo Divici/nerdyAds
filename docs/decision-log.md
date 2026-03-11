@@ -837,3 +837,39 @@ Our previous calibration (Phase 7) used only synthetic ads we wrote ourselves. T
 - 19 new tests (16 langfuse + 3 gemini-langfuse), 183 total passing
 
 **Tradeoff:** AsyncLocalStorage adds ~0 overhead for the no-op case. The context is invisible in the type system — you can't tell from `callGemini`'s signature that it may emit traces. Mitigated by the explicit `trace` option still being available for direct use.
+
+---
+
+### D-031: Pipeline Restructure — Continuous Small-Batch Generation
+**Date:** 2026-03-10
+**Context:** The original pipeline generated a fixed batch of 5-8 ads per brief, processed all briefs, and finished. This produced 85-100% acceptance rates because every ad got 3 editor cycles to pass a 7.0 threshold. The project brief says "most ads fail" and the system should "surface only its best work."
+
+**Options considered:**
+1. **Keep fixed batch, raise threshold** — simple but doesn't change the fundamental loop or add visible iteration story.
+2. **Continuous small-batch with discard/replace** — generate 3 ads at a time, evaluate, fix failures (max 3 editor cycles), discard unfixable, keep generating until 6+ accepted or safety cap reached.
+3. **Tournament/elimination bracket** — generate many, rank, eliminate bottom half iteratively. More complex, harder to explain.
+
+**Chosen:** Option 2 — continuous small-batch generation.
+
+**What changed:**
+- `QUALITY_THRESHOLD`: 7.0 → 7.5 (higher bar for acceptance)
+- `MIN_DIMENSION_SCORE`: 5 → 6 (per-dimension floor raised)
+- New constants: `TARGET_ACCEPTED_PER_BRIEF = 6`, `BATCH_SIZE = 3`, `MAX_GENERATION_ROUNDS = 10`
+- New `runContinuousBatch()` function wraps the existing `iterateAd()` loop in a multi-round generator
+- `ContinuousBatchResult` tracks `accepted[]`, `rejected[]`, `roundsUsed`, `totalGenerated`
+- `PipelineResult` now includes `costPerAcceptedAd`, `totalAdsRejected`, per-brief `rejected[]` and `roundsUsed`
+- Writer accepts `FewShotExample[]` — 1 strong + 1 weak reference ad injected into the prompt
+- `loadWriterFewShotExamples()` reads from the reference set
+- Old `runBatch()` preserved for backward compatibility (evals, integration tests)
+- 217 tests passing (up from 194)
+
+**Why this approach:**
+- Rejected ads with full history show the system's filtering capability ("we generated 120, rejected 55, accepted 65")
+- Higher threshold + per-dimension floor forces genuine quality differentiation
+- Few-shot examples give the writer calibration context — it knows what "strong" and "weak" look like
+- Safety cap (10 rounds) prevents infinite loops if the model can't produce quality output
+- Small batches (3) mean each round is fast and cost-controlled
+
+**Tradeoff:** Slightly higher cost per accepted ad (more generations needed), but the story is stronger: the system demonstrates judgment by rejecting work. The `costPerAcceptedAd` metric makes this visible.
+
+**Expected outcomes:** 40-60% acceptance rate, 60+ accepted ads, visible iteration history on rejected ads.

@@ -52,6 +52,19 @@ export class MetricsTracker {
     return { ...this.failures };
   }
 
+  /** Cost per accepted ad (totalCost / acceptedCount), or 0 if none accepted. */
+  getCostPerAcceptedAd(): number {
+    const summary = this.getSummary();
+    return summary.totalAdsAccepted > 0
+      ? summary.totalCostUsd / summary.totalAdsAccepted
+      : 0;
+  }
+
+  /** Number of rejected ads. */
+  getRejectedCount(): number {
+    return this.ads.filter((a) => !a.accepted).length;
+  }
+
   getBatchMetrics(briefId: string): BatchMetrics {
     const briefAds = this.ads.filter((a) => a.briefId === briefId);
     const adsGenerated = briefAds.length;

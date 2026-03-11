@@ -3,6 +3,7 @@ import { WriterAgent } from '../../src/agents/writer.js';
 import type { Brief } from '../../src/types/brief.js';
 import type { Ad } from '../../src/types/ad.js';
 import type { CompetitorPattern } from '../../src/types/patterns.js';
+import type { FewShotExample } from '../../src/config/prompts.js';
 
 // Mock the gemini client
 vi.mock('../../src/utils/gemini-client.js', () => ({
@@ -190,5 +191,37 @@ describe('WriterAgent', () => {
     expect(ads[0].metadata.tokensOut).toBe(250);
     expect(ads[0].metadata.costUsd).toBeCloseTo(0.0005, 6);
     expect(ads[1].metadata.costUsd).toBeCloseTo(0.0005, 6);
+  });
+
+  it('includes few-shot examples in prompt when provided', async () => {
+    mockCallGemini.mockResolvedValueOnce(makeMockAdResponse([MOCK_ADS_RAW[0]]));
+
+    const fewShotExamples: FewShotExample[] = [
+      {
+        tier: 'strong',
+        primaryText: 'Strong ad copy here.',
+        headline: 'Strong Headline',
+        description: 'Strong description.',
+        ctaButton: 'Learn more',
+        tierRationale: 'Longest-running ad.',
+      },
+      {
+        tier: 'weak',
+        primaryText: 'Weak ad copy.',
+        headline: 'Weak Headline',
+        description: 'Weak description.',
+        ctaButton: 'Learn more',
+        tierRationale: 'Generic messaging.',
+      },
+    ];
+
+    await writer.generateAd(MOCK_BRIEF, undefined, fewShotExamples);
+
+    const [, , userPrompt] = mockCallGemini.mock.calls[0];
+    expect(userPrompt).toContain('Quality Reference Examples');
+    expect(userPrompt).toContain('STRONG');
+    expect(userPrompt).toContain('WEAK');
+    expect(userPrompt).toContain('Strong ad copy here.');
+    expect(userPrompt).toContain('Weak ad copy.');
   });
 });

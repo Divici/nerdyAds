@@ -20,12 +20,12 @@ function makeScores(overrides: Partial<Record<string, number>> = {}): DimensionS
 }
 
 describe('meetsThreshold', () => {
-  it('accepts score at exactly 7.0 with no running average', () => {
-    expect(meetsThreshold(7.0)).toBe(true);
+  it('accepts score at exactly 7.5 with no running average', () => {
+    expect(meetsThreshold(7.5)).toBe(true);
   });
 
-  it('rejects score below 7.0 with no running average', () => {
-    expect(meetsThreshold(6.9)).toBe(false);
+  it('rejects score below 7.5 with no running average', () => {
+    expect(meetsThreshold(7.4)).toBe(false);
   });
 
   it('accepts score well above threshold', () => {
@@ -33,43 +33,43 @@ describe('meetsThreshold', () => {
   });
 
   it('uses ratchet threshold when running average is high', () => {
-    // runningAvg = 8.5 → dynamic threshold = max(7.0, 8.5 - 0.5) = 8.0
+    // runningAvg = 8.5 → dynamic threshold = max(7.5, 8.5 - 0.5) = 8.0
     expect(meetsThreshold(8.0, 8.5)).toBe(true);
     expect(meetsThreshold(7.9, 8.5)).toBe(false);
   });
 
-  it('falls back to 7.0 when ratchet would be lower', () => {
-    // runningAvg = 7.2 → dynamic threshold = max(7.0, 7.2 - 0.5) = 7.0
-    expect(meetsThreshold(7.0, 7.2)).toBe(true);
-    expect(meetsThreshold(6.9, 7.2)).toBe(false);
+  it('falls back to 7.5 when ratchet would be lower', () => {
+    // runningAvg = 7.8 → dynamic threshold = max(7.5, 7.8 - 0.5) = 7.5
+    expect(meetsThreshold(7.5, 7.8)).toBe(true);
+    expect(meetsThreshold(7.4, 7.8)).toBe(false);
   });
 
-  it('uses static 7.0 when no running average provided', () => {
-    expect(meetsThreshold(7.0)).toBe(true);
-    expect(meetsThreshold(6.99)).toBe(false);
+  it('uses static 7.5 when no running average provided', () => {
+    expect(meetsThreshold(7.5)).toBe(true);
+    expect(meetsThreshold(7.49)).toBe(false);
   });
 });
 
 describe('QualityRatchet', () => {
-  it('starts with static threshold of 7.0', () => {
+  it('starts with static threshold of 7.5', () => {
     const ratchet = new QualityRatchet();
-    expect(ratchet.getThreshold()).toBeCloseTo(7.0, 2);
+    expect(ratchet.getThreshold()).toBeCloseTo(7.5, 2);
   });
 
   it('updates threshold as scores are recorded', () => {
     const ratchet = new QualityRatchet();
-    ratchet.record(8.0);
-    ratchet.record(9.0);
-    // avg = 8.5 → threshold = max(7.0, 8.5 - 0.5) = 8.0
-    expect(ratchet.getThreshold()).toBeCloseTo(8.0, 2);
+    ratchet.record(8.5);
+    ratchet.record(9.5);
+    // avg = 9.0 → threshold = max(7.5, 9.0 - 0.5) = 8.5
+    expect(ratchet.getThreshold()).toBeCloseTo(8.5, 2);
   });
 
-  it('never drops below 7.0', () => {
+  it('never drops below 7.5', () => {
     const ratchet = new QualityRatchet();
-    ratchet.record(7.2);
-    ratchet.record(7.0);
-    // avg = 7.1 → max(7.0, 7.1 - 0.5) = max(7.0, 6.6) = 7.0
-    expect(ratchet.getThreshold()).toBeCloseTo(7.0, 2);
+    ratchet.record(7.8);
+    ratchet.record(7.6);
+    // avg = 7.7 → max(7.5, 7.7 - 0.5) = max(7.5, 7.2) = 7.5
+    expect(ratchet.getThreshold()).toBeCloseTo(7.5, 2);
   });
 
   it('ratchets up with consistently high scores', () => {
@@ -99,8 +99,8 @@ describe('QualityRatchet', () => {
 
   it('rejects ad when weighted score passes but a dimension is below floor', () => {
     const ratchet = new QualityRatchet();
-    // Weighted score of 7.7 passes the 7.0 threshold,
-    // but brand_voice=2 is below the dimension floor of 5
+    // Weighted score of 8.8 passes the 7.5 threshold,
+    // but brand_voice=2 is below the dimension floor of 6
     const scores = makeScores({
       clarity: 10,
       value_proposition: 10,
@@ -114,12 +114,12 @@ describe('QualityRatchet', () => {
 
   it('accepts ad when weighted score passes and all dimensions are above floor', () => {
     const ratchet = new QualityRatchet();
-    const scores = makeScores({ cta: 6 });
-    expect(ratchet.check(7.0, scores)).toBe(true);
+    const scores = makeScores({ cta: 7 });
+    expect(ratchet.check(7.5, scores)).toBe(true);
   });
 
   it('accepts ad when no dimension scores provided (backward compat)', () => {
     const ratchet = new QualityRatchet();
-    expect(ratchet.check(7.0)).toBe(true);
+    expect(ratchet.check(7.5)).toBe(true);
   });
 });

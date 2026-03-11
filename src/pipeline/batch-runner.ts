@@ -54,3 +54,98 @@ export async function runBatch(
 
   return { briefId: brief.id, ads: results };
 }
+
+// ── Continuous Batch Runner ──────────────────────────────────────
+
+export interface ContinuousBatchDeps {
+  generateBatch: (brief: Brief, count: number, patterns?: CompetitorPattern) => Promise<Ad[]>;
+  evaluate: (ad: Ad, brief?: Brief) => Promise<Evaluation>;
+  improve: (ad: Ad, evaluation: Evaluation, brief?: Brief) => Promise<Ad>;
+  checkThreshold: (score: number, dimensionScores?: DimensionScore[]) => boolean;
+  maxCycles: number;
+  patterns?: CompetitorPattern;
+  targetAccepted: number;
+  batchSize: number;
+  maxRounds: number;
+}
+
+export interface ContinuousBatchResult {
+  briefId: string;
+  accepted: AdWithHistory[];
+  rejected: AdWithHistory[];
+  roundsUsed: number;
+  totalGenerated: number;
+}
+
+/**
+ * Generate ads in small batches continuously until enough are accepted
+ * or the max round cap is reached. Failed ads that exhaust editor cycles
+ * are discarded and replaced with fresh generations.
+ */
+export async function runContinuousBatch(
+  brief: Brief,
+  deps: ContinuousBatchDeps,
+): Promise<ContinuousBatchResult> {
+  const accepted: AdWithHistory[] = [];
+  const rejected: AdWithHistory[] = [];
+  let round = 0;
+  let totalGenerated = 0;
+
+  const iterationDeps: IterationDeps = {
+    evaluate: deps.evaluate,
+    improve: deps.improve,
+    checkThreshold: deps.checkThreshold,
+    maxCycles: deps.maxCycles,
+  };
+
+  logger.info('Starting continuous batch', {
+    briefId: brief.id,
+    targetAccepted: deps.targetAccepted,
+    batchSize: deps.batchSize,
+    maxRounds: deps.maxRounds,
+  });
+
+  while (accepted.length < deps.targetAccepted && round < deps.maxRounds) {
+    round++;
+    const batch = await deps.generateBatch(brief, deps.batchSize, deps.patterns);
+    totalGenerated += batch.length;
+
+    // Process ads concurrently within each round
+    const results = await Promise.all(
+      batch.map((ad) => iterateAd(ad, iterationDeps, brief)),
+    );
+
+    for (const result of results) {
+      if (result.accepted) {
+        accepted.push(result);
+        if (accepted.length >= deps.targetAccepted) break;
+      } else {
+        rejected.push(result);
+      }
+    }
+
+    logger.info('Round complete', {
+      briefId: brief.id,
+      round,
+      accepted: accepted.length,
+      rejected: rejected.length,
+      totalGenerated,
+    });
+  }
+
+  logger.info('Continuous batch complete', {
+    briefId: brief.id,
+    roundsUsed: round,
+    accepted: accepted.length,
+    rejected: rejected.length,
+    totalGenerated,
+  });
+
+  return {
+    briefId: brief.id,
+    accepted,
+    rejected,
+    roundsUsed: round,
+    totalGenerated,
+  };
+}

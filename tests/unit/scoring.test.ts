@@ -139,11 +139,18 @@ describe('allDimensionsAboveFloor', () => {
     expect(allDimensionsAboveFloor(scores)).toBe(false);
   });
 
-  it('returns true when a dimension is exactly at the floor (5)', () => {
+  it('returns true when a dimension is exactly at the floor (6)', () => {
+    const scores = makeScores({
+      brand_voice: { score: 6, confidence: 7 },
+    });
+    expect(allDimensionsAboveFloor(scores)).toBe(true);
+  });
+
+  it('returns false when a dimension is at old floor (5) but below new floor (6)', () => {
     const scores = makeScores({
       brand_voice: { score: 5, confidence: 7 },
     });
-    expect(allDimensionsAboveFloor(scores)).toBe(true);
+    expect(allDimensionsAboveFloor(scores)).toBe(false);
   });
 
   it('returns false when multiple dimensions are below the floor', () => {

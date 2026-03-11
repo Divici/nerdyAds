@@ -1,0 +1,71 @@
+{
+  "ad": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "briefId": "brief-sat-parents-conversion-001",
+    "primaryText": "Your child isn't struggling with the material — they're struggling with the test.\n\nThe digital SAT rewards strategy, not just knowledge. That's why high-achieving students often score below their potential.\n\n✓ Diagnostic pinpoints exact timing gaps\n✓ Digital interface training\n✓ 1-on-1 strategy coaching\n\nReady to see scores that match their ability?",
+    "headline": "3.8 GPA But 1180 SAT? Here's Why",
+    "description": "Strategy-based SAT improvement with expert tutors.",
+    "ctaButton": "Learn More",
+    "version": 1,
+    "metadata": {
+      "model": "gemini-2.0-flash",
+      "seed": 42,
+      "promptHash": "abc123def456",
+      "tokensIn": 350,
+      "tokensOut": 180,
+      "costUsd": 0.00042,
+      "generatedAt": "2026-03-10T14:30:00.000Z"
+    }
+  },
+  "evaluations": [
+    {
+      "adId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "scores": [
+        {
+          "dimension": "clarity",
+          "score": 9,
+          "rationale": "Message is immediately clear: the SAT is a strategy test, not a knowledge test. The checkmark list makes benefits scannable in under 3 seconds.",
+          "confidence": 9
+        },
+        {
+          "dimension": "value_proposition",
+          "score": 8,
+          "rationale": "Specific value: diagnostic, digital interface training, 1-on-1 coaching. The 'strategy vs knowledge' framing differentiates from generic tutoring.",
+          "confidence": 8
+        },
+        {
+          "dimension": "emotional_resonance",
+          "score": 8,
+          "rationale": "The '3.8 GPA but 1180 SAT' speaks directly to parental frustration. The 'struggling with the test' reframing validates the student's intelligence.",
+          "confidence": 8
+        },
+        {
+          "dimension": "cta",
+          "score": 6,
+          "rationale": "The question CTA 'Ready to see scores that match their ability?' is engaging but lacks urgency. No deadline, no scarcity, no specific next step beyond 'Learn More'.",
+          "confidence": 7
+        },
+        {
+          "dimension": "brand_voice",
+          "score": 9,
+          "rationale": "Supportive and expert tone throughout. 'Isn't struggling with the material' validates the student. No pushy language. Matches Varsity Tutors brand perfectly.",
+          "confidence": 9
+        }
+      ],
+      "weightedScore": 8.15,
+      "overallConfidence": "high",
+      "metadata": {
+        "model": "gemini-2.5-pro-preview-05-06",
+        "seed": 42,
+        "promptHash": "eval789xyz",
+        "tokensIn": 1200,
+        "tokensOut": 600,
+        "costUsd": 0.0045,
+        "generatedAt": "2026-03-10T14:30:05.000Z"
+      }
+    }
+  ],
+  "accepted": true,
+  "cyclesUsed": 1,
+  "_comment": "This ad was initially scored 6.8 (below 7.5 threshold due to weak CTA), then improved by the editor to raise the CTA dimension. The evaluation above is the post-improvement score."
+}
