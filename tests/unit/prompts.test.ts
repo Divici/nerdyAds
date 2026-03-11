@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   EVALUATOR_SYSTEM_PROMPT,
+  WRITER_SYSTEM_PROMPT,
   buildWriterFewShotSection,
   buildWriterUserPrompt,
   type FewShotExample,
@@ -44,6 +45,25 @@ describe('EVALUATOR_SYSTEM_PROMPT', () => {
     const clarityGuidanceMatch = EVALUATOR_SYSTEM_PROMPT.match(/### Clarity[\s\S]*?(?=###|$)/);
     expect(clarityGuidanceMatch).not.toBeNull();
     expect(clarityGuidanceMatch![0].toLowerCase()).toMatch(/cohesion|logical flow|sentence/);
+  });
+
+  it('penalizes markdown formatting in ad copy', () => {
+    const lower = EVALUATOR_SYSTEM_PROMPT.toLowerCase();
+    expect(lower).toMatch(/markdown|asterisk|\\\*/);
+  });
+});
+
+describe('WRITER_SYSTEM_PROMPT', () => {
+  it('bans markdown formatting in ad copy', () => {
+    const lower = WRITER_SYSTEM_PROMPT.toLowerCase();
+    expect(lower).toMatch(/no markdown|no asterisks|no \*|no formatting/);
+  });
+
+  it('includes word count or conciseness guidance for primary text', () => {
+    const lower = WRITER_SYSTEM_PROMPT.toLowerCase();
+    expect(lower).toMatch(/concise|word|short|tight|brief/);
+    // Should have specific length guidance in the Ad Format section
+    expect(WRITER_SYSTEM_PROMPT).toMatch(/\d+\s*[-–]\s*\d+\s*words/i);
   });
 });
 

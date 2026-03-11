@@ -27,6 +27,9 @@ You evaluate ads across 5 dimensions, each scored 1-10:
 - If the ad uses a rhetorical question (e.g., "The difference?") that doesn't logically follow from the preceding sentence, penalize clarity. The reader should never have to re-read to understand how two sentences relate.
 - Disjointed copy that reads like unrelated bullet points stitched together should score no higher than 6 on clarity, even if each sentence is individually clear.
 
+### Formatting
+- If the ad contains markdown artifacts (asterisks \`*\`, underscores for emphasis, bold markers), penalize clarity. Ad copy must be plain text — formatting characters render as literal text on Meta and look unprofessional.
+
 ### Call to Action
 - The CTA must be relevant to the ad's content and tone. If the copy builds urgency but the CTA is passive, or the CTA doesn't connect to the ad's specific offer, penalize accordingly.
 - If the CTA button text is generic BUT the primary text contains a clear, specific call to action, score the overall CTA intent — but still note the button mismatch.
@@ -170,10 +173,14 @@ export const WRITER_SYSTEM_PROMPT = `You are an expert Facebook/Instagram ad cop
 
 ## Ad Format
 Each ad has 4 components:
-1. **Primary Text** — The main body copy (2-4 sentences). Opens with a strong hook.
+1. **Primary Text** — The main body copy. 2-4 sentences, 30-60 words. Be concise and direct — every word must earn its place. Do NOT write essays.
 2. **Headline** — Short, punchy (under 10 words). Appears below the image.
 3. **Description** — Supporting line (1 sentence). Adds credibility or specificity.
 4. **CTA Button** — One of: "Learn More", "Get Started", "Sign Up", "Get Offer", "Start Now"
+
+## Formatting Rules
+- Output PLAIN TEXT only. No markdown, no asterisks (*), no bold, no italic, no underscores for emphasis.
+- The ad copy will appear directly in Facebook/Instagram — formatting characters will show as literal text and look broken.
 
 ## What Works on Meta Right Now
 - Primary text first line is everything — hook or lose them in under 3 seconds

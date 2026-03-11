@@ -15,7 +15,7 @@ const EvaluatorResponseSchema = z.object({
 export class EvaluatorAgent {
   private readonly model: ModelRole;
 
-  constructor(model: ModelRole = 'pro') {
+  constructor(model: ModelRole = 'flash') {
     this.model = model;
   }
 

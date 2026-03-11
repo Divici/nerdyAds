@@ -25,7 +25,7 @@ export interface OrchestratorOptions {
   runId?: string;
   /** Override base quality threshold (default: 7.5 from config). */
   threshold?: number;
-  /** Model for the evaluator agent (default: 'pro'). */
+  /** Model for the evaluator agent (default: 'flash'). */
   evalModel?: ModelRole;
   /** Calibration anchors for the evaluator (strong/weak/borderline examples). */
   calibrationAnchors?: CalibrationAnchor[];
@@ -45,7 +45,7 @@ export async function processBrief(
     metadata: {
       runId: options.runId,
       briefId: brief.id,
-      evalModel: options.evalModel ?? 'pro',
+      evalModel: options.evalModel ?? 'flash',
     },
     tags: ['pipeline', `brief:${brief.id}`],
   });
@@ -105,7 +105,7 @@ export async function processAllBriefs(
       metadata: {
         runId,
         briefId: brief.id,
-        evalModel: options.evalModel ?? 'pro',
+        evalModel: options.evalModel ?? 'flash',
         phase: 'pipeline',
       },
       tags: ['pipeline', `brief:${brief.id}`, `run:${runId}`],

@@ -93,14 +93,23 @@ describe('EvaluatorAgent', () => {
     expect(['high', 'medium', 'low']).toContain(evaluation.overallConfidence);
   });
 
-  it('calls Gemini with pro role and JSON mode', async () => {
+  it('defaults to flash model for speed', async () => {
     mockCallGemini.mockResolvedValueOnce(makeMockGeminiResponse(GOOD_SCORES));
 
     await evaluator.evaluate(MOCK_AD);
 
     expect(mockCallGemini).toHaveBeenCalledOnce();
-    const [role, , , options] = mockCallGemini.mock.calls[0];
-    expect(role).toBe('pro');
+    const [role] = mockCallGemini.mock.calls[0];
+    expect(role).toBe('flash');
+  });
+
+  it('calls Gemini with JSON mode', async () => {
+    mockCallGemini.mockResolvedValueOnce(makeMockGeminiResponse(GOOD_SCORES));
+
+    await evaluator.evaluate(MOCK_AD);
+
+    expect(mockCallGemini).toHaveBeenCalledOnce();
+    const [, , , options] = mockCallGemini.mock.calls[0];
     expect(options?.jsonMode).toBe(true);
   });
 
