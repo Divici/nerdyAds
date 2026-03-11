@@ -5,6 +5,7 @@ import type { Ad } from '../types/ad.js';
 import type { Brief } from '../types/brief.js';
 import type { CompetitorPattern } from '../types/patterns.js';
 import { logger } from '../utils/logger.js';
+import { DEFAULT_SEED } from '../config/models.js';
 import { randomUUID } from 'crypto';
 
 const WriterAdSchema = z.object({
@@ -22,8 +23,8 @@ export class WriterAgent {
   /**
    * Generate a single ad from a brief using Gemini Flash.
    */
-  async generateAd(brief: Brief, patterns?: CompetitorPattern, fewShotExamples?: FewShotExample[]): Promise<Ad> {
-    const ads = await this.generateRaw(brief, 1, patterns, fewShotExamples);
+  async generateAd(brief: Brief, patterns?: CompetitorPattern, fewShotExamples?: FewShotExample[], round?: number): Promise<Ad> {
+    const ads = await this.generateRaw(brief, 1, patterns, fewShotExamples, round);
     return this.toAd(ads[0], brief, ads[0]._metadata);
   }
 
@@ -31,8 +32,8 @@ export class WriterAgent {
    * Generate a batch of ads from a brief.
    * Throws if the model returns fewer ads than requested.
    */
-  async generateBatch(brief: Brief, count: number, patterns?: CompetitorPattern, fewShotExamples?: FewShotExample[]): Promise<Ad[]> {
-    const ads = await this.generateRaw(brief, count, patterns, fewShotExamples);
+  async generateBatch(brief: Brief, count: number, patterns?: CompetitorPattern, fewShotExamples?: FewShotExample[], round?: number): Promise<Ad[]> {
+    const ads = await this.generateRaw(brief, count, patterns, fewShotExamples, round);
 
     if (ads.length < count) {
       throw new Error(
@@ -50,13 +51,15 @@ export class WriterAgent {
     count: number,
     patterns?: CompetitorPattern,
     fewShotExamples?: FewShotExample[],
+    round?: number,
   ): Promise<Array<z.infer<typeof WriterAdSchema> & { _metadata: { model: string; seed: number; promptHash: string; tokensIn: number; tokensOut: number; costUsd: number; generatedAt: string } }>> {
     const userPrompt = buildWriterUserPrompt(brief, count, patterns, fewShotExamples);
 
-    logger.debug('Generating ads', { briefId: brief.id, count });
+    logger.debug('Generating ads', { briefId: brief.id, count, round });
 
     const result = await callGemini('flash', WRITER_SYSTEM_PROMPT, userPrompt, {
       jsonMode: true,
+      ...(round != null ? { seed: DEFAULT_SEED + round } : {}),
     });
 
     const parsed = this.parseResponse(result.text);

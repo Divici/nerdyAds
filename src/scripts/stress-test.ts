@@ -201,7 +201,7 @@ async function main() {
     }
 
     const batchResult = await runBatch(brief, adsPerBrief, {
-      generateBatch: (b, count, p) => writer.generateBatch(b, count, p),
+      generateBatch: (b, count, p, round) => writer.generateBatch(b, count, p, undefined, round),
       evaluate: (ad, b) => strictEvaluator.evaluate(ad, b),
       improve: (ad, evaluation, b) => editor.improve(ad, evaluation, b),
       checkThreshold: (score, dimensionScores) => {

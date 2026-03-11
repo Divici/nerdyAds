@@ -188,8 +188,8 @@ export function createApp() {
 
       const batchResult = await withTrace(briefTrace, () =>
         runContinuousBatch(brief, {
-          generateBatch: (b, count, patterns) =>
-            writer.generateBatch(b, count, patterns, fewShotExamples),
+          generateBatch: (b, count, patterns, round) =>
+            writer.generateBatch(b, count, patterns, fewShotExamples, round),
           evaluate: (ad, b) => evaluator.evaluate(ad, b, calibrationAnchors),
           improve: (ad, evaluation, b) => editor.improve(ad, evaluation, b),
           checkThreshold: (score, dimensionScores) => {

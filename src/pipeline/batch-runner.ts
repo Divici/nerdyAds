@@ -7,7 +7,7 @@ import { iterateAd, type IterationDeps } from './iteration-loop.js';
 import { logger } from '../utils/logger.js';
 
 export interface BatchRunnerDeps {
-  generateBatch: (brief: Brief, count: number, patterns?: CompetitorPattern) => Promise<Ad[]>;
+  generateBatch: (brief: Brief, count: number, patterns?: CompetitorPattern, round?: number) => Promise<Ad[]>;
   evaluate: (ad: Ad, brief?: Brief) => Promise<Evaluation>;
   improve: (ad: Ad, evaluation: Evaluation, brief?: Brief) => Promise<Ad>;
   checkThreshold: (score: number, dimensionScores?: DimensionScore[]) => boolean;
@@ -79,7 +79,7 @@ export interface PipelineEvent {
 export type PipelineEventCallback = (event: PipelineEvent) => void;
 
 export interface ContinuousBatchDeps {
-  generateBatch: (brief: Brief, count: number, patterns?: CompetitorPattern) => Promise<Ad[]>;
+  generateBatch: (brief: Brief, count: number, patterns?: CompetitorPattern, round?: number) => Promise<Ad[]>;
   evaluate: (ad: Ad, brief?: Brief) => Promise<Evaluation>;
   improve: (ad: Ad, evaluation: Evaluation, brief?: Brief) => Promise<Ad>;
   checkThreshold: (score: number, dimensionScores?: DimensionScore[]) => boolean;
@@ -134,7 +134,7 @@ export async function runContinuousBatch(
     round++;
     emit({ type: 'round:start', briefId: brief.id, round });
 
-    const batch = await deps.generateBatch(brief, deps.batchSize, deps.patterns);
+    const batch = await deps.generateBatch(brief, deps.batchSize, deps.patterns, round);
     totalGenerated += batch.length;
 
     // Emit generating events for each ad

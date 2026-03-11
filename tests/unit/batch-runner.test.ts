@@ -185,4 +185,23 @@ describe('runContinuousBatch', () => {
     expect(result.roundsUsed).toBe(1);
     expect(result.briefId).toBe('brief-001');
   });
+
+  it('passes incrementing round number to generateBatch each round', async () => {
+    const generateBatch = vi.fn(async (_brief: Brief, count: number, _patterns?: unknown, _round?: number) =>
+      Array.from({ length: count }, () => makeAd()),
+    );
+    const deps = makeDeps({
+      generateBatch,
+      batchSize: 3,
+      targetAccepted: 6,
+    });
+
+    await runContinuousBatch(BRIEF, deps);
+
+    // Should have been called twice (2 rounds × 3 ads = 6 accepted)
+    expect(generateBatch).toHaveBeenCalledTimes(2);
+    // Round 1 should pass round=1, round 2 should pass round=2
+    expect(generateBatch.mock.calls[0][3]).toBe(1);
+    expect(generateBatch.mock.calls[1][3]).toBe(2);
+  });
 });

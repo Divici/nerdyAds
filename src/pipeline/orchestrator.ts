@@ -57,8 +57,8 @@ export async function processBrief(
 
   const result = await withTrace(trace, () =>
     runContinuousBatch(brief, {
-      generateBatch: (b, count, patterns) =>
-        writer.generateBatch(b, count, patterns, options.fewShotExamples),
+      generateBatch: (b, count, patterns, round) =>
+        writer.generateBatch(b, count, patterns, options.fewShotExamples, round),
       evaluate: (ad, b) => evaluator.evaluate(ad, b, options.calibrationAnchors),
       improve: (ad, evaluation, b) => editor.improve(ad, evaluation, b),
       checkThreshold: (score, dimensionScores) => {
@@ -113,8 +113,8 @@ export async function processAllBriefs(
 
     const batchResult = await withTrace(briefTrace, () =>
       runContinuousBatch(brief, {
-        generateBatch: (b, count, patterns) =>
-          writer.generateBatch(b, count, patterns, options.fewShotExamples),
+        generateBatch: (b, count, patterns, round) =>
+          writer.generateBatch(b, count, patterns, options.fewShotExamples, round),
         evaluate: (ad, b) => evaluator.evaluate(ad, b, options.calibrationAnchors),
         improve: (ad, evaluation, b) => editor.improve(ad, evaluation, b),
         checkThreshold: (score, dimensionScores) => {
