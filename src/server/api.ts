@@ -51,7 +51,14 @@ export function createApp() {
   // ── GET /api/runs ────────────────────────────────────────────
   app.get('/api/runs', async (_req, res) => {
     try {
-      const dirs = await readdir(OUTPUT_DIR);
+      let dirs: string[];
+      try {
+        dirs = await readdir(OUTPUT_DIR);
+      } catch {
+        // Output directory doesn't exist yet — no runs
+        res.json([]);
+        return;
+      }
       const runs = [];
       for (const dir of dirs) {
         try {
