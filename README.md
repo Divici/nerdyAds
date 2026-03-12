@@ -7,6 +7,8 @@ An autonomous ad generation engine for Varsity Tutors (Nerdy) that creates Faceb
 - [Project Brief](NerdyProjectBrief.md) — full requirements, evaluation criteria, and starter kit
 - [Pre-Research](PRESEARCH.md) — competitive analysis and approach planning done before building
 - [Decision Log](docs/decision-log.md) — 34 decisions with full rationale, alternatives considered, and tradeoffs
+- [Technical Writeup](docs/technical-writeup.md) — 1-2 page architecture and results summary
+- [Limitations](docs/limitations.md) — honest documentation of weaknesses and failure modes
 
 ## Quick Start
 
