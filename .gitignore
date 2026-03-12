@@ -3,6 +3,9 @@ dist/
 .env
 .env.local
 STUDY_GUIDE.md
+DEMO_SCRIPT.md
+docs/implementation-plan.md
+docs/pipeline-restructure-plan.md
 *.log
 data/output/
 .langfuse/
