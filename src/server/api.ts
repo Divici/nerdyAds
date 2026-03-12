@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { readdir, readFile } from 'fs/promises';
+import { existsSync } from 'fs';
 import { join } from 'path';
 import type { PipelineEventCallback } from '../pipeline/batch-runner.js';
 import type { Brief } from '../types/brief.js';
@@ -297,6 +298,16 @@ export function createApp() {
 
     // Clean up streams after a delay
     setTimeout(() => activeStreams.delete(runId), 5000);
+  }
+
+  // ── Production: serve built frontend from ui/dist/ ──────────
+  const uiDistPath = join(process.cwd(), 'ui', 'dist');
+  if (process.env.NODE_ENV === 'production' && existsSync(uiDistPath)) {
+    app.use(express.static(uiDistPath));
+    // SPA catch-all: serve index.html for any non-API route
+    app.get('*', (_req, res) => {
+      res.sendFile(join(uiDistPath, 'index.html'));
+    });
   }
 
   return app;

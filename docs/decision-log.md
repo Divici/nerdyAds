@@ -944,3 +944,35 @@ Flash doesn't just shift scores up — it's less discriminating. Raising the thr
 - Pro: Clean implementation — only 2 config values change between modes
 - Con: Users might not understand which mode to pick (mitigated by tooltip)
 - Con: Quick mode output may look artificially good (high acceptance, high scores) if users don't realize the evaluator is lenient
+
+---
+
+### D-034: Railway Deployment — Express Serves Frontend in Production
+
+**Date:** 2026-03-12
+**Phase:** 12 (Railway Deployment)
+
+**Context:** Need a shareable URL for hiring partner demo. The app currently runs as two processes: Vite dev server (port 5173) proxying API calls to Express (port 3001). This works locally but isn't deployable as-is.
+
+**Decision:** Deploy as a single Express server on Railway that serves both the API and the built frontend static files.
+
+**Implementation:**
+1. In production (`NODE_ENV=production`), Express serves `ui/dist/` via `express.static()` with an SPA catch-all fallback to `index.html`
+2. In development, the Vite proxy still handles frontend (no change to dev workflow)
+3. Server reads `PORT` env var (Railway convention) with fallback to `API_PORT` / 3001
+4. Root `package.json` gets `build:prod` (compiles TS + builds UI) and `start:prod` (runs the server)
+5. `railway.json` defines build and start commands for Railway's buildpack
+
+**Alternatives considered:**
+- **Separate frontend deploy (Vercel/Netlify) + backend (Railway):** Two deploys, CORS config, environment variable coordination. More complex for no benefit on a demo app.
+- **Docker container:** More control but unnecessary — Railway's Node.js buildpack handles everything.
+- **Static export with baked-in JSON:** Loses live generation (SSE streaming), which is the most compelling demo feature.
+
+**Tradeoffs:**
+- Pro: Single deploy, single URL, zero CORS issues
+- Pro: Railway auto-detects Node.js, sets PORT, handles HTTPS
+- Pro: Live generation (SSE) works unchanged — same Express server
+- Pro: ~15 minutes of code changes, no architectural changes
+- Con: Frontend build must happen at deploy time (adds ~30s to build)
+- Con: Railway free tier has usage limits (may sleep after inactivity)
+- Con: `data/output/` must be committed to git for historical runs to show up (pipeline results are file-based, not in a database)

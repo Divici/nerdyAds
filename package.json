@@ -19,7 +19,9 @@
     "stress-test": "tsx src/scripts/stress-test.ts",
     "ui": "cd ui && npm run dev",
     "ui:server": "tsx src/server/index.ts",
-    "ui:dev": "npx concurrently \"npm run ui:server\" \"npm run ui\""
+    "ui:dev": "npx concurrently \"npm run ui:server\" \"npm run ui\"",
+    "build:prod": "cd ui && npm install && npx vite build",
+    "start:prod": "NODE_ENV=production tsx src/server/index.ts"
   },
   "keywords": [],
   "license": "UNLICENSED",
