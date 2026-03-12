@@ -154,3 +154,46 @@ LANGFUSE_SECRET_KEY=sk-...
 LANGFUSE_PUBLIC_KEY=pk-...
 LANGFUSE_BASE_URL=https://us.cloud.langfuse.com
 ```
+
+## Key Files
+
+**Prompts (what the LLMs actually see):**
+- [src/config/prompts.ts](src/config/prompts.ts) — all system prompts and user prompt builders for every agent (writer, evaluator, editor, researcher), including the full 5-dimension rubric, cliche blacklist, few-shot section builder, and JSON output schemas
+
+**Agents:**
+- [src/agents/writer.ts](src/agents/writer.ts) — generates ad copy batches via Gemini Flash
+- [src/agents/evaluator.ts](src/agents/evaluator.ts) — scores ads across 5 dimensions via Gemini Pro
+- [src/agents/editor.ts](src/agents/editor.ts) — targeted rewrites of weak dimensions
+- [src/agents/researcher.ts](src/agents/researcher.ts) — extracts patterns from competitor ads with hash-based caching
+
+**Pipeline:**
+- [src/pipeline/batch-runner.ts](src/pipeline/batch-runner.ts) — `runContinuousBatch()` — the core generation loop (generate 3 → evaluate → fix/discard → repeat)
+- [src/pipeline/iteration-loop.ts](src/pipeline/iteration-loop.ts) — single-ad evaluate → edit cycle (max 3 rounds)
+- [src/pipeline/orchestrator.ts](src/pipeline/orchestrator.ts) — wires agents + ratchet + metrics for full pipeline runs
+
+**Evaluation logic:**
+- [src/evaluate/scoring.ts](src/evaluate/scoring.ts) — weighted score computation, confidence, weakest dimension identification
+- [src/evaluate/threshold.ts](src/evaluate/threshold.ts) — `QualityRatchet` class (threshold rises as quality improves)
+- [src/evaluate/failure-taxonomy.ts](src/evaluate/failure-taxonomy.ts) — labels why an ad failed with actionable suggestions
+
+**Config:**
+- [src/config/weights.ts](src/config/weights.ts) — dimension weights (clarity 25, value_prop 25, emotional 20, cta 15, brand_voice 15)
+- [src/config/thresholds.ts](src/config/thresholds.ts) — quality threshold, max cycles, ratchet buffer, batch size, round cap
+- [src/config/models.ts](src/config/models.ts) — model IDs, temperatures, token limits, per-token pricing
+
+**Types:**
+- [src/types/](src/types/) — Zod schemas for ad, brief, evaluation, pipeline result, and competitor patterns
+
+**Data:**
+- [data/reference/competitor_ads.json](data/reference/competitor_ads.json) — 65 real ads from Meta Ad Library (41 VT + competitors)
+- [data/reference/reference-set.json](data/reference/reference-set.json) — 16-ad tiered calibration set with tier rationales
+- [data/briefs.json](data/briefs.json) — 10 campaign briefs (audience x goal x angle matrix)
+
+**UI:**
+- [ui/src/App.tsx](ui/src/App.tsx) — main app with SSE event handling and tab routing
+- [ui/src/components/AdCard.tsx](ui/src/components/AdCard.tsx) — Meta ad format card with score badge
+- [ui/src/components/InsightsTab.tsx](ui/src/components/InsightsTab.tsx) — charts and cost metrics
+- [ui/src/hooks/useSSE.ts](ui/src/hooks/useSSE.ts) — EventSource hook for real-time pipeline events
+
+**Server:**
+- [src/server/api.ts](src/server/api.ts) — Express API (5 endpoints + SSE streaming)
