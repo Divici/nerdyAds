@@ -23,6 +23,9 @@
     "build:prod": "cd ui && npm install && npx vite build",
     "start:prod": "NODE_ENV=production tsx src/server/index.ts"
   },
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "keywords": [],
   "license": "UNLICENSED",
   "devDependencies": {
