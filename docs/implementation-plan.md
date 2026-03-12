@@ -1,7 +1,7 @@
 # nerdyAds Implementation Plan
 
 ## Overview
-2-day build (two 18-hour days). 12 phases. TypeScript full-stack.
+2-day build (two 18-hour days). 13 phases. TypeScript full-stack.
 
 ---
 
@@ -206,7 +206,40 @@ Run via: `npm run eval` (separate from `npm test`)
 - `docs/technical-writeup.md` — 1-2 page summary
 - Update `docs/decision-log.md` — failed approaches, post-run observations
 
-### Phase 12: Polish + Demo Prep (3h)
+### Phase 12: Railway Deployment (1h)
+**Why:** Need a shareable URL for hiring partner demo. Railway is the simplest path — Node.js buildpack, zero Docker config, free tier available.
+
+**Step 1: Serve frontend from Express**
+- `src/server/api.ts` — add `express.static()` middleware to serve `ui/dist/` in production
+- Fallback: serve `index.html` for client-side routing (SPA catch-all)
+- Only activate when `NODE_ENV=production` (dev still uses Vite proxy)
+
+**Step 2: Unified build script**
+- Add `build:prod` script to root `package.json`: `tsc && cd ui && npm run build`
+- Add `start:prod` script: `node dist/server/index.js` (or `tsx src/server/index.ts`)
+- Ensure `data/output/` pipeline results are included (committed or copied at build time)
+
+**Step 3: Railway config**
+- Add `railway.json` with build + start commands
+- Set env vars in Railway dashboard: `GEMINI_API_KEY`, `NODE_ENV=production`, `PORT` (Railway sets this automatically)
+- Update server to use `process.env.PORT` (Railway convention) with fallback to `API_PORT` / 3001
+
+**Step 4: Deploy + verify**
+- `railway up` or connect GitHub repo for auto-deploy
+- Verify: UI loads at Railway URL, API endpoints return data, SSE generation works
+- Share URL with hiring partners
+
+**Files to touch:**
+- `src/server/api.ts` — static file serving + SPA fallback
+- `src/server/index.ts` — use `PORT` env var
+- `package.json` — `build:prod` and `start:prod` scripts
+- `railway.json` — build/start config
+
+**Done when:** App is live at a Railway URL, UI renders pipeline results, live generation works.
+
+---
+
+### Phase 13: Polish + Demo Prep (3h)
 - Final generation pass if needed
 - UI polish
 - Demo video or walkthrough prep
@@ -228,7 +261,7 @@ Run via: `npm run eval` (separate from `npm test`)
 
 ## Critical Path
 ```
-Phase 1 → Phase 2 → Phase 3 → Phase 4 (evaluator) → Phase 5 (agents) → Phase 6 (pipeline) → Phase 7 (calibration) → Phase 8 (full run) → Phase 8.5 (reference calibration) → Phase 8.7 (Langfuse) → Phase 9 (evals) → Phase 10 (UI)
+Phase 1 → Phase 2 → Phase 3 → Phase 4 (evaluator) → Phase 5 (agents) → Phase 6 (pipeline) → Phase 7 (calibration) → Phase 8 (full run) → Phase 8.5 (reference calibration) → Phase 8.7 (Langfuse) → Phase 9 (evals) → Phase 10 (UI) → Phase 12 (Railway deploy)
 ```
 
 ## Cut List (if behind)
@@ -251,7 +284,9 @@ Phase 1 (scaffold)
                           │                 └── Phase 8.7 (Langfuse observability)
                           │                       ├── Phase 9 (evals)
                           │                       └── Phase 10 (UI)
+                          │                             └── Phase 12 (Railway deploy)
 
 Phase 11 (docs) — parallel after Phase 8
-Phase 12 (polish) — final
+Phase 12 (Railway deploy) — after Phase 10
+Phase 13 (polish) — final
 ```
