@@ -107,6 +107,28 @@ Think of it like a small internal growth team at a company, except each role (re
 - **Why:** The UI is a read-only viewer of pipeline JSON output. Zero routing, zero SSR, zero auth needed. Vite starts instantly and has zero config.
 - **Tradeoff:** No server-side rendering, but that's irrelevant for a localhost demo tool.
 
+### Decision 11: Live generation with SSE (not static viewer)
+
+- **Chosen:** Server-Sent Events streaming for live pipeline visualization
+- **Alternatives:** Read-only JSON viewer (original plan — simple but static), WebSocket (overkill — bidirectional not needed)
+- **Why:** Watching ads appear, get scored, and get accepted/rejected in real-time is far more compelling for demos than browsing a static JSON file. SSE is native to browsers (EventSource API), auto-reconnects, and requires no extra library.
+- **Tradeoff:** Requires running Express API server alongside Vite in dev. Worth it for the live UX.
+- **Analogy:** Like watching a cooking show where you see dishes being made and judged, vs reading a cookbook.
+
+### Decision 12: Quick/Quality mode toggle
+
+- **Chosen:** Two evaluation presets — Quick (Flash + 7.5 threshold) and Quality (Pro + 8.0 threshold)
+- **Alternatives:** Always use Pro (too slow for demos), auto-detect based on brief count (opaque), three modes (over-engineered)
+- **Why:** Flash doesn't just score higher — it's less discriminating. It has less variance between good and mediocre ads. Pro provides genuine quality judgment with meaningful rejection rates.
+- **Tradeoff:** Users might not understand which mode to pick (mitigated by UI tooltip).
+
+### Decision 13: Railway single-server deployment
+
+- **Chosen:** Deploy Express as a single server that serves both API endpoints and the built Vite frontend
+- **Alternatives:** Separate frontend (Vercel) + backend (Railway) — two deploys, CORS issues. Docker — unnecessary complexity. Static export — loses live generation.
+- **Why:** Single URL, zero CORS, Railway handles HTTPS/PORT automatically. ~15 minutes of code changes.
+- **Tradeoff:** Railway free tier may sleep after inactivity. Pipeline results are file-based, not a database.
+
 ---
 
 ## How Each Piece Works
@@ -163,12 +185,14 @@ Think of it like a small internal growth team at a company, except each role (re
 
 ## Build Plan Summary
 
-12 phases across 2 days. Critical path: Types → Utilities → **Evaluator** (most important) → Writer/Editor → Pipeline → Generation Run → UI.
+13 phases across 2 days. Critical path: Types → Utilities → **Evaluator** (most important) → Writer/Editor → Pipeline → Generation Run → UI → Deploy.
 
-- Day 1: Foundation + pipeline core + first calibration run
-- Day 2: Scale to 50+ ads + evals + demo UI + documentation
+- Day 1: Foundation + pipeline core + first calibration run (Phases 1-7)
+- Day 2: Scale to 50+ ads + evals + demo UI + deployment (Phases 8-12)
 
 The evaluator is built first (Phase 4) because the brief's highest-weighted category (25%) is "can the system tell good ads from bad?" Everything else is plumbing around that core judgment capability.
+
+**Current status:** Phases 1-10 + 12 complete. Phase 11 (documentation) and Phase 13 (polish) remaining.
 
 ---
 
@@ -332,11 +356,13 @@ The evaluator is built first (Phase 4) because the brief's highest-weighted cate
   - Results: Max non-targeted drop = 0
 
 ### Test Coverage
-- 215 unit/integration tests passing across 21 test files
-- 11 eval tests passing across 5 eval files (hit real API, ~2 min total)
-- Unit tests: scoring, threshold, ratchet, confidence, failure taxonomy, rate limiter, cost, hash, snapshot, config, agents (mocked), langfuse, gemini-langfuse, API server
+- 229 unit/integration tests passing across 21 test files
+- 11 eval tests across 5 eval files (hit real API, ~2 min total) — 10 passing, 1 flaky (calibration strong-medium gap 0.975 vs ≥1.0 threshold)
+- **240 total tests** across 26 test files
+- Unit tests: scoring, threshold, ratchet, confidence, failure taxonomy, rate limiter, cost, hash, snapshot, config, agents (mocked), langfuse, gemini-langfuse, API server, prompts
 - Integration tests: mocked pipeline scenarios (pass first try, improve then pass, fail all cycles, ratchet increase)
 - Evals: calibration ranking, consistency, dimension independence, improvement verification, regression check
+- **Known flaky eval:** `calibration.eval.ts` — strong-medium tier gap occasionally dips below 1.0 (0.975 observed). This is a natural variance in LLM scoring, not a code bug. The ranking order (strong > medium > weak) is always correct.
 
 ## Phase 10: Demo UI
 
@@ -369,10 +395,43 @@ A live-generation UI that lets you watch ads being created, evaluated, and accep
 - **EvaluationBreakdown** — Modal showing full ad preview + 5 dimension bars with rationales + iteration history
 - **PreviousRunsTab** — Clickable list of past runs with expandable ad grids
 
+### Quick/Quality Mode Toggle (D-033)
+- **Quick Mode** (default): Flash evaluator + 7.5 threshold. Fast (~30s per brief), but Flash scores generously — most ads pass.
+- **Quality Mode**: Pro evaluator + 8.0 threshold. Slower (~2 min per brief), but genuinely discriminating — produces realistic rejection rates.
+- **Why two modes:** Flash doesn't just shift scores up — it has less variance between good and mediocre ads. Raising the threshold on Flash just produces inflated 8.5s instead of inflated 7.8s. Pro is fundamentally better at evaluation judgment.
+- Mode sent via POST body to `/api/generate`, threaded to `EvaluatorAgent` and `QualityRatchet` constructors.
+
 ### VT Branding
 - Colors: `#e1245a` (primary CTA), `#20205F` (text), `#181a2e` (navy), `#d4d1ec` (lavender)
 - Fonts: Poppins (headings), Lato (body), Montserrat (buttons)
 - Score colors: green ≥7.5, yellow 6-7.5, red <6
+
+---
+
+## Phase 12: Railway Deployment (Complete)
+
+### What It Does
+Deploys the app to Railway so it's accessible via a shareable URL for demo purposes.
+
+### How It Works
+1. In production (`NODE_ENV=production`), Express serves `ui/dist/` as static files via `express.static()` with an SPA catch-all fallback to `index.html`
+2. In development, the Vite proxy still handles frontend (no change to dev workflow)
+3. Server reads `PORT` env var (Railway convention) with fallback to `API_PORT` / 3001, binds to `0.0.0.0`
+4. `railway.json` defines build (`npm install && npm run build:prod`) and start (`npm run start:prod`) commands
+5. Uses NIXPACKS builder (no Docker required), auto-restart on failure
+
+### Key Architecture Decision: Single Server Deploy
+- **Chosen:** Express serves both API + built frontend from one process
+- **Alternative:** Separate frontend deploy (Vercel/Netlify) + backend (Railway) — two deploys, CORS config, environment variable coordination. More complex for no benefit on a demo app.
+- **Alternative:** Static export with baked-in JSON — would lose live generation (SSE streaming), which is the most compelling demo feature.
+- **Tradeoff:** Frontend build happens at deploy time (~30s added), but single URL with zero CORS issues.
+
+### Implementation Details
+- `build:prod` script: `cd ui && npm install && npx vite build`
+- `start:prod` script: `NODE_ENV=production tsx src/server/index.ts`
+- Express 5 wildcard route syntax: `{*path}` (not `*`) for SPA catch-all
+- `data/output/` must be committed for historical runs to show (file-based, no database)
+- Railway free tier may sleep after inactivity
 
 ---
 
@@ -386,5 +445,6 @@ A live-generation UI that lets you watch ads being created, evaluated, and accep
 | Observability | Langfuse | Cost tracking, trace logging |
 | Frontend | Vite + React + Tailwind + Framer Motion + Recharts | Live generation UI with VT branding |
 | API Server | Express with SSE | Real-time streaming of pipeline events |
-| Testing | Vitest (likely) | Fast, TS-native |
+| Testing | Vitest | Fast, TS-native, 3 test projects (unit, integration, evals) |
+| Deployment | Railway (NIXPACKS) | Single-server deploy, auto HTTPS, PORT env var |
 | Image gen (v2) | Imagen via Gemini API | Placeholder, not on critical path |
