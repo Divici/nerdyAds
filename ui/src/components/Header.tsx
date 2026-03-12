@@ -3,26 +3,14 @@ interface HeaderProps {
   onTabChange: (tab: 'campaign' | 'insights' | 'runs') => void;
 }
 
-/** VT-style swirl logo */
+/** VT swirl logo — loaded from static asset */
 function VTLogo({ className = '' }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="16" cy="16" r="16" fill="#20205F" />
-      <path
-        d="M10 12c0-2.5 2-4.5 4.5-4.5 3.5 0 5.5 2.5 5.5 5.5 0 4-3 7.5-7 11-1.5-1.3-2.8-2.6-3.8-4"
-        stroke="white"
-        strokeWidth="2.2"
-        strokeLinecap="round"
-        fill="none"
-      />
-      <path
-        d="M22 20c0 2.5-2 4.5-4.5 4.5-3.5 0-5.5-2.5-5.5-5.5 0-4 3-7.5 7-11 1.5 1.3 2.8 2.6 3.8 4"
-        stroke="white"
-        strokeWidth="2.2"
-        strokeLinecap="round"
-        fill="none"
-      />
-    </svg>
+    <img
+      src="/vt-logo.svg"
+      alt="Varsity Tutors"
+      className={className}
+    />
   );
 }
 

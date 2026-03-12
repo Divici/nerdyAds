@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Varsity Tutors swirl logo -->
+  <path
+    d="M32 4C18 4 8 14.5 8 27c0 9.5 5.5 17.5 13 22.5C25.5 52.5 29 56 32 60c3-4 6.5-7.5 11-10.5C50.5 44.5 56 36.5 56 27 56 14.5 46 4 32 4Z"
+    fill="#3B3EAC"
+    opacity="0"
+  />
+  <!-- Upper spiral arm -->
+  <path
+    d="M20 24c0-6.6 5.4-12 12-12 8.8 0 14 7 14 14.5 0 10-8 19-18 27.5-3.5-3-6.8-6.2-9.5-9.8"
+    stroke="#3B3EAC"
+    stroke-width="5"
+    stroke-linecap="round"
+    fill="none"
+  />
+  <!-- Lower spiral arm -->
+  <path
+    d="M44 40c0 6.6-5.4 12-12 12-8.8 0-14-7-14-14.5 0-10 8-19 18-27.5 3.5 3 6.8 6.2 9.5 9.8"
+    stroke="#3B3EAC"
+    stroke-width="5"
+    stroke-linecap="round"
+    fill="none"
+  />
+</svg>
