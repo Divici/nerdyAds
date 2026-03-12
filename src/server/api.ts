@@ -305,7 +305,7 @@ export function createApp() {
   if (process.env.NODE_ENV === 'production' && existsSync(uiDistPath)) {
     app.use(express.static(uiDistPath));
     // SPA catch-all: serve index.html for any non-API route
-    app.get('*', (_req, res) => {
+    app.get('{*path}', (_req, res) => {
       res.sendFile(join(uiDistPath, 'index.html'));
     });
   }
