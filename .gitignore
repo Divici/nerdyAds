@@ -5,6 +5,7 @@ dist/
 STUDY_GUIDE.md
 DEMO_SCRIPT.md
 CLAUDE.md
+NerdyProjectBrief.md
 .claude/
 docs/implementation-plan.md
 docs/pipeline-restructure-plan.md
