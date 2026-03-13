@@ -129,7 +129,8 @@ export function ImageGenerator({ ad, runId, accepted }: ImageGeneratorProps) {
           <p className="text-xs text-red-600 mb-2">{error}</p>
           <button
             type="button"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               reset();
               generateImages(ad.id, runId, ad.briefId);
             }}
@@ -148,7 +149,10 @@ export function ImageGenerator({ ad, runId, accepted }: ImageGeneratorProps) {
       <div className="bg-vt-light-blue aspect-square flex items-center justify-center">
         <button
           type="button"
-          onClick={() => generateImages(ad.id, runId, ad.briefId)}
+          onClick={(e) => {
+            e.stopPropagation();
+            generateImages(ad.id, runId, ad.briefId);
+          }}
           className="bg-vt-primary text-white text-sm font-button font-medium px-5 py-2 rounded-full hover:bg-vt-primary-hover transition-colors shadow-sm"
         >
           Generate Image
@@ -175,7 +179,7 @@ export function ImageGenerator({ ad, runId, accepted }: ImageGeneratorProps) {
 
   // Show variant comparison
   return (
-    <div className="bg-gray-50 p-3 space-y-3">
+    <div className="bg-gray-50 p-3 space-y-3" onClick={(e) => e.stopPropagation()}>
       <AnimatePresence mode="wait">
         <motion.div
           key={selectedVariant}
