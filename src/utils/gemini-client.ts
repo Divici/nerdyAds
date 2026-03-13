@@ -18,7 +18,7 @@ export interface GeminiCallResult {
 
 export type ModelRole = 'flash' | 'pro';
 
-const rateLimiter = new RateLimiter({
+export const rateLimiter = new RateLimiter({
   minDelayMs: 100,
   maxConcurrent: 5,
   maxRetries: 3,
@@ -27,7 +27,7 @@ const rateLimiter = new RateLimiter({
 
 let client: GoogleGenAI | null = null;
 
-function getClient(): GoogleGenAI {
+export function getClient(): GoogleGenAI {
   if (!client) {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {

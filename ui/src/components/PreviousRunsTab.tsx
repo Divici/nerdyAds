@@ -155,6 +155,7 @@ export function PreviousRunsTab() {
                       onClick={() => setSelectedAd(adh)}
                       index={i}
                       variant="compact"
+                      runId={selectedRun.runId}
                     />
                   ))}
                 </div>
@@ -170,7 +171,7 @@ export function PreviousRunsTab() {
         onClose={() => setSelectedAd(null)}
         title="Ad Details"
       >
-        {selectedAd && <EvaluationBreakdown adWithHistory={selectedAd} />}
+        {selectedAd && <EvaluationBreakdown adWithHistory={selectedAd} runId={selectedRun?.runId} />}
       </Modal>
     </div>
   );

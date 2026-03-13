@@ -155,6 +155,7 @@ function App() {
               ads={accepted}
               onAdClick={setSelectedAd}
               onViewAll={() => setViewAllOpen(true)}
+              runId={pipelineResult?.runId ?? activeRunId ?? undefined}
             />
 
             <GenerationSection
@@ -186,7 +187,7 @@ function App() {
 
       {/* Ad detail modal */}
       <Modal open={selectedAd !== null} onClose={() => setSelectedAd(null)} title="Ad Insights">
-        {selectedAd && <EvaluationBreakdown adWithHistory={selectedAd} />}
+        {selectedAd && <EvaluationBreakdown adWithHistory={selectedAd} runId={pipelineResult?.runId ?? activeRunId ?? undefined} />}
       </Modal>
 
       {/* View All accepted modal */}
@@ -206,6 +207,7 @@ function App() {
                 setSelectedAd(adh);
               }}
               index={i}
+              runId={pipelineResult?.runId ?? activeRunId ?? undefined}
             />
           ))}
         </div>

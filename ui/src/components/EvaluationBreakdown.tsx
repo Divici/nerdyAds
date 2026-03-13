@@ -2,9 +2,11 @@ import { useState } from 'react';
 import type { AdWithHistory, Ad } from '../types.ts';
 import { DimensionBar } from './DimensionBar.tsx';
 import { ScoreBadge } from './ScoreBadge.tsx';
+import { ImageGenerator } from './ImageGenerator.tsx';
 
 interface EvaluationBreakdownProps {
   adWithHistory: AdWithHistory;
+  runId?: string;
 }
 
 function MiniAdPreview({ ad }: { ad: Ad }) {
@@ -24,7 +26,7 @@ function MiniAdPreview({ ad }: { ad: Ad }) {
   );
 }
 
-export function EvaluationBreakdown({ adWithHistory }: EvaluationBreakdownProps) {
+export function EvaluationBreakdown({ adWithHistory, runId }: EvaluationBreakdownProps) {
   const { ad, evaluations, accepted, cyclesUsed, adVersions } = adWithHistory;
   const lastEval = evaluations[evaluations.length - 1];
   const [expandedCycle, setExpandedCycle] = useState<number | null>(null);
@@ -43,8 +45,14 @@ export function EvaluationBreakdown({ adWithHistory }: EvaluationBreakdownProps)
           </div>
         </div>
         <p className="text-sm text-vt-dark mb-3">{ad.primaryText}</p>
-        <div className="bg-vt-light-blue h-24 rounded-lg flex items-center justify-center mb-3">
-          <span className="text-xs text-vt-accent/50 font-button">IMAGE — v2</span>
+        <div className="rounded-lg overflow-hidden mb-3">
+          {runId ? (
+            <ImageGenerator ad={ad} runId={runId} accepted={accepted} />
+          ) : (
+            <div className="bg-vt-light-blue h-24 flex items-center justify-center">
+              <span className="text-xs text-vt-accent/50 font-button">IMAGE — v2</span>
+            </div>
+          )}
         </div>
         <p className="font-bold text-sm text-vt-text">{ad.headline}</p>
         <p className="text-xs text-gray-500">{ad.description}</p>

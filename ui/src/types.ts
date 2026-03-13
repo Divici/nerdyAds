@@ -26,6 +26,11 @@ export interface AdMetadata {
   generatedAt: string;
 }
 
+export interface AdImageRef {
+  confirmedVariant: number;
+  imagePath: string;
+}
+
 export interface Ad {
   id: string;
   briefId: string;
@@ -35,6 +40,33 @@ export interface Ad {
   ctaButton: string;
   version: number;
   metadata: AdMetadata;
+  imageResult?: AdImageRef;
+}
+
+// Visual evaluation types (v2 — image generation)
+export type VisualDimensionName = 'brand_consistency' | 'copy_alignment' | 'engagement_potential';
+
+export interface VisualDimensionScore {
+  dimension: VisualDimensionName;
+  score: number;
+  rationale: string;
+  confidence: number;
+}
+
+export interface ImageVariant {
+  variantIndex: number;
+  imagePath: string;
+  blurb: string;
+  visualScores?: VisualDimensionScore[];
+  metadata: AdMetadata;
+}
+
+export interface AdImageResult {
+  adId: string;
+  runId: string;
+  variants: ImageVariant[];
+  confirmedVariant?: number;
+  generatedAt: string;
 }
 
 export interface Evaluation {

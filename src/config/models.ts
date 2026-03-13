@@ -16,6 +16,11 @@ export const MODELS = {
     temperature: 0.3,
     maxOutputTokens: 16384,
   },
+  flashImage: {
+    modelId: 'gemini-2.5-flash',
+    temperature: 0.9,
+    maxOutputTokens: 8192,
+  },
 } as const satisfies Record<string, ModelConfig>;
 
 /**
@@ -30,6 +35,10 @@ export const TOKEN_PRICING = {
   pro: {
     inputPerToken: 0.000_001_25,  // $1.25 per 1M input tokens
     outputPerToken: 0.000_005,    // $5.00 per 1M output tokens
+  },
+  flashImage: {
+    inputPerToken: 0.000_000_1,   // $0.10 per 1M input tokens (same as flash text)
+    outputPerToken: 0.000_000_4,  // $0.40 per 1M output tokens — image tokens billed as output
   },
 } as const;
 

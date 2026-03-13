@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import type { AdWithHistory, AdStatus, AdStatusType } from '../types.ts';
 import { ScoreBadge } from './ScoreBadge.tsx';
+import { ImageGenerator } from './ImageGenerator.tsx';
 
 function VTLogoSmall() {
   return (
@@ -15,6 +16,8 @@ interface AdCardProps {
   variant?: 'default' | 'compact';
   /** Pipeline status — when set, overrides default score/status display */
   status?: AdStatus;
+  /** Run ID for image generation (v2) */
+  runId?: string;
 }
 
 const STATUS_CONFIG: Record<AdStatusType, { label: string; color: string; barClass: string; animate: boolean }> = {
@@ -41,7 +44,7 @@ function StatusBadge({ status }: { status: AdStatus }) {
   );
 }
 
-export function AdCard({ adWithHistory, onClick, index = 0, variant = 'default', status }: AdCardProps) {
+export function AdCard({ adWithHistory, onClick, index = 0, variant = 'default', status, runId }: AdCardProps) {
   const { ad, evaluations, accepted } = adWithHistory;
   const lastEval = evaluations[evaluations.length - 1];
   const score = lastEval?.weightedScore ?? 0;
@@ -88,12 +91,18 @@ export function AdCard({ adWithHistory, onClick, index = 0, variant = 'default',
         <p className="text-sm text-vt-dark leading-snug line-clamp-4">{ad.primaryText}</p>
       </div>
 
-      {/* Image Placeholder */}
-      <div className="bg-vt-light-blue mx-0 aspect-square flex items-center justify-center border-y border-gray-100/60">
-        <div className="text-center">
-          <div className="text-3xl mb-1 opacity-40">&#x1F393;</div>
-          <p className="text-xs text-vt-accent opacity-60 font-button">IMAGE — v2</p>
-        </div>
+      {/* Image Section */}
+      <div className="mx-0 border-y border-gray-100/60 overflow-hidden">
+        {runId ? (
+          <ImageGenerator ad={ad} runId={runId} accepted={accepted} />
+        ) : (
+          <div className="bg-vt-light-blue aspect-square flex items-center justify-center">
+            <div className="text-center">
+              <div className="text-3xl mb-1 opacity-40">&#x1F393;</div>
+              <p className="text-xs text-vt-accent opacity-60 font-button">IMAGE — v2</p>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Headline + Description + CTA */}

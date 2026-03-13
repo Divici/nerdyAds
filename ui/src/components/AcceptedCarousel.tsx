@@ -7,9 +7,10 @@ interface AcceptedCarouselProps {
   ads: AdWithHistory[];
   onAdClick: (ad: AdWithHistory) => void;
   onViewAll: () => void;
+  runId?: string;
 }
 
-export function AcceptedCarousel({ ads, onAdClick, onViewAll }: AcceptedCarouselProps) {
+export function AcceptedCarousel({ ads, onAdClick, onViewAll, runId }: AcceptedCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   useHorizontalScroll(scrollRef);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -118,6 +119,7 @@ export function AcceptedCarousel({ ads, onAdClick, onViewAll }: AcceptedCarousel
                   onClick={() => onAdClick(adh)}
                   index={i}
                   variant="default"
+                  runId={runId}
                 />
               ))}
             </div>

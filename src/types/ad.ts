@@ -12,6 +12,12 @@ export const AdMetadataSchema = z.object({
 
 export type AdMetadata = z.infer<typeof AdMetadataSchema>;
 
+export const AdImageRefSchema = z.object({
+  confirmedVariant: z.number().int().min(0).max(1),
+  imagePath: z.string().min(1),
+});
+export type AdImageRef = z.infer<typeof AdImageRefSchema>;
+
 export const AdSchema = z.object({
   id: z.string(),
   briefId: z.string(),
@@ -21,6 +27,7 @@ export const AdSchema = z.object({
   ctaButton: z.string().min(1),
   version: z.number().int().nonnegative(),
   metadata: AdMetadataSchema,
+  imageResult: AdImageRefSchema.optional(),
 });
 
 export type Ad = z.infer<typeof AdSchema>;

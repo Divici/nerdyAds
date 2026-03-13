@@ -976,3 +976,60 @@ Flash doesn't just shift scores up — it's less discriminating. Raising the thr
 - Con: Frontend build must happen at deploy time (adds ~30s to build)
 - Con: Railway free tier has usage limits (may sleep after inactivity)
 - Con: `data/output/` must be committed to git for historical runs to show up (pipeline results are file-based, not in a database)
+
+---
+
+## Phase 14 — Image Generation (v2)
+
+### D-035: Gemini Flash Image for Ad Creative Generation
+
+**Date:** 2026-03-13
+**Context:** The v2 scope requires image generation for ad creatives. Need to choose between Imagen 3, Gemini Flash Image, Flux, and GPT Image.
+
+**Decision:** Use Gemini 2.5 Flash with `responseModalities: ['TEXT', 'IMAGE']` for native text+image generation in a single API call.
+
+**Alternatives considered:**
+- **Imagen 3:** Dedicated image model ($0.03/image), better quality but separate SDK, no text blurb co-generation
+- **Flux (via Replicate):** Open-source, good quality, but adds a new dependency and API key
+- **GPT Image (DALL-E 3/gpt-image-1):** High quality but different SDK, higher cost, no existing integration
+
+**Why this choice:**
+- Same `@google/genai` SDK already in use — zero new dependencies
+- Same API key — zero new credentials
+- Co-generates text blurb alongside image — enables copy-alignment evaluation without multimodal input
+- Shares rate limiter and Langfuse tracing infrastructure
+- Cost: ~$0.039/image (1,290 output tokens × $0.40/1M)
+
+**Tradeoffs:**
+- Pro: Minimal integration work, shared infrastructure
+- Pro: Text blurb enables text-only visual evaluation (v2 scope)
+- Con: Image quality may be lower than dedicated image models
+- Con: `responseModalities` typing not fully supported in SDK types (requires cast)
+- Con: Less control over image style compared to dedicated models
+
+### D-036: On-Demand Image Generation (Not Pipeline-Integrated)
+
+**Date:** 2026-03-13
+**Context:** Images could be generated automatically for all accepted ads during the pipeline, or on-demand via a user action.
+
+**Decision:** Generate images on-demand only — accepted ads show a "Generate Image" button. Each generation produces 2 variants (photo-realistic + graphic/illustrated) that the user can toggle, confirm, or regenerate.
+
+**Why:** Cost control. At ~$0.04/image × 2 variants × ~60 accepted ads = ~$4.80 if all ads get images. On-demand means users only pay for ads they care about. Also keeps pipeline fast — image generation adds ~15-20s per ad.
+
+### D-037: Text Blurb Visual Evaluation (Not Multimodal)
+
+**Date:** 2026-03-13
+**Context:** Need to evaluate generated images for brand consistency, copy alignment, and engagement potential.
+
+**Decision:** v2 visual evaluation compares the generated text blurb (description of the image) against ad copy and brief context using a text-only LLM call. Visual scores are informational only — no blocking threshold.
+
+**Why:** Avoids multimodal API calls (higher cost, slower). The text blurb is generated alongside the image by the same model, so it accurately describes what's in the image. v3 improvement: pass actual image bytes as multimodal input for more accurate scoring.
+
+### D-038: File-Based Image Storage (v2 Limitation)
+
+**Date:** 2026-03-13
+**Context:** Generated images need to be stored and served. Options: filesystem, S3-compatible (Tigris), SQLite, AWS S3.
+
+**Decision:** Store images on local filesystem at `data/output/{runId}/images/`, serve via Express static middleware. JSON sidecar files store metadata.
+
+**Known limitation:** Railway has an ephemeral filesystem — images are lost on redeploy. This is acceptable for demo/development. Phase 15+ should address persistent storage (Tigris S3-compatible bucket or AWS S3).

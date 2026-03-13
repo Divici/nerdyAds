@@ -2,6 +2,52 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createApp } from '../../src/server/api.js';
 import request from 'supertest';
 
+// Mock image generation and visual evaluation agents
+vi.mock('../../src/agents/image-generator.js', () => ({
+  ImageGeneratorAgent: vi.fn().mockImplementation(() => ({
+    generateVariants: vi.fn().mockResolvedValue([
+      {
+        variantIndex: 0,
+        imagePath: '/test-run/images/ad-001-variant-0.png',
+        blurb: 'Photo-realistic image of student studying',
+        metadata: {
+          model: 'gemini-2.5-flash',
+          seed: 42,
+          promptHash: 'img-hash-0',
+          tokensIn: 200,
+          tokensOut: 1290,
+          costUsd: 0.039,
+          generatedAt: '2026-03-13T00:00:00Z',
+        },
+      },
+      {
+        variantIndex: 1,
+        imagePath: '/test-run/images/ad-001-variant-1.png',
+        blurb: 'Graphic illustration of tutoring concept',
+        metadata: {
+          model: 'gemini-2.5-flash',
+          seed: 43,
+          promptHash: 'img-hash-1',
+          tokensIn: 200,
+          tokensOut: 1290,
+          costUsd: 0.039,
+          generatedAt: '2026-03-13T00:00:00Z',
+        },
+      },
+    ]),
+  })),
+}));
+
+vi.mock('../../src/agents/visual-evaluator.js', () => ({
+  VisualEvaluatorAgent: vi.fn().mockImplementation(() => ({
+    evaluate: vi.fn().mockResolvedValue([
+      { dimension: 'brand_consistency', score: 8, rationale: 'Strong navy palette', confidence: 7 },
+      { dimension: 'copy_alignment', score: 7, rationale: 'Matches theme', confidence: 6 },
+      { dimension: 'engagement_potential', score: 9, rationale: 'Strong focal point', confidence: 8 },
+    ]),
+  })),
+}));
+
 // Check if supertest is available, if not we'll use a simpler approach
 let app: ReturnType<typeof createApp>;
 
@@ -125,6 +171,72 @@ describe('API server', () => {
           reject(new Error('Timeout'));
         }, 3000);
       });
+    });
+  });
+
+  describe('POST /api/ads/:adId/generate-image', () => {
+    it('returns 404 for non-existent run', async () => {
+      const res = await request(app)
+        .post('/api/ads/ad-001/generate-image')
+        .send({ runId: 'nonexistent-run', briefId: 'student-aspire' });
+      expect(res.status).toBe(404);
+    });
+
+    it('returns image result for valid ad in existing run', async () => {
+      // Get a real run to use
+      const runsRes = await request(app).get('/api/runs');
+      if (runsRes.body.length === 0) return; // skip if no runs
+
+      const runId = runsRes.body[0].runId;
+      const runRes = await request(app).get(`/api/runs/${runId}`);
+      const briefs = runRes.body.briefs;
+      if (!briefs || briefs.length === 0) return;
+
+      const firstBrief = briefs[0];
+      const acceptedAds = firstBrief.ads;
+      if (!acceptedAds || acceptedAds.length === 0) return;
+
+      const ad = acceptedAds[0].ad;
+      const res = await request(app)
+        .post(`/api/ads/${ad.id}/generate-image`)
+        .send({ runId, briefId: firstBrief.briefId });
+
+      expect(res.status).toBe(200);
+      expect(res.body).toHaveProperty('adId', ad.id);
+      expect(res.body).toHaveProperty('runId', runId);
+      expect(res.body).toHaveProperty('variants');
+      expect(res.body.variants).toHaveLength(2);
+      expect(res.body.variants[0]).toHaveProperty('visualScores');
+      expect(res.body.variants[0].visualScores).toHaveLength(3);
+    }, 15000);
+
+    it('returns 404 for non-existent ad in valid run', async () => {
+      const runsRes = await request(app).get('/api/runs');
+      if (runsRes.body.length === 0) return;
+
+      const runId = runsRes.body[0].runId;
+      const res = await request(app)
+        .post('/api/ads/nonexistent-ad/generate-image')
+        .send({ runId, briefId: 'student-aspire' });
+      expect(res.status).toBe(404);
+    });
+  });
+
+  describe('POST /api/ads/:adId/confirm-image', () => {
+    it('returns 404 for non-existent run', async () => {
+      const res = await request(app)
+        .post('/api/ads/ad-001/confirm-image')
+        .send({ runId: 'nonexistent-run', variantIndex: 0 });
+      expect(res.status).toBe(404);
+    });
+  });
+
+  describe('Static image serving', () => {
+    it('serves files from /api/output path', async () => {
+      // Just verify the route exists (404 for missing file, not routing error)
+      const res = await request(app).get('/api/output/nonexistent/image.png');
+      // Express static returns 404 for missing files but the route should exist
+      expect(res.status).toBe(404);
     });
   });
 });

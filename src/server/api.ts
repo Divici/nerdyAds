@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { readdir, readFile } from 'fs/promises';
+import { readdir, readFile, writeFile, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import type { PipelineEventCallback } from '../pipeline/batch-runner.js';
@@ -10,6 +10,8 @@ import { WriterAgent } from '../agents/writer.js';
 import { loadCalibrationAnchors, loadWriterFewShotExamples } from '../utils/calibration-loader.js';
 import { EvaluatorAgent } from '../agents/evaluator.js';
 import { EditorAgent } from '../agents/editor.js';
+import { ImageGeneratorAgent } from '../agents/image-generator.js';
+import { VisualEvaluatorAgent } from '../agents/visual-evaluator.js';
 import { QualityRatchet } from '../evaluate/threshold.js';
 import { MetricsTracker } from '../metrics/tracker.js';
 import { runContinuousBatch } from '../pipeline/batch-runner.js';
@@ -25,6 +27,7 @@ import {
   MAX_GENERATION_ROUNDS,
 } from '../config/thresholds.js';
 import { randomUUID } from 'crypto';
+import type { AdImageResult } from '../types/image.js';
 
 const DATA_DIR = join(process.cwd(), 'data');
 const OUTPUT_DIR = join(DATA_DIR, 'output');
@@ -306,6 +309,136 @@ export function createApp() {
     // Clean up streams after a delay
     setTimeout(() => activeStreams.delete(runId), 5000);
   }
+
+  // ── Static image serving ────────────────────────────────────
+  app.use('/api/output', express.static(OUTPUT_DIR));
+
+  // ── POST /api/ads/:adId/generate-image ─────────────────────
+  app.post('/api/ads/:adId/generate-image', async (req, res) => {
+    const { adId } = req.params;
+    const { runId, briefId } = req.body;
+
+    try {
+      // Load pipeline result to find the ad and brief
+      const resultPath = join(OUTPUT_DIR, runId, 'pipeline-result.json');
+      let pipelineResult;
+      try {
+        const raw = await readFile(resultPath, 'utf-8');
+        pipelineResult = JSON.parse(raw);
+      } catch {
+        res.status(404).json({ error: 'Run not found' });
+        return;
+      }
+
+      // Find the ad in accepted ads
+      let ad = null;
+      let brief = null;
+      for (const briefResult of pipelineResult.briefs) {
+        for (const adHistory of briefResult.ads) {
+          if (adHistory.ad.id === adId) {
+            ad = adHistory.ad;
+            brief = { id: briefResult.briefId } as Brief;
+            break;
+          }
+        }
+        if (ad) break;
+      }
+
+      if (!ad) {
+        res.status(404).json({ error: 'Ad not found in run' });
+        return;
+      }
+
+      // Load brief details
+      const briefsRaw = await readFile(BRIEFS_PATH, 'utf-8');
+      const allBriefs: Brief[] = JSON.parse(briefsRaw);
+      const fullBrief = allBriefs.find((b) => b.id === (briefId || brief!.id));
+      if (!fullBrief) {
+        res.status(404).json({ error: 'Brief not found' });
+        return;
+      }
+
+      // Generate images
+      const imageGenerator = new ImageGeneratorAgent();
+      const variants = await imageGenerator.generateVariants(ad, fullBrief, runId);
+
+      // Evaluate each variant
+      const visualEvaluator = new VisualEvaluatorAgent();
+      for (const variant of variants) {
+        const scores = await visualEvaluator.evaluate(variant, ad, fullBrief);
+        variant.visualScores = scores;
+      }
+
+      // Build result
+      const imageResult: AdImageResult = {
+        adId,
+        runId,
+        variants,
+        generatedAt: new Date().toISOString(),
+      };
+
+      // Save sidecar JSON
+      const imagesDir = join(OUTPUT_DIR, runId, 'images');
+      await mkdir(imagesDir, { recursive: true });
+      await writeFile(
+        join(imagesDir, `${adId}-images.json`),
+        JSON.stringify(imageResult, null, 2),
+      );
+
+      logger.info('Image generation complete', { adId, runId, variants: variants.length });
+      res.json(imageResult);
+    } catch (err) {
+      logger.error('Image generation failed', { adId, runId, error: String(err) });
+      res.status(500).json({ error: 'Image generation failed' });
+    }
+  });
+
+  // ── POST /api/ads/:adId/confirm-image ──────────────────────
+  app.post('/api/ads/:adId/confirm-image', async (req, res) => {
+    const { adId } = req.params;
+    const { runId, variantIndex } = req.body;
+
+    try {
+      const sidecarPath = join(OUTPUT_DIR, runId, 'images', `${adId}-images.json`);
+      let imageResult: AdImageResult;
+      try {
+        const raw = await readFile(sidecarPath, 'utf-8');
+        imageResult = JSON.parse(raw);
+      } catch {
+        res.status(404).json({ error: 'Image result not found' });
+        return;
+      }
+
+      // Update confirmed variant
+      imageResult.confirmedVariant = variantIndex;
+      await writeFile(sidecarPath, JSON.stringify(imageResult, null, 2));
+
+      logger.info('Image confirmed', { adId, runId, variantIndex });
+      res.json({ success: true });
+    } catch (err) {
+      logger.error('Image confirmation failed', { adId, runId, error: String(err) });
+      res.status(500).json({ error: 'Image confirmation failed' });
+    }
+  });
+
+  // ── GET /api/ads/:adId/image-result ────────────────────────
+  app.get('/api/ads/:adId/image-result', async (req, res) => {
+    const { adId } = req.params;
+    const { runId } = req.query;
+
+    if (!runId || typeof runId !== 'string') {
+      res.status(400).json({ error: 'runId query parameter required' });
+      return;
+    }
+
+    try {
+      const sidecarPath = join(OUTPUT_DIR, runId, 'images', `${adId}-images.json`);
+      const raw = await readFile(sidecarPath, 'utf-8');
+      res.json(JSON.parse(raw));
+    } catch {
+      res.status(404).json({ error: 'Image result not found' });
+    }
+  });
 
   // ── Production: serve built frontend from ui/dist/ ──────────
   const uiDistPath = join(process.cwd(), 'ui', 'dist');
