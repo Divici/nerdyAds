@@ -86,13 +86,14 @@ function VariantCard({
 
 export function ImageGenerator({ ad, runId, accepted }: ImageGeneratorProps) {
   const { imageResult, loading, error, generateImages, confirmImage, loadExistingImage, reset } =
-    useImageGeneration();
+    useImageGeneration(ad.id);
   const [selectedVariant, setSelectedVariant] = useState<number>(0);
+  const adBody = ad as unknown as Record<string, unknown>;
 
   // Load existing image result on mount
   useEffect(() => {
-    loadExistingImage(ad.id, runId);
-  }, [ad.id, runId, loadExistingImage]);
+    loadExistingImage(runId);
+  }, [runId, loadExistingImage]);
 
   if (!accepted) {
     return (
@@ -132,7 +133,7 @@ export function ImageGenerator({ ad, runId, accepted }: ImageGeneratorProps) {
             onClick={(e) => {
               e.stopPropagation();
               reset();
-              generateImages(ad.id, runId, ad.briefId, ad as unknown as Record<string, unknown>);
+              generateImages(runId, ad.briefId, adBody);
             }}
             className="text-xs bg-red-100 text-red-700 px-3 py-1 rounded-full hover:bg-red-200 transition-colors font-button"
           >
@@ -151,7 +152,7 @@ export function ImageGenerator({ ad, runId, accepted }: ImageGeneratorProps) {
           type="button"
           onClick={(e) => {
             e.stopPropagation();
-            generateImages(ad.id, runId, ad.briefId, ad as unknown as Record<string, unknown>);
+            generateImages(runId, ad.briefId, adBody);
           }}
           className="bg-vt-primary text-white text-sm font-button font-medium px-5 py-2 rounded-full hover:bg-vt-primary-hover transition-colors shadow-sm"
         >
@@ -215,7 +216,7 @@ export function ImageGenerator({ ad, runId, accepted }: ImageGeneratorProps) {
       <div className="flex gap-2 justify-center">
         <button
           type="button"
-          onClick={() => confirmImage(ad.id, runId, selectedVariant)}
+          onClick={() => confirmImage(runId, selectedVariant)}
           className="bg-green-600 text-white text-xs font-button px-3 py-1.5 rounded-full hover:bg-green-700 transition-colors"
         >
           Confirm
@@ -224,7 +225,7 @@ export function ImageGenerator({ ad, runId, accepted }: ImageGeneratorProps) {
           type="button"
           onClick={() => {
             reset();
-            generateImages(ad.id, runId, ad.briefId, ad as unknown as Record<string, unknown>);
+            generateImages(runId, ad.briefId, adBody);
           }}
           className="bg-gray-200 text-gray-700 text-xs font-button px-3 py-1.5 rounded-full hover:bg-gray-300 transition-colors"
         >
