@@ -132,7 +132,7 @@ export function ImageGenerator({ ad, runId, accepted }: ImageGeneratorProps) {
             onClick={(e) => {
               e.stopPropagation();
               reset();
-              generateImages(ad.id, runId, ad.briefId);
+              generateImages(ad.id, runId, ad.briefId, ad as unknown as Record<string, unknown>);
             }}
             className="text-xs bg-red-100 text-red-700 px-3 py-1 rounded-full hover:bg-red-200 transition-colors font-button"
           >
@@ -151,7 +151,7 @@ export function ImageGenerator({ ad, runId, accepted }: ImageGeneratorProps) {
           type="button"
           onClick={(e) => {
             e.stopPropagation();
-            generateImages(ad.id, runId, ad.briefId);
+            generateImages(ad.id, runId, ad.briefId, ad as unknown as Record<string, unknown>);
           }}
           className="bg-vt-primary text-white text-sm font-button font-medium px-5 py-2 rounded-full hover:bg-vt-primary-hover transition-colors shadow-sm"
         >
@@ -224,7 +224,7 @@ export function ImageGenerator({ ad, runId, accepted }: ImageGeneratorProps) {
           type="button"
           onClick={() => {
             reset();
-            generateImages(ad.id, runId, ad.briefId);
+            generateImages(ad.id, runId, ad.briefId, ad as unknown as Record<string, unknown>);
           }}
           className="bg-gray-200 text-gray-700 text-xs font-button px-3 py-1.5 rounded-full hover:bg-gray-300 transition-colors"
         >

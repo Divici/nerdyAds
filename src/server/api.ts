@@ -316,32 +316,34 @@ export function createApp() {
   // ── POST /api/ads/:adId/generate-image ─────────────────────
   app.post('/api/ads/:adId/generate-image', async (req, res) => {
     const { adId } = req.params;
-    const { runId, briefId } = req.body;
+    const { runId, briefId, ad: adFromBody } = req.body;
 
     try {
-      // Load pipeline result to find the ad and brief
-      const resultPath = join(OUTPUT_DIR, runId, 'pipeline-result.json');
-      let pipelineResult;
-      try {
-        const raw = await readFile(resultPath, 'utf-8');
-        pipelineResult = JSON.parse(raw);
-      } catch {
-        res.status(404).json({ error: 'Run not found' });
-        return;
-      }
-
-      // Find the ad in accepted ads
+      // Try loading from pipeline-result.json first; fall back to ad sent in request body
+      // (the file doesn't exist until the full run completes, but ads can be accepted mid-run)
       let ad = null;
       let brief = null;
-      for (const briefResult of pipelineResult.briefs) {
-        for (const adHistory of briefResult.ads) {
-          if (adHistory.ad.id === adId) {
-            ad = adHistory.ad;
-            brief = { id: briefResult.briefId } as Brief;
-            break;
+      const resultPath = join(OUTPUT_DIR, runId, 'pipeline-result.json');
+      try {
+        const raw = await readFile(resultPath, 'utf-8');
+        const pipelineResult = JSON.parse(raw);
+        for (const briefResult of pipelineResult.briefs) {
+          for (const adHistory of briefResult.ads) {
+            if (adHistory.ad.id === adId) {
+              ad = adHistory.ad;
+              brief = { id: briefResult.briefId } as Brief;
+              break;
+            }
           }
+          if (ad) break;
         }
-        if (ad) break;
+      } catch {
+        // pipeline-result.json not yet written — use ad from request body
+      }
+
+      // Fall back to ad provided in request body (e.g. during active run)
+      if (!ad && adFromBody && adFromBody.id === adId) {
+        ad = adFromBody;
       }
 
       if (!ad) {

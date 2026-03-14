@@ -9,14 +9,14 @@ export function useImageGeneration() {
   const [error, setError] = useState<string | null>(null);
 
   const generateImages = useCallback(
-    async (adId: string, runId: string, briefId: string): Promise<AdImageResult | null> => {
+    async (adId: string, runId: string, briefId: string, ad?: Record<string, unknown>): Promise<AdImageResult | null> => {
       setLoading(true);
       setError(null);
       try {
         const res = await fetch(`${API_BASE}/ads/${adId}/generate-image`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ runId, briefId }),
+          body: JSON.stringify({ runId, briefId, ad }),
         });
         if (!res.ok) {
           const body = await res.json().catch(() => ({ error: 'Unknown error' }));
