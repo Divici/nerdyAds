@@ -13,6 +13,10 @@ export const BriefSchema = z.object({
   emotionalAngle: z.string(),
   offer: z.string().min(1),
   constraints: z.array(z.string()).optional(),
+  persona: z.string().optional(),
+  personaPsychology: z.string().optional(),
+  sampleHooks: z.array(z.string()).optional(),
+  suggestedCta: z.string().optional(),
 });
 
 export type Brief = z.infer<typeof BriefSchema>;

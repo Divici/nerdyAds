@@ -115,7 +115,7 @@ describe('API server', () => {
     it('returns runId for valid brief', async () => {
       const res = await request(app)
         .post('/api/generate')
-        .send({ briefId: 'student-aspire' });
+        .send({ briefId: 'athlete-urgency' });
       expect(res.status).toBe(200);
       expect(res.body).toHaveProperty('runId');
       expect(res.body).toHaveProperty('briefCount', 1);
@@ -165,7 +165,7 @@ describe('API server', () => {
     it('returns 404 for non-existent run', async () => {
       const res = await request(app)
         .post('/api/ads/ad-001/generate-image')
-        .send({ runId: 'nonexistent-run', briefId: 'student-aspire' });
+        .send({ runId: 'nonexistent-run', briefId: 'athlete-urgency' });
       expect(res.status).toBe(404);
     });
 
@@ -182,6 +182,11 @@ describe('API server', () => {
       const firstBrief = briefs[0];
       const acceptedAds = firstBrief.ads;
       if (!acceptedAds || acceptedAds.length === 0) return;
+
+      // Get current brief IDs to check if this run's brief still exists
+      const briefsRes = await request(app).get('/api/briefs');
+      const currentBriefIds = new Set(briefsRes.body.map((b: { id: string }) => b.id));
+      if (!currentBriefIds.has(firstBrief.briefId)) return; // skip if run uses old brief IDs
 
       const ad = acceptedAds[0].ad;
       const res = await request(app)
@@ -204,7 +209,7 @@ describe('API server', () => {
       const runId = runsRes.body[0].runId;
       const res = await request(app)
         .post('/api/ads/nonexistent-ad/generate-image')
-        .send({ runId, briefId: 'student-aspire' });
+        .send({ runId, briefId: 'athlete-urgency' });
       expect(res.status).toBe(404);
     });
   });

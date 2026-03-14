@@ -52,11 +52,12 @@ const WEAK_CLARITY_AD = makeAd('weak-clarity', {
 });
 
 // Ad with weak emotional resonance — purely factual, no emotion
+// Uses compliant language so brand_voice isn't also penalized (masking the intended weakness)
 const WEAK_EMOTIONAL_AD = makeAd('weak-emotional', {
   primaryText:
-    'Varsity Tutors provides SAT preparation services. Our tutors hold advanced degrees. Sessions are available online. The program includes diagnostic assessments, practice tests, and strategy instruction. Sessions are 60 minutes. Scheduling is flexible.',
-  headline: 'SAT Preparation Services Available',
-  description: 'Online SAT tutoring with qualified instructors',
+    'Varsity Tutors provides SAT tutoring. Our tutors hold advanced degrees. The program includes diagnostic assessments, practice tests, and strategy instruction. Sessions are 60 minutes. Scheduling is flexible.',
+  headline: 'SAT Tutoring Sessions Available',
+  description: '1-on-1 SAT tutoring with qualified instructors',
   ctaButton: 'Schedule a Session',
 });
 

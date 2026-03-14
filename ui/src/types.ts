@@ -126,6 +126,10 @@ export interface Brief {
   emotionalAngle: string;
   offer: string;
   constraints?: string[];
+  persona?: string;
+  personaPsychology?: string;
+  sampleHooks?: string[];
+  suggestedCta?: string;
 }
 
 /** Pipeline generation mode — controls evaluator model and score threshold */

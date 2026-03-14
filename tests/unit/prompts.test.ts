@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
   EVALUATOR_SYSTEM_PROMPT,
   WRITER_SYSTEM_PROMPT,
+  EDITOR_SYSTEM_PROMPT,
   buildWriterFewShotSection,
   buildWriterUserPrompt,
   type FewShotExample,
@@ -51,6 +52,42 @@ describe('EVALUATOR_SYSTEM_PROMPT', () => {
     const lower = EVALUATOR_SYSTEM_PROMPT.toLowerCase();
     expect(lower).toMatch(/markdown|asterisk|\\\*/);
   });
+
+  it('penalizes "your student" in brand voice guidance', () => {
+    expect(EVALUATOR_SYSTEM_PROMPT).toContain('your student');
+    // Should be in a penalty context
+    const brandSection = EVALUATOR_SYSTEM_PROMPT.match(/### Brand Voice Violations[\s\S]*?(?=###|## |$)/);
+    expect(brandSection).not.toBeNull();
+    expect(brandSection![0]).toContain('your student');
+    expect(brandSection![0]).toContain('penalize brand voice');
+  });
+
+  it('penalizes "SAT prep" in brand voice guidance', () => {
+    const brandSection = EVALUATOR_SYSTEM_PROMPT.match(/### Brand Voice Violations[\s\S]*?(?=###|## |$)/);
+    expect(brandSection).not.toBeNull();
+    expect(brandSection![0]).toContain('SAT prep');
+  });
+
+  it('penalizes fake urgency in brand voice guidance', () => {
+    const brandSection = EVALUATOR_SYSTEM_PROMPT.match(/### Brand Voice Violations[\s\S]*?(?=###|## |$)/);
+    expect(brandSection).not.toBeNull();
+    expect(brandSection![0]).toContain('spots filling fast');
+  });
+
+  it('penalizes corporate language in brand voice guidance', () => {
+    const brandSection = EVALUATOR_SYSTEM_PROMPT.match(/### Brand Voice Violations[\s\S]*?(?=###|## |$)/);
+    expect(brandSection).not.toBeNull();
+    expect(brandSection![0]).toContain('unlock potential');
+  });
+
+  it('caps brand voice score at 5 for violations', () => {
+    expect(EVALUATOR_SYSTEM_PROMPT).toContain('no higher than 5');
+  });
+
+  it('includes VT language rules in brand voice dimension definition', () => {
+    expect(EVALUATOR_SYSTEM_PROMPT).toContain('your child');
+    expect(EVALUATOR_SYSTEM_PROMPT).toContain('SAT tutoring');
+  });
 });
 
 describe('WRITER_SYSTEM_PROMPT', () => {
@@ -64,6 +101,63 @@ describe('WRITER_SYSTEM_PROMPT', () => {
     expect(lower).toMatch(/concise|word|short|tight|brief/);
     // Should have specific length guidance in the Ad Format section
     expect(WRITER_SYSTEM_PROMPT).toMatch(/\d+\s*[-–]\s*\d+\s*words/i);
+  });
+
+  it('bans "your student" phrasing in favor of "your child"', () => {
+    expect(WRITER_SYSTEM_PROMPT).toContain('your child');
+    expect(WRITER_SYSTEM_PROMPT).toMatch(/not.*your student/i);
+  });
+
+  it('bans "SAT prep" in favor of "SAT tutoring"', () => {
+    expect(WRITER_SYSTEM_PROMPT).toContain('SAT tutoring');
+    expect(WRITER_SYSTEM_PROMPT).toMatch(/not.*SAT prep/i);
+  });
+
+  it('bans fake urgency language', () => {
+    expect(WRITER_SYSTEM_PROMPT).toContain('spots filling fast');
+    expect(WRITER_SYSTEM_PROMPT).toContain('Never use fake scarcity');
+  });
+
+  it('bans corporate/marketing language', () => {
+    expect(WRITER_SYSTEM_PROMPT).toContain('unlock potential');
+    expect(WRITER_SYSTEM_PROMPT).toContain('maximize score potential');
+  });
+
+  it('includes approved claims with specific numbers', () => {
+    expect(WRITER_SYSTEM_PROMPT).toContain('100 points/month');
+    expect(WRITER_SYSTEM_PROMPT).toContain('10x');
+    expect(WRITER_SYSTEM_PROMPT).toContain('2.6x');
+  });
+
+  it('includes digital SAT differentiator', () => {
+    expect(WRITER_SYSTEM_PROMPT).toContain('60%');
+    expect(WRITER_SYSTEM_PROMPT).toContain('built-in');
+    expect(WRITER_SYSTEM_PROMPT).toContain('digital');
+  });
+
+  it('bans "online tutoring" positioning', () => {
+    expect(WRITER_SYSTEM_PROMPT).toContain('online tutoring');
+    // Should be in a NEVER/ban context
+    expect(WRITER_SYSTEM_PROMPT).toMatch(/NEVER.*position.*online tutoring/i);
+  });
+
+  it('includes offer details with pricing', () => {
+    expect(WRITER_SYSTEM_PROMPT).toContain('$349');
+    expect(WRITER_SYSTEM_PROMPT).toContain('$639');
+    expect(WRITER_SYSTEM_PROMPT).toContain('monthly');
+  });
+
+  it('requires conditioned score claims', () => {
+    expect(WRITER_SYSTEM_PROMPT).toMatch(/condition|conditioned/i);
+    expect(WRITER_SYSTEM_PROMPT).toContain('16 sessions');
+  });
+});
+
+describe('EDITOR_SYSTEM_PROMPT', () => {
+  it('includes VT language rules', () => {
+    expect(EDITOR_SYSTEM_PROMPT).toContain('your child');
+    expect(EDITOR_SYSTEM_PROMPT).toContain('SAT tutoring');
+    expect(EDITOR_SYSTEM_PROMPT).toContain('spots filling fast');
   });
 });
 
@@ -89,6 +183,48 @@ describe('buildWriterFewShotSection', () => {
 
   it('returns empty string when no examples provided', () => {
     expect(buildWriterFewShotSection([])).toBe('');
+  });
+});
+
+describe('buildWriterUserPrompt with persona context', () => {
+  const personaBrief = {
+    id: 'test-persona',
+    targetAudience: 'parent' as const,
+    campaignGoal: 'conversion' as const,
+    emotionalAngle: 'urgency',
+    offer: 'Varsity Tutors SAT tutoring',
+    persona: 'Athlete-Recruit Gatekeeper',
+    personaPsychology: 'Fear of missed recruiting window',
+    sampleHooks: ['The coach wants him.', 'SAT score blocks scholarship.'],
+    suggestedCta: 'Talk to a specialist today.',
+  };
+
+  const plainBrief = {
+    id: 'test-plain',
+    targetAudience: 'parent' as const,
+    campaignGoal: 'conversion' as const,
+    emotionalAngle: 'anxiety',
+    offer: 'Varsity Tutors SAT tutoring',
+  };
+
+  it('includes persona context when provided', () => {
+    const prompt = buildWriterUserPrompt(personaBrief, 3);
+    expect(prompt).toContain('Athlete-Recruit Gatekeeper');
+    expect(prompt).toContain('Fear of missed recruiting window');
+    expect(prompt).toContain('Talk to a specialist today.');
+  });
+
+  it('includes sample hooks when provided', () => {
+    const prompt = buildWriterUserPrompt(personaBrief, 3);
+    expect(prompt).toContain('Persona-Specific Hook Examples');
+    expect(prompt).toContain('The coach wants him.');
+    expect(prompt).toContain('SAT score blocks scholarship.');
+  });
+
+  it('omits persona section when no persona fields in brief', () => {
+    const prompt = buildWriterUserPrompt(plainBrief, 3);
+    expect(prompt).not.toContain('Persona');
+    expect(prompt).not.toContain('Persona-Specific Hook Examples');
   });
 });
 

@@ -1,74 +1,238 @@
 [
   {
-    "id": "student-aspire",
-    "targetAudience": "student",
+    "id": "athlete-urgency",
+    "targetAudience": "parent",
     "campaignGoal": "conversion",
-    "emotionalAngle": "aspiration",
-    "offer": "Varsity Tutors SAT test prep"
+    "emotionalAngle": "urgency",
+    "offer": "Varsity Tutors 1-on-1 SAT tutoring — flexible scheduling around practice and games",
+    "persona": "Athlete-Recruit Gatekeeper",
+    "personaPsychology": "Mother of 11th grade student athlete. SAT is a gating factor for scholarships and NCAA/NAIA eligibility. Fear of missed recruiting window. Late funnel, urgency-driven. Budget resistance is low.",
+    "sampleHooks": [
+      "The coach wants him. The admissions office needs an SAT score.",
+      "If the SAT is the only thing between your athlete and a scholarship... don't wait.",
+      "Practice ends at 7. SAT tutoring starts at 9:30. No commute.",
+      "Don't let a low SAT score be the reason the NCAA scholarship disappears."
+    ],
+    "suggestedCta": "Talk to an SAT specialist today."
   },
   {
-    "id": "parent-anxiety",
+    "id": "athlete-scholarship",
+    "targetAudience": "parent",
+    "campaignGoal": "conversion",
+    "emotionalAngle": "aspiration",
+    "offer": "Varsity Tutors 1-on-1 SAT tutoring — scholarship dollars at stake",
+    "persona": "Athlete-Recruit Gatekeeper",
+    "personaPsychology": "Family where student's athletic talent opens doors but SAT score could close them. Every SAT point translates to scholarship money. The investment in tutoring is small compared to scholarship value.",
+    "sampleHooks": [
+      "He's putting in the work on the field. Is his SAT score keeping up?",
+      "Recruiting windows don't care about SAT score excuses.",
+      "A 100-point SAT increase can mean $10,000-$40,000 in scholarships."
+    ],
+    "suggestedCta": "See how many scholarship dollars your score could unlock."
+  },
+  {
+    "id": "optimizer-gpa-gap",
     "targetAudience": "parent",
     "campaignGoal": "conversion",
     "emotionalAngle": "anxiety",
-    "offer": "Varsity Tutors SAT test prep"
+    "offer": "Varsity Tutors 1-on-1 SAT tutoring — diagnostic + targeted 8-10 week plan",
+    "persona": "Proactive Suburban Optimizer",
+    "personaPsychology": "Upper-middle-class suburban mother, 11th grader with 3.8+ GPA. PSAT/SAT score in mid-1200s doesn't match classroom performance. Values optimization and fairness. Mid-funnel, comparison shopping.",
+    "sampleHooks": [
+      "3.8 GPA. 1260 SAT. Something's off.",
+      "Straight A's. Disappointing SAT score. Sound familiar?",
+      "Most mid-1200s students are 3-4 fixes away from a 1400+.",
+      "Stop studying everything. Start studying what actually moves points."
+    ],
+    "suggestedCta": "See what score range is realistic in 8-10 weeks."
   },
   {
-    "id": "student-urgent",
-    "targetAudience": "student",
-    "campaignGoal": "awareness",
-    "emotionalAngle": "urgency",
-    "offer": "Varsity Tutors SAT test prep"
-  },
-  {
-    "id": "parent-proof",
+    "id": "optimizer-comparison",
     "targetAudience": "parent",
     "campaignGoal": "awareness",
     "emotionalAngle": "social_proof",
-    "offer": "Varsity Tutors SAT test prep"
+    "offer": "Varsity Tutors 1-on-1 SAT tutoring — 2.6x improvement vs group classes",
+    "persona": "Proactive Suburban Optimizer",
+    "personaPsychology": "Parent comparing prep options. Already aware of Princeton Review, Kaplan, local tutors. Needs data showing VT delivers better results at comparable or better value.",
+    "sampleHooks": [
+      "Before you choose a local prep center, read this.",
+      "School doesn't prepare smart kids for the SAT, and neither does generic SAT tutoring.",
+      "If she's capable of a 1450, why is she stuck in the 1200s?"
+    ],
+    "suggestedCta": "See how we compare to Princeton Review and Kaplan."
   },
   {
-    "id": "family-aspire",
+    "id": "immigrant-navigator",
     "targetAudience": "both",
-    "campaignGoal": "conversion",
-    "emotionalAngle": "aspiration",
-    "offer": "Varsity Tutors SAT test prep"
-  },
-  {
-    "id": "student-relief",
-    "targetAudience": "student",
-    "campaignGoal": "engagement",
+    "campaignGoal": "awareness",
     "emotionalAngle": "relief",
-    "offer": "Varsity Tutors SAT test prep"
+    "offer": "Varsity Tutors 1-on-1 SAT tutoring — step-by-step guidance through the SAT process",
+    "persona": "Immigrant Family Navigator",
+    "personaPsychology": "First- or second-generation immigrant family. Mother calling 60%, student 40%. Overwhelm with unfamiliar US college admissions system. Deep value on education as path to upward mobility. Early to mid-funnel, needs education about the SAT itself before evaluating providers.",
+    "sampleHooks": [
+      "The SAT process is confusing. We walk you through all of it.",
+      "Not sure where your child stands on the SAT? That's the first thing we figure out.",
+      "Your child deserves the same shot as kids whose parents grew up with this system.",
+      "New to the US college process? We guide you through the SAT, the scores, and what they mean."
+    ],
+    "suggestedCta": "Talk to an SAT specialist who will walk you through it step by step."
   },
   {
-    "id": "parent-aspire",
+    "id": "cultural-investor",
     "targetAudience": "parent",
     "campaignGoal": "conversion",
     "emotionalAngle": "aspiration",
-    "offer": "Varsity Tutors SAT test prep"
+    "offer": "Varsity Tutors 1-on-1 SAT tutoring — replaces scattered tools with one system",
+    "persona": "Education-First Cultural Investor",
+    "personaPsychology": "Dual-income STEM household, higher father involvement. Already invested in prep books, online programs, subject tutors. Values mastery over quick fixes. Mid-funnel, consensus-oriented. High lifetime value once committed.",
+    "sampleHooks": [
+      "Already tried Khan Academy, prep books, and a tutor — and the score hasn't moved?",
+      "Three apps, two tutors, and a prep book. Still stuck? There's a reason.",
+      "You don't need more tools. You need one plan that ties everything together."
+    ],
+    "suggestedCta": "See how we replace five tools with one system that actually raises scores."
   },
   {
-    "id": "family-anxiety",
-    "targetAudience": "both",
-    "campaignGoal": "awareness",
-    "emotionalAngle": "anxiety",
-    "offer": "Varsity Tutors SAT test prep"
-  },
-  {
-    "id": "student-proof",
-    "targetAudience": "student",
+    "id": "system-optimizer",
+    "targetAudience": "parent",
     "campaignGoal": "conversion",
     "emotionalAngle": "social_proof",
-    "offer": "Varsity Tutors SAT test prep",
-    "constraints": ["Must mention free consultation offer", "Include specific score improvement stat"]
+    "offer": "Varsity Tutors 1-on-1 SAT tutoring — diagnostic-driven, measurable outcomes",
+    "persona": "System Optimizer",
+    "personaPsychology": "Corporate father in tech region. Treats SAT like a procurement decision. Wants scope, method, timeline, result. Late funnel, execution-focused. Will disengage if process feels clunky.",
+    "sampleHooks": [
+      "Gap: 190 points. Timeline: 10 weeks. Result: Closed.",
+      "16 sessions. 2 per week. 200+ point avg gain. Do the math.",
+      "Start with a free diagnostic. Know the gap before you spend a dollar."
+    ],
+    "suggestedCta": "Book Diagnostic"
   },
   {
-    "id": "parent-urgent",
+    "id": "neurodivergent-advocate",
     "targetAudience": "parent",
-    "campaignGoal": "engagement",
-    "emotionalAngle": "urgency",
-    "offer": "Varsity Tutors SAT test prep",
-    "constraints": ["Target parents of juniors/seniors", "Mention limited availability"]
+    "campaignGoal": "conversion",
+    "emotionalAngle": "relief",
+    "offer": "Varsity Tutors 1-on-1 SAT tutoring — matched to how your child learns",
+    "persona": "Neurodivergent Advocate",
+    "personaPsychology": "Mother of student with ADHD, dyslexia, or processing differences. Deep knowledge of child's diagnosis. Values right fit over lowest price. Needs acknowledgment of specific diagnosis, honesty about tutor experience with similar students.",
+    "sampleHooks": [
+      "Standard SAT tutoring doesn't work for every kid. We know that.",
+      "ADHD doesn't mean they can't score high. It means they need the right tutor.",
+      "The right tutor doesn't just know the SAT. They know how your child thinks.",
+      "Your child isn't broken. They just learn differently."
+    ],
+    "suggestedCta": "Tell us about your child. We'll match them with a tutor who understands how they learn."
+  },
+  {
+    "id": "burned-returner",
+    "targetAudience": "parent",
+    "campaignGoal": "conversion",
+    "emotionalAngle": "anxiety",
+    "offer": "Varsity Tutors 1-on-1 SAT tutoring — perfect tutor match guarantee, cancel anytime",
+    "persona": "Burned Returner",
+    "personaPsychology": "Mother after a prior negative tutoring experience. Defining characteristic is disappointment. Values accountability and real results. Late funnel but conditional — returning out of urgency. Trust must be rebuilt in a single conversation.",
+    "sampleHooks": [
+      "Tutoring didn't work last time? That's why you're here.",
+      "You already spent the money. The score didn't move. We hear you.",
+      "Paid for tutoring and got the same score? That's not your child's fault.",
+      "We match, we measure, and if it's not working we change course. That's the difference."
+    ],
+    "suggestedCta": "Tell us what went wrong. We'll show you what's different."
+  },
+  {
+    "id": "khan-failure",
+    "targetAudience": "parent",
+    "campaignGoal": "conversion",
+    "emotionalAngle": "relief",
+    "offer": "Varsity Tutors 1-on-1 SAT tutoring — 10x improvement vs self-study",
+    "persona": "Khan Academy Failure",
+    "personaPsychology": "Parent whose child has been self-studying with free resources but score hasn't moved. Frustration + validation that it's not their child's fault. The problem is the method, not the student.",
+    "sampleHooks": [
+      "Khan Academy raised her score 10 points. That was the problem.",
+      "Free SAT resources are great... until you get your score back.",
+      "If your child won't sit down and study, this fixes that.",
+      "Most self-study fails for one reason: no accountability."
+    ],
+    "suggestedCta": "See what 1-on-1 changes."
+  },
+  {
+    "id": "online-skeptic",
+    "targetAudience": "parent",
+    "campaignGoal": "awareness",
+    "emotionalAngle": "social_proof",
+    "offer": "Varsity Tutors 1-on-1 SAT tutoring — training on the actual digital SAT interface",
+    "persona": "Online Skeptic",
+    "personaPsychology": "Parent skeptical of online instruction. Key reframe: the SAT itself is digital, so training digitally is an advantage, not a compromise. Don't defend online — flip the script.",
+    "sampleHooks": [
+      "The SAT is digital now. Why would you practice on paper?",
+      "You wouldn't practice football on a baseball field.",
+      "Training for a digital test in a classroom is the real risk.",
+      "This isn't a class. It's one tutor focused entirely on your child."
+    ],
+    "suggestedCta": "See how training on the real digital SAT interface raises scores."
+  },
+  {
+    "id": "test-anxiety",
+    "targetAudience": "both",
+    "campaignGoal": "conversion",
+    "emotionalAngle": "anxiety",
+    "offer": "Varsity Tutors 1-on-1 SAT tutoring — 6 full-length practice tests before test day",
+    "persona": "Test Anxiety",
+    "personaPsychology": "Student who knows the material but freezes on test day. Identity belief: 'I'm not a good test taker.' Problem is preparation and confidence, not knowledge. By test day, nothing on the screen should be unfamiliar.",
+    "sampleHooks": [
+      "She knows the material. She freezes on the test.",
+      "Good grades, bad test scores. That's not a knowledge problem.",
+      "'I'm just not a good test taker' — that's fixable.",
+      "The SAT shouldn't feel like a surprise. By test day, your child has already done this six times."
+    ],
+    "suggestedCta": "See how we help students walk into the SAT feeling ready, not scared."
+  },
+  {
+    "id": "accountability",
+    "targetAudience": "parent",
+    "campaignGoal": "conversion",
+    "emotionalAngle": "relief",
+    "offer": "Varsity Tutors 1-on-1 SAT tutoring — weekly progress reports, tutor keeps them on track",
+    "persona": "Accountability Seeker",
+    "personaPsychology": "Parental exhaustion. Can't make teenager study. Needs external authority figure. A 16-year-old won't listen to Mom but will listen to their tutor. Weekly progress reports so parent knows if child is doing the work.",
+    "sampleHooks": [
+      "Tired of being the homework police? That's what the tutor is for.",
+      "A 16-year-old won't listen to Mom. They'll listen to their tutor.",
+      "We don't just teach your child. We hold them accountable.",
+      "Progress reports every week. You'll know if they're doing the work."
+    ],
+    "suggestedCta": "Get a tutor who keeps your child accountable — so you don't have to."
+  },
+  {
+    "id": "school-failed",
+    "targetAudience": "parent",
+    "campaignGoal": "conversion",
+    "emotionalAngle": "anxiety",
+    "offer": "Varsity Tutors 1-on-1 SAT tutoring — real diagnostic and focused study plan",
+    "persona": "School Failed Them",
+    "personaPsychology": "Parent frustrated that school SAT prep was inadequate — watching videos, handing out books. May have had a substitute teacher in AP math. SAT is in weeks and child isn't ready. Frustration + betrayal.",
+    "sampleHooks": [
+      "Their school gave them a book. That's not SAT tutoring.",
+      "If the school's SAT class was working, you wouldn't be here.",
+      "They didn't have a real math teacher for half the year. Now they have the SAT in 6 weeks.",
+      "Your child's school prepared them for school. We prepare them for the SAT."
+    ],
+    "suggestedCta": "See what real SAT tutoring looks like."
+  },
+  {
+    "id": "scholarship-financial",
+    "targetAudience": "parent",
+    "campaignGoal": "conversion",
+    "emotionalAngle": "aspiration",
+    "offer": "Varsity Tutors 1-on-1 SAT tutoring — every SAT point has a dollar value",
+    "persona": "Scholarship/Financial Family",
+    "personaPsychology": "SAT is a money lever for this family. Every point maps to scholarship dollars. The ROI of tutoring is measurable against tuition savings. Practical, numbers-driven decision.",
+    "sampleHooks": [
+      "A 100-point SAT increase can mean $10,000-$40,000 in scholarships.",
+      "The SAT isn't just a test. It's a tuition discount.",
+      "Your child's score determines how much you write in tuition checks.",
+      "Don't leave scholarship money on the table."
+    ],
+    "suggestedCta": "See how many scholarship dollars your score could unlock."
   }
 ]

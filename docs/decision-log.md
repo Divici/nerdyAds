@@ -1033,3 +1033,39 @@ Flash doesn't just shift scores up — it's less discriminating. Raising the thr
 **Decision:** Store images on local filesystem at `data/output/{runId}/images/`, serve via Express static middleware. JSON sidecar files store metadata.
 
 **Known limitation:** Railway has an ephemeral filesystem — images are lost on redeploy. This is acceptable for demo/development. Phase 15+ should address persistent storage (Tigris S3-compatible bucket or AWS S3).
+
+---
+
+### D-039: Supplementary Materials Integration — VT Brand Language & Personas
+
+**Date:** 2026-03-14
+**Context:** Received official Varsity Tutors supplementary materials (C4_Automatic_Ad_Generator_Supplementary.md) with brand language rules, approved claims, 7 detailed personas with psychology profiles, ~100 proven hooks across 15 categories, offer/pricing details, and digital SAT differentiator messaging.
+
+**Decision:** Deep integration across all agents and data:
+- **Writer prompt:** Added language rules (banned phrases: "your student", "SAT prep", fake urgency, corporate speak), approved claims (100pts/month, 10x, 2.6x, competitor pricing), digital SAT differentiator (60% stat), offer details ($349-$1,099/mo pricing)
+- **Evaluator prompt:** Added brand voice violation penalty section — score capped at 5 for any language rule violation
+- **Editor prompt:** Added VT language rules as rule #6
+- **Briefs:** Expanded from 10 generic to 15 persona-based briefs with persona, personaPsychology, sampleHooks (3-5 per brief from supplementary), suggestedCta
+- **Calibration data:** Fixed 10 language violations in strong.json and borderline.json
+- **Eval suite:** Expanded from 11 to 31 tests across 11 files (5 existing + 6 new eval files)
+
+**Tradeoffs:**
+- Pro: Ads now match VT brand voice with specific, verifiable claims
+- Pro: Personas drive more targeted, audience-specific copy
+- Pro: Evaluator enforces compliance via scoring penalties
+- Con: More constrained creative space — writer has more rules to follow
+- Con: Existing pipeline runs used old brief IDs (API gracefully skips)
+
+---
+
+### D-040: Image Generation — Single Variant Instead of Two
+
+**Date:** 2026-03-14
+**Context:** Original v2 design generated 2 image variants per ad (photo-realistic + graphic). User requested simplification to 1 variant.
+
+**Decision:** Reduced to 1 variant per ad. Updated ImageVariantSchema (variantIndex max 0, variants length 1), AdImageRefSchema (confirmedVariant max 0), ImageGeneratorAgent (loop bound < 1), UI (removed variant toggle), and all related tests.
+
+**Tradeoffs:**
+- Pro: Simpler UX, fewer API calls, lower cost per image generation
+- Con: Less creative variety to choose from
+- Con: No A/B comparison between visual styles

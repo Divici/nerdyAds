@@ -246,11 +246,64 @@ describe('CompetitorPattern schema', () => {
   });
 });
 
+describe('Calibration data language compliance', () => {
+  const strong = JSON.parse(readFileSync(resolve(__dirname, '../../data/calibration/strong.json'), 'utf-8'));
+  const borderline = JSON.parse(readFileSync(resolve(__dirname, '../../data/calibration/borderline.json'), 'utf-8'));
+
+  it('strong calibration examples do not contain "your student"', () => {
+    for (const ad of strong) {
+      const combined = `${ad.primaryText} ${ad.headline} ${ad.description}`;
+      expect(combined.toLowerCase()).not.toContain('your student');
+    }
+  });
+
+  it('strong calibration examples do not contain "SAT Prep" in headlines', () => {
+    for (const ad of strong) {
+      expect(ad.headline).not.toMatch(/SAT Prep/i);
+    }
+  });
+
+  it('borderline calibration examples do not contain "your student"', () => {
+    for (const ad of borderline) {
+      const combined = `${ad.primaryText} ${ad.headline} ${ad.description}`;
+      expect(combined.toLowerCase()).not.toContain('your student');
+    }
+  });
+});
+
+describe('BriefSchema persona fields', () => {
+  it('accepts briefs with persona fields', () => {
+    const result = BriefSchema.safeParse({
+      id: 'test-persona',
+      targetAudience: 'parent',
+      campaignGoal: 'conversion',
+      emotionalAngle: 'anxiety',
+      offer: 'SAT tutoring',
+      persona: 'Athlete-Recruit Gatekeeper',
+      personaPsychology: 'Fear of missed recruiting window',
+      sampleHooks: ['Hook 1', 'Hook 2'],
+      suggestedCta: 'Talk to a specialist',
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it('accepts briefs without persona fields (backward compat)', () => {
+    const result = BriefSchema.safeParse({
+      id: 'test-no-persona',
+      targetAudience: 'student',
+      campaignGoal: 'awareness',
+      emotionalAngle: 'aspiration',
+      offer: 'SAT tutoring',
+    });
+    expect(result.success).toBe(true);
+  });
+});
+
 describe('briefs.json', () => {
   const briefs = JSON.parse(readFileSync(resolve(__dirname, '../../data/briefs.json'), 'utf-8'));
 
-  it('contains exactly 10 briefs', () => {
-    expect(briefs).toHaveLength(10);
+  it('contains 15 persona-based briefs', () => {
+    expect(briefs).toHaveLength(15);
   });
 
   it('every brief passes BriefSchema validation', () => {
@@ -260,22 +313,34 @@ describe('briefs.json', () => {
     }
   });
 
-  it('covers all three audience types', () => {
+  it('covers parent and both audience types', () => {
     const audiences = new Set(briefs.map((b: { targetAudience: string }) => b.targetAudience));
-    expect(audiences).toContain('student');
     expect(audiences).toContain('parent');
     expect(audiences).toContain('both');
   });
 
-  it('covers all three campaign goals', () => {
+  it('covers awareness and conversion campaign goals', () => {
     const goals = new Set(briefs.map((b: { campaignGoal: string }) => b.campaignGoal));
     expect(goals).toContain('awareness');
     expect(goals).toContain('conversion');
-    expect(goals).toContain('engagement');
   });
 
   it('has unique IDs', () => {
     const ids = briefs.map((b: { id: string }) => b.id);
-    expect(new Set(ids).size).toBe(10);
+    expect(new Set(ids).size).toBe(15);
+  });
+
+  it('every brief has persona and sampleHooks', () => {
+    for (const brief of briefs) {
+      expect(brief.persona, `Brief ${brief.id} missing persona`).toBeTruthy();
+      expect(brief.sampleHooks, `Brief ${brief.id} missing sampleHooks`).toBeDefined();
+      expect(brief.sampleHooks.length).toBeGreaterThanOrEqual(3);
+    }
+  });
+
+  it('every brief has a suggestedCta', () => {
+    for (const brief of briefs) {
+      expect(brief.suggestedCta, `Brief ${brief.id} missing suggestedCta`).toBeTruthy();
+    }
   });
 });
