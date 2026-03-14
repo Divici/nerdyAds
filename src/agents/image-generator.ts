@@ -15,9 +15,8 @@ const OUTPUT_DIR = join(process.cwd(), 'data', 'output');
 
 export class ImageGeneratorAgent {
   /**
-   * Generate 2 image variants for an accepted ad.
+   * Generate 1 image for an accepted ad.
    * Variant 0: photo-realistic style
-   * Variant 1: graphic/illustrated style
    */
   async generateVariants(
     ad: Ad,
@@ -29,7 +28,7 @@ export class ImageGeneratorAgent {
 
     const variants: ImageVariant[] = [];
 
-    for (let variantIndex = 0; variantIndex < 2; variantIndex++) {
+    for (let variantIndex = 0; variantIndex < 1; variantIndex++) {
       const userPrompt = buildImageUserPrompt(ad, brief, variantIndex);
       const seed = DEFAULT_SEED + variantIndex;
 

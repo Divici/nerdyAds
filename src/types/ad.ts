@@ -13,7 +13,7 @@ export const AdMetadataSchema = z.object({
 export type AdMetadata = z.infer<typeof AdMetadataSchema>;
 
 export const AdImageRefSchema = z.object({
-  confirmedVariant: z.number().int().min(0).max(1),
+  confirmedVariant: z.number().int().min(0).max(0),
   imagePath: z.string().min(1),
 });
 export type AdImageRef = z.infer<typeof AdImageRefSchema>;

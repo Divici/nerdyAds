@@ -17,7 +17,7 @@ export const VisualDimensionScoreSchema = z.object({
 export type VisualDimensionScore = z.infer<typeof VisualDimensionScoreSchema>;
 
 export const ImageVariantSchema = z.object({
-  variantIndex: z.number().int().min(0).max(1),
+  variantIndex: z.number().int().min(0).max(0),
   imagePath: z.string().min(1),
   blurb: z.string().min(1),
   visualScores: z.array(VisualDimensionScoreSchema).length(3).optional(),
@@ -28,8 +28,8 @@ export type ImageVariant = z.infer<typeof ImageVariantSchema>;
 export const AdImageResultSchema = z.object({
   adId: z.string(),
   runId: z.string(),
-  variants: z.array(ImageVariantSchema).length(2),
-  confirmedVariant: z.number().int().min(0).max(1).optional(),
+  variants: z.array(ImageVariantSchema).length(1),
+  confirmedVariant: z.number().int().min(0).max(0).optional(),
   generatedAt: z.string(),
 });
 export type AdImageResult = z.infer<typeof AdImageResultSchema>;

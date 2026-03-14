@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect } from 'react';
 import { useImageGeneration } from '../hooks/useImageGeneration.ts';
 import type { Ad, AdImageResult, VisualDimensionScore } from '../types.ts';
 
@@ -87,7 +86,6 @@ function VariantCard({
 export function ImageGenerator({ ad, runId, accepted }: ImageGeneratorProps) {
   const { imageResult, loading, error, generateImages, confirmImage, loadExistingImage, reset } =
     useImageGeneration(ad.id);
-  const [selectedVariant, setSelectedVariant] = useState<number>(0);
   const adBody = ad as unknown as Record<string, unknown>;
 
   // Load existing image result on mount
@@ -178,45 +176,21 @@ export function ImageGenerator({ ad, runId, accepted }: ImageGeneratorProps) {
     );
   }
 
-  // Show variant comparison
+  // Show single variant with action buttons
   return (
     <div className="bg-gray-50 p-3 space-y-3" onClick={(e) => e.stopPropagation()}>
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={selectedVariant}
-          initial={{ opacity: 0, x: selectedVariant === 0 ? -20 : 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: selectedVariant === 0 ? 20 : -20 }}
-          transition={{ duration: 0.2 }}
-        >
-          <VariantCard
-            variant={imageResult.variants[selectedVariant]}
-            selected
-            confirmed={false}
-            onSelect={() => {}}
-          />
-        </motion.div>
-      </AnimatePresence>
-
-      {/* Variant toggle */}
-      <div className="flex items-center justify-center gap-2">
-        {imageResult.variants.map((v) => (
-          <button
-            key={v.variantIndex}
-            type="button"
-            onClick={() => setSelectedVariant(v.variantIndex)}
-            className={`w-2 h-2 rounded-full transition-colors ${
-              selectedVariant === v.variantIndex ? 'bg-vt-accent' : 'bg-gray-300'
-            }`}
-          />
-        ))}
-      </div>
+      <VariantCard
+        variant={imageResult.variants[0]}
+        selected
+        confirmed={false}
+        onSelect={() => {}}
+      />
 
       {/* Action buttons */}
       <div className="flex gap-2 justify-center">
         <button
           type="button"
-          onClick={() => confirmImage(runId, selectedVariant)}
+          onClick={() => confirmImage(runId, 0)}
           className="bg-green-600 text-white text-xs font-button px-3 py-1.5 rounded-full hover:bg-green-700 transition-colors"
         >
           Confirm

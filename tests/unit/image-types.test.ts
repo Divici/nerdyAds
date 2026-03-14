@@ -70,7 +70,7 @@ describe('ImageVariantSchema', () => {
 
   it('accepts a valid image variant with visual scores', () => {
     const variant = {
-      ...makeVariant(1),
+      ...makeVariant(0),
       visualScores: [
         { dimension: 'brand_consistency', score: 8, rationale: 'Good', confidence: 7 },
         { dimension: 'copy_alignment', score: 7, rationale: 'Matches', confidence: 6 },
@@ -81,8 +81,8 @@ describe('ImageVariantSchema', () => {
     expect(result.visualScores).toHaveLength(3);
   });
 
-  it('rejects variantIndex outside 0-1', () => {
-    expect(() => ImageVariantSchema.parse({ ...makeVariant(0), variantIndex: 2 })).toThrow();
+  it('rejects variantIndex outside 0', () => {
+    expect(() => ImageVariantSchema.parse({ ...makeVariant(0), variantIndex: 1 })).toThrow();
     expect(() => ImageVariantSchema.parse({ ...makeVariant(0), variantIndex: -1 })).toThrow();
   });
 
@@ -95,14 +95,14 @@ describe('AdImageResultSchema', () => {
   const validResult = {
     adId: 'ad-1',
     runId: 'run-123',
-    variants: [makeVariant(0), makeVariant(1)],
+    variants: [makeVariant(0)],
     generatedAt: '2026-03-13T00:00:00Z',
   };
 
   it('accepts a valid result without confirmed variant', () => {
     const result = AdImageResultSchema.parse(validResult);
     expect(result.confirmedVariant).toBeUndefined();
-    expect(result.variants).toHaveLength(2);
+    expect(result.variants).toHaveLength(1);
   });
 
   it('accepts a valid result with confirmed variant', () => {
@@ -110,12 +110,12 @@ describe('AdImageResultSchema', () => {
     expect(result.confirmedVariant).toBe(0);
   });
 
-  it('rejects confirmedVariant outside 0-1', () => {
-    expect(() => AdImageResultSchema.parse({ ...validResult, confirmedVariant: 2 })).toThrow();
+  it('rejects confirmedVariant outside 0', () => {
+    expect(() => AdImageResultSchema.parse({ ...validResult, confirmedVariant: 1 })).toThrow();
   });
 
-  it('requires exactly 2 variants', () => {
-    expect(() => AdImageResultSchema.parse({ ...validResult, variants: [makeVariant(0)] })).toThrow();
+  it('requires exactly 1 variant', () => {
+    expect(() => AdImageResultSchema.parse({ ...validResult, variants: [makeVariant(0), makeVariant(0)] })).toThrow();
   });
 });
 

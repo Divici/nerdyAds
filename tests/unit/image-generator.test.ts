@@ -62,24 +62,19 @@ describe('ImageGeneratorAgent', () => {
     vi.clearAllMocks();
   });
 
-  it('generates exactly 2 image variants', async () => {
+  it('generates exactly 1 image variant', async () => {
     const variants = await agent.generateVariants(mockAd, mockBrief, 'test-run');
-    expect(variants).toHaveLength(2);
+    expect(variants).toHaveLength(1);
     expect(variants[0].variantIndex).toBe(0);
-    expect(variants[1].variantIndex).toBe(1);
   });
 
-  it('calls callGeminiImage twice with different seeds', async () => {
+  it('calls callGeminiImage once with the default seed', async () => {
     await agent.generateVariants(mockAd, mockBrief, 'test-run');
 
-    expect(callGeminiImage).toHaveBeenCalledTimes(2);
+    expect(callGeminiImage).toHaveBeenCalledTimes(1);
 
     const firstCall = vi.mocked(callGeminiImage).mock.calls[0];
-    const secondCall = vi.mocked(callGeminiImage).mock.calls[1];
-
-    // Different seeds for different variants
     expect(firstCall[2]?.seed).toBe(42);
-    expect(secondCall[2]?.seed).toBe(43);
   });
 
   it('saves image files to the correct directory', async () => {
@@ -89,21 +84,16 @@ describe('ImageGeneratorAgent', () => {
       expect.stringContaining('test-run'),
       { recursive: true },
     );
-    expect(writeFile).toHaveBeenCalledTimes(2);
+    expect(writeFile).toHaveBeenCalledTimes(1);
 
-    // First variant
+    // Single variant
     const firstPath = vi.mocked(writeFile).mock.calls[0][0] as string;
     expect(firstPath).toContain('ad-test-001-variant-0.png');
-
-    // Second variant
-    const secondPath = vi.mocked(writeFile).mock.calls[1][0] as string;
-    expect(secondPath).toContain('ad-test-001-variant-1.png');
   });
 
   it('includes text blurb from the image generation response', async () => {
     const variants = await agent.generateVariants(mockAd, mockBrief, 'test-run');
     expect(variants[0].blurb).toBe('A student studying at a desk with navy blue accents');
-    expect(variants[1].blurb).toBe('A student studying at a desk with navy blue accents');
   });
 
   it('includes metadata with cost and model info', async () => {
@@ -119,7 +109,6 @@ describe('ImageGeneratorAgent', () => {
     const variants = await agent.generateVariants(mockAd, mockBrief, 'run-abc');
 
     expect(variants[0].imagePath).toBe('/run-abc/images/ad-test-001-variant-0.png');
-    expect(variants[1].imagePath).toBe('/run-abc/images/ad-test-001-variant-1.png');
   });
 
   it('prompts include ad copy and brief context', async () => {
@@ -130,8 +119,5 @@ describe('ImageGeneratorAgent', () => {
     expect(firstUserPrompt).toContain('parent');
     expect(firstUserPrompt).toContain('anxiety');
     expect(firstUserPrompt).toContain('PHOTO-REALISTIC');
-
-    const secondUserPrompt = vi.mocked(callGeminiImage).mock.calls[1][1];
-    expect(secondUserPrompt).toContain('GRAPHIC/ILLUSTRATED');
   });
 });

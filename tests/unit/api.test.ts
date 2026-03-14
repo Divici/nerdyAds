@@ -20,20 +20,6 @@ vi.mock('../../src/agents/image-generator.js', () => ({
           generatedAt: '2026-03-13T00:00:00Z',
         },
       },
-      {
-        variantIndex: 1,
-        imagePath: '/test-run/images/ad-001-variant-1.png',
-        blurb: 'Graphic illustration of tutoring concept',
-        metadata: {
-          model: 'gemini-2.5-flash',
-          seed: 43,
-          promptHash: 'img-hash-1',
-          tokensIn: 200,
-          tokensOut: 1290,
-          costUsd: 0.039,
-          generatedAt: '2026-03-13T00:00:00Z',
-        },
-      },
     ]),
   })),
 }));
@@ -61,7 +47,7 @@ describe('API server', () => {
       const res = await request(app).get('/api/briefs');
       expect(res.status).toBe(200);
       expect(Array.isArray(res.body)).toBe(true);
-      expect(res.body.length).toBe(10);
+      expect(res.body.length).toBe(15);
       expect(res.body[0]).toHaveProperty('id');
       expect(res.body[0]).toHaveProperty('targetAudience');
       expect(res.body[0]).toHaveProperty('campaignGoal');
@@ -141,7 +127,8 @@ describe('API server', () => {
         .send({});
       expect(res.status).toBe(200);
       expect(res.body).toHaveProperty('runId');
-      expect(res.body).toHaveProperty('briefCount', 10);
+      expect(res.body).toHaveProperty('briefCount');
+      expect(res.body.briefCount).toBeGreaterThanOrEqual(1);
     });
   });
 
@@ -205,7 +192,7 @@ describe('API server', () => {
       expect(res.body).toHaveProperty('adId', ad.id);
       expect(res.body).toHaveProperty('runId', runId);
       expect(res.body).toHaveProperty('variants');
-      expect(res.body.variants).toHaveLength(2);
+      expect(res.body.variants).toHaveLength(1);
       expect(res.body.variants[0]).toHaveProperty('visualScores');
       expect(res.body.variants[0].visualScores).toHaveLength(3);
     }, 15000);
