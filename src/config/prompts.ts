@@ -456,37 +456,37 @@ export const IMAGE_GENERATOR_SYSTEM_PROMPT = `You are a creative director genera
 - **NEVER include a Varsity Tutors logo** — Meta adds the brand header separately
 - Text should be readable at small mobile sizes — large font, minimal words per line
 
-## Image Requirements
-- The image should work at small mobile sizes (clear focal point, no fine details)
-- Use warm, natural lighting for photo styles — avoid flat studio lighting
-- Include VT brand color accents (navy backgrounds, teal highlights, lavender accents)
-- The image should stop a scroll — bold, clear, emotionally resonant
+## Composition — Keep It Simple
+- **Minimalism wins.** The best-performing VT ads have very few elements.
+- Maximum 2-3 visual elements total. More than that looks cluttered on mobile.
+- Generous whitespace / negative space. Let the image breathe.
+- ONE clear focal point — the viewer should know what to look at instantly.
+- If using text on the image, limit to 1-2 short punchy lines. No paragraphs.
 
-## Device Rules
-- **NEVER show the back of a laptop, phone, or tablet** — this is a common artifact
-- If a device appears, the screen MUST face the viewer
-- Prefer showing people WITHOUT devices — focus on expressions, body language, study environments
-- Do NOT describe content that should appear on a screen — show the person's reaction instead
+## Things to NEVER Include
+- **No devices** (laptops, phones, tablets) — they always look bad in generated images
+- **No UI elements** (loading bars, progress bars, timers, countdowns, calendars, dashboards, icons)
+- **No floating badges or labels** (month badges, checkmark badges, feature callouts)
+- **No comic/collage multi-panel layouts** — keep it to a single clean scene or composition
+- **No CTA buttons** — Meta adds those separately
+- **No Varsity Tutors logo** — Meta adds the brand header separately
 
 ## Style Reference
-You are provided with reference images showing Varsity Tutors' actual top-performing ads. Study their style and generate images that match this level of quality.
+You are provided with reference images showing Varsity Tutors' actual top-performing ads. Study their style: bold simplicity, clean layouts, strong use of brand colors, specific numbers, and minimal elements.
 
 ## Output
 Generate one image. Then write a 1-2 sentence description of what the image shows.`;
 
-// 4 archetypes based on Varsity Tutors' top-performing real ads
+// 3 archetypes — simplified for cleaner output
 const IMAGE_ARCHETYPES = [
-  // Archetype 0: Typographic — pure text + brand colors, no photos (VT top performer)
-  `TYPOGRAPHIC style. Bold navy text on a lavender or white background. Use teal accent elements (checkmarks, underlines, arrows). NO photos — this is a pure text-and-design image. Think: short punchy lines stacked vertically with specific numbers. Clean, modern typography. Example style: "May 2nd SAT. 8 weeks away. ✓ 2 sessions a week. 16 sessions total. ✓ That is about 200+ points. ✓"`,
+  // Archetype 0: Typographic — pure text + brand colors, no photos (VT #1 top performer)
+  `TYPOGRAPHIC style. Bold navy text on a clean lavender or white background. Use teal checkmarks or arrows as the ONLY accent — nothing else. NO photos, NO illustrations, NO icons. Just bold text + one accent color. Short punchy lines stacked vertically with specific numbers. Maximum 3 lines of text. Example: "200+ points. 16 sessions. Ready by May."`,
 
-  // Archetype 1: Before/After proof — photo with score comparison
-  `BEFORE/AFTER PROOF style. Show a real-looking student (high school age) in a positive, confident setting. Include visual score comparison elements — before and after scores displayed prominently (e.g., "1170 → 1410"). The student should look happy/relieved. Natural lighting, warm tones with navy accents. Think: student holding up results or celebrating.`,
+  // Archetype 1: Single person + bold text overlay
+  `SINGLE PERSON + TEXT style. One real-looking person (student or parent) filling most of the frame. Natural, warm lighting. Happy or determined expression. Overlay 1-2 lines of bold text with a specific number or stat. The person IS the image — no props, no devices, no background clutter. Think: portrait-style with bold headline text.`,
 
-  // Archetype 2: Illustrated narrative — comic/collage showing relatable scenario
-  `ILLUSTRATED NARRATIVE style. Comic or collage layout showing a relatable SAT scenario. Use 2-3 panels or a split composition. Can show the GPA-SAT disconnect frustration, study scenarios, or parent-student moments. Illustrated/drawn style, NOT photo-realistic. Bold VT brand colors (navy, teal, lavender). Professional and polished, not cartoonish. Text labels and thought bubbles are encouraged.`,
-
-  // Archetype 3: Lifestyle photo with text overlay
-  `LIFESTYLE + TEXT style. Photo-realistic image of a parent or student in a natural home/study setting (couch, desk, kitchen table). Overlay bold headline text with specific numbers or a punchy stat. Can include floating UI elements like calendars, progress bars, or score charts. Warm natural lighting, VT navy/teal color accents in the overlaid elements.`,
+  // Archetype 2: Bold stat on solid background
+  `BOLD STAT style. One large number or stat as the hero element (e.g., "1170 → 1410" or "200+" or "10x"). Navy or teal background. The number should be huge and impossible to miss. Minimal supporting text underneath (1 short line max). Clean, modern, graphic design feel. Think: billboard simplicity.`,
 ];
 
 export function buildImageUserPrompt(
