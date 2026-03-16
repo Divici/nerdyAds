@@ -18,7 +18,7 @@ export const MODELS = {
   },
   flashImage: {
     modelId: 'gemini-2.5-flash-image',
-    temperature: 0.9,
+    temperature: 0.6,
     maxOutputTokens: 8192,
   },
 } as const satisfies Record<string, ModelConfig>;

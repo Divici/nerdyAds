@@ -11,7 +11,6 @@ import { loadCalibrationAnchors, loadWriterFewShotExamples } from '../utils/cali
 import { EvaluatorAgent } from '../agents/evaluator.js';
 import { EditorAgent } from '../agents/editor.js';
 import { ImageGeneratorAgent } from '../agents/image-generator.js';
-import { VisualEvaluatorAgent } from '../agents/visual-evaluator.js';
 import { QualityRatchet } from '../evaluate/threshold.js';
 import { MetricsTracker } from '../metrics/tracker.js';
 import { runContinuousBatch } from '../pipeline/batch-runner.js';
@@ -363,13 +362,6 @@ export function createApp() {
       // Generate images
       const imageGenerator = new ImageGeneratorAgent();
       const variants = await imageGenerator.generateVariants(ad, fullBrief, runId);
-
-      // Evaluate each variant
-      const visualEvaluator = new VisualEvaluatorAgent();
-      for (const variant of variants) {
-        const scores = await visualEvaluator.evaluate(variant, ad, fullBrief);
-        variant.visualScores = scores;
-      }
 
       // Build result
       const imageResult: AdImageResult = {

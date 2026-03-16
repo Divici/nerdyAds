@@ -24,15 +24,7 @@ vi.mock('../../src/agents/image-generator.js', () => ({
   })),
 }));
 
-vi.mock('../../src/agents/visual-evaluator.js', () => ({
-  VisualEvaluatorAgent: vi.fn().mockImplementation(() => ({
-    evaluate: vi.fn().mockResolvedValue([
-      { dimension: 'brand_consistency', score: 8, rationale: 'Strong navy palette', confidence: 7 },
-      { dimension: 'copy_alignment', score: 7, rationale: 'Matches theme', confidence: 6 },
-      { dimension: 'engagement_potential', score: 9, rationale: 'Strong focal point', confidence: 8 },
-    ]),
-  })),
-}));
+
 
 // Check if supertest is available, if not we'll use a simpler approach
 let app: ReturnType<typeof createApp>;
@@ -198,8 +190,6 @@ describe('API server', () => {
       expect(res.body).toHaveProperty('runId', runId);
       expect(res.body).toHaveProperty('variants');
       expect(res.body.variants).toHaveLength(1);
-      expect(res.body.variants[0]).toHaveProperty('visualScores');
-      expect(res.body.variants[0].visualScores).toHaveLength(3);
     }, 15000);
 
     it('returns 404 for non-existent ad in valid run', async () => {

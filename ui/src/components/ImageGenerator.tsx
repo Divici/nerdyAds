@@ -1,34 +1,11 @@
 import { useEffect } from 'react';
 import { useImageGeneration } from '../hooks/useImageGeneration.ts';
-import type { Ad, AdImageResult, VisualDimensionScore } from '../types.ts';
+import type { Ad, AdImageResult } from '../types.ts';
 
 interface ImageGeneratorProps {
   ad: Ad;
   runId: string;
   accepted: boolean;
-}
-
-const DIMENSION_LABELS: Record<string, string> = {
-  brand_consistency: 'Brand',
-  copy_alignment: 'Copy',
-  engagement_potential: 'Engage',
-};
-
-function VisualScoreBar({ score }: { score: VisualDimensionScore }) {
-  const pct = (score.score / 10) * 100;
-  const color =
-    score.score >= 7 ? 'bg-score-good' : score.score >= 5 ? 'bg-score-ok' : 'bg-score-bad';
-  return (
-    <div className="flex items-center gap-2 text-xs">
-      <span className="text-gray-500 w-10 text-right">
-        {DIMENSION_LABELS[score.dimension] ?? score.dimension}
-      </span>
-      <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-        <div className={`h-full rounded-full ${color}`} style={{ width: `${pct}%` }} />
-      </div>
-      <span className="text-gray-600 w-5 text-right font-medium">{score.score}</span>
-    </div>
-  );
 }
 
 function VariantCard({
@@ -65,15 +42,6 @@ function VariantCard({
           }`}
         >
           {confirmed ? '✓' : variant.variantIndex + 1}
-        </div>
-      )}
-
-      {/* Visual scores */}
-      {variant.visualScores && (
-        <div className="p-2 space-y-1 bg-white">
-          {variant.visualScores.map((s) => (
-            <VisualScoreBar key={s.dimension} score={s} />
-          ))}
         </div>
       )}
 

@@ -462,6 +462,12 @@ export const IMAGE_GENERATOR_SYSTEM_PROMPT = `You are a creative director genera
 - Include VT brand color accents (navy backgrounds, teal highlights, lavender accents)
 - The image should stop a scroll — bold, clear, emotionally resonant
 
+## Device Rules
+- **NEVER show the back of a laptop, phone, or tablet** — this is a common artifact
+- If a device appears, the screen MUST face the viewer
+- Prefer showing people WITHOUT devices — focus on expressions, body language, study environments
+- Do NOT describe content that should appear on a screen — show the person's reaction instead
+
 ## Output
 Generate one image. Then write a 1-2 sentence description of what the image shows.`;
 
