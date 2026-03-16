@@ -53,13 +53,13 @@ const MOCK_ADS_RAW = [
     primaryText: 'Your dream SAT score is closer than you think. Our expert tutors create a personalized plan to help you succeed.',
     headline: 'SAT Prep That Gets Results',
     description: 'Join thousands of students who boosted their scores.',
-    ctaButton: 'Start Now',
+    ctaButton: 'Sign Up',
   },
   {
     primaryText: 'Stop stressing about the SAT. Get matched with a tutor who knows exactly how to raise your score.',
     headline: 'Expert SAT Help, Real Results',
     description: 'Personalized prep plans built for your goals.',
-    ctaButton: 'Get Started',
+    ctaButton: 'Learn More',
   },
 ];
 
@@ -169,7 +169,7 @@ describe('WriterAgent', () => {
       primaryText: `Ad text ${i}`,
       headline: `Headline ${i}`,
       description: `Description ${i}`,
-      ctaButton: 'CTA',
+      ctaButton: 'Learn More',
     }));
     mockCallGemini.mockResolvedValueOnce(makeMockAdResponse(fiveAds));
 

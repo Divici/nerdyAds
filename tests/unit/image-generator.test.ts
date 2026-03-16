@@ -34,7 +34,7 @@ const mockAd: Ad = {
   primaryText: 'Your child is smarter than their SAT score suggests.',
   headline: 'SAT Prep That Works',
   description: 'Expert 1-on-1 tutoring for real score improvement.',
-  ctaButton: 'Start Free Trial',
+  ctaButton: 'Learn More',
   version: 0,
   metadata: {
     model: 'gemini-2.5-flash',
@@ -111,13 +111,19 @@ describe('ImageGeneratorAgent', () => {
     expect(variants[0].imagePath).toBe('/run-abc/images/ad-test-001-variant-0.png');
   });
 
-  it('prompts include ad copy and brief context', async () => {
+  it('prompts include ad context and archetype direction', async () => {
     await agent.generateVariants(mockAd, mockBrief, 'test-run');
 
     const firstUserPrompt = vi.mocked(callGeminiImage).mock.calls[0][1];
-    expect(firstUserPrompt).toContain('Your child is smarter');
+    // Should include headline and brief context
+    expect(firstUserPrompt).toContain(mockAd.headline);
     expect(firstUserPrompt).toContain('parent');
     expect(firstUserPrompt).toContain('anxiety');
-    expect(firstUserPrompt).toContain('PHOTO-REALISTIC');
+    // Should include one of the 4 archetypes
+    expect(firstUserPrompt).toMatch(/TYPOGRAPHIC|BEFORE\/AFTER|ILLUSTRATED|LIFESTYLE/);
+    // Should ban CTA buttons on the image
+    expect(firstUserPrompt).toContain('Do NOT include any CTA buttons');
+    // Should ban logo
+    expect(firstUserPrompt).toContain('Do NOT include a Varsity Tutors logo');
   });
 });

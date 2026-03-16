@@ -57,7 +57,7 @@ const mockAd: Ad = {
   primaryText: 'Your child is smarter than their SAT score.',
   headline: 'SAT Prep That Works',
   description: 'Expert 1-on-1 tutoring',
-  ctaButton: 'Start Free Trial',
+  ctaButton: 'Learn More',
   version: 0,
   metadata: makeMetadata(),
 };

@@ -16,7 +16,7 @@ const TEST_AD: Ad = {
     "📊 Your child isn't struggling with the material—they're struggling with the test.\n\nThe digital SAT rewards strategy, not just knowledge. That's why high-achieving students often score below their potential.\n\n✓ Diagnostic pinpoints exact timing gaps\n✓ Digital interface training\n✓ 1-on-1 strategy coaching\n✓ Flexible scheduling around your timeline\n\nSmart students need smart test strategy.\n\nReady to see scores that match their ability?",
   headline: '3.8 GPA But 1180 SAT? Here\'s Why',
   description: 'Strategy-based SAT improvement',
-  ctaButton: 'Learn more',
+  ctaButton: 'Learn More',
   version: 0,
   metadata: {
     model: 'reference',

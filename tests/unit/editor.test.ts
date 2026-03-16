@@ -18,7 +18,7 @@ const MOCK_AD: Ad = {
   primaryText: 'Boost your SAT score with expert tutors.',
   headline: 'SAT Prep That Works',
   description: 'Join students who improved.',
-  ctaButton: 'Start Now',
+  ctaButton: 'Sign Up',
   version: 0,
   metadata: {
     model: 'gemini-2.0-flash',
@@ -77,7 +77,7 @@ const IMPROVED_AD_RAW = {
   primaryText: 'Picture this: walking out of the SAT knowing you gave it your best shot. Our expert tutors make that feeling real.',
   headline: 'SAT Prep That Inspires Confidence',
   description: 'Join students who didn\'t just improve — they transformed.',
-  ctaButton: 'Start Now',
+  ctaButton: 'Sign Up',
 };
 
 describe('EditorAgent', () => {

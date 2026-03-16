@@ -39,7 +39,7 @@ const WEAK_CTA_AD = makeAd('weak-cta', {
     "Your child's SAT score doesn't reflect their true ability. The digital SAT tests strategy, not just knowledge. Our diagnostic identifies exact timing gaps and knowledge blind spots. With 1-on-1 coaching, students gain 200+ points in 8 weeks. We've helped 12,000+ families see real improvement.",
   headline: 'Smart Students Deserve Smart Strategy',
   description: 'Expert SAT coaching for the digital test era',
-  ctaButton: 'Click Here',
+  ctaButton: 'Learn More',
 });
 
 // Ad with deliberately weak clarity — muddled, multiple competing messages
@@ -48,7 +48,7 @@ const WEAK_CLARITY_AD = makeAd('weak-clarity', {
     "SAT scores matter but also GPA and extracurriculars plus college essays are important too and don't forget about AP classes which we also tutor for along with ACT prep and summer programs and academic coaching for middle schoolers who might want to start early because early preparation is key to success in all areas of academic life including but not limited to standardized testing.",
   headline: 'Everything Academic Under One Roof Plus More',
   description: 'SAT, ACT, AP, essays, coaching, tutoring, and more for all students everywhere',
-  ctaButton: 'Get Started Today',
+  ctaButton: 'Sign Up',
 });
 
 // Ad with weak emotional resonance — purely factual, no emotion
@@ -58,7 +58,7 @@ const WEAK_EMOTIONAL_AD = makeAd('weak-emotional', {
     'Varsity Tutors provides SAT tutoring. Our tutors hold advanced degrees. The program includes diagnostic assessments, practice tests, and strategy instruction. Sessions are 60 minutes. Scheduling is flexible.',
   headline: 'SAT Tutoring Sessions Available',
   description: '1-on-1 SAT tutoring with qualified instructors',
-  ctaButton: 'Schedule a Session',
+  ctaButton: 'Book Now',
 });
 
 describe('Dimension Independence Eval — catches specific weak dimensions', () => {

@@ -20,7 +20,7 @@ const TEST_AD: Ad = {
     "Your child's 3.8 GPA says they're smart. Their 1180 SAT says the test doesn't show it. The digital SAT rewards strategy, not just knowledge. Our diagnostic finds the gaps. 1-on-1 coaching fills them. Average improvement: 200+ points in 8 weeks.",
   headline: 'Smart Kids. Low Scores. We Fix That.',
   description: 'Expert SAT strategy coaching',
-  ctaButton: 'Stuff',  // deliberately weak CTA
+  ctaButton: 'Learn More',
   version: 0,
   metadata: {
     model: 'eval',

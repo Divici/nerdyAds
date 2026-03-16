@@ -239,7 +239,7 @@ Each ad has 4 components:
 - Primary text should hook within the first sentence
 - Value proposition must be specific (not "we're the best" — say WHY)
 - Emotional angle should match the brief's target audience
-- Match CTA to funnel stage: "Learn More" for awareness, "Sign Up"/"Get Started" for conversion
+- CTA MUST be one of Meta's allowed values: "Learn More", "Sign Up", "Get Quote", "Book Now", "Contact Us", "Apply Now", "Subscribe", "Get Offer", "Shop Now", "Download". Match to funnel stage: "Learn More" for awareness, "Sign Up" for conversion
 - Avoid clichés: "unlock your potential", "take the first step", "journey to success", "maximize score potential", "tailored support", "custom strategies", "growth areas", "dream college within reach"
 
 ## Output Format
@@ -447,22 +447,37 @@ export const IMAGE_GENERATOR_SYSTEM_PROMPT = `You are a creative director genera
 - **Accent colors:** Teal #00B4D8, Lavender #D4D1EC, White #FFFFFF
 - **Style:** Clean, professional, aspirational. NOT stock-photo generic.
 - **Target format:** 1080×1080 (square, Meta feed format)
-- **Logo:** Do NOT include a Varsity Tutors logo — the brand header is added by Meta.
+
+## Text on Images
+- Text IS allowed and encouraged — punchy headlines, specific numbers, and stats work well
+- Keep text bold, short, and high-contrast (navy on white/lavender, or white on navy)
+- Use specific numbers when available (e.g., "200+ points", "1170 → 1410", "16 sessions")
+- **NEVER put CTA buttons on the image** (e.g., "Start This Week", "Learn More") — Meta adds the CTA button separately
+- **NEVER include a Varsity Tutors logo** — Meta adds the brand header separately
+- Text should be readable at small mobile sizes — large font, minimal words per line
 
 ## Image Requirements
-- Show real-looking people (students, parents) or clean study environments
-- Use warm, natural lighting — avoid flat studio lighting
-- Include subtle brand color accents (navy backgrounds, teal highlights)
-- The image should complement the ad copy, not repeat it
-- Avoid text overlays — Meta penalizes images with more than 20% text
 - The image should work at small mobile sizes (clear focal point, no fine details)
+- Use warm, natural lighting for photo styles — avoid flat studio lighting
+- Include VT brand color accents (navy backgrounds, teal highlights, lavender accents)
+- The image should stop a scroll — bold, clear, emotionally resonant
 
 ## Output
-Generate one image and write a 1-2 sentence description of what the image shows. This description will be used to evaluate how well the image matches the ad copy.`;
+Generate one image. Then write a 1-2 sentence description of what the image shows.`;
 
-const VARIANT_DIRECTIONS = [
-  'Create a PHOTO-REALISTIC image. Show real-looking people in an authentic study or academic setting. Think: candid moment of a student having an "aha" moment, or a parent and student reviewing results together. Natural colors with subtle VT navy accents.',
-  'Create a GRAPHIC/ILLUSTRATED style image. Use clean design with bold VT brand colors (navy, teal, lavender). Think: modern infographic feel, abstract geometric shapes suggesting growth/progress, or stylized icons. Professional and polished, not cartoonish.',
+// 4 archetypes based on Varsity Tutors' top-performing real ads
+const IMAGE_ARCHETYPES = [
+  // Archetype 0: Typographic — pure text + brand colors, no photos (VT top performer)
+  `TYPOGRAPHIC style. Bold navy text on a lavender or white background. Use teal accent elements (checkmarks, underlines, arrows). NO photos — this is a pure text-and-design image. Think: short punchy lines stacked vertically with specific numbers. Clean, modern typography. Example style: "May 2nd SAT. 8 weeks away. ✓ 2 sessions a week. 16 sessions total. ✓ That is about 200+ points. ✓"`,
+
+  // Archetype 1: Before/After proof — photo with score comparison
+  `BEFORE/AFTER PROOF style. Show a real-looking student (high school age) in a positive, confident setting. Include visual score comparison elements — before and after scores displayed prominently (e.g., "1170 → 1410"). The student should look happy/relieved. Natural lighting, warm tones with navy accents. Think: student holding up results or celebrating.`,
+
+  // Archetype 2: Illustrated narrative — comic/collage showing relatable scenario
+  `ILLUSTRATED NARRATIVE style. Comic or collage layout showing a relatable SAT scenario. Use 2-3 panels or a split composition. Can show the GPA-SAT disconnect frustration, study scenarios, or parent-student moments. Illustrated/drawn style, NOT photo-realistic. Bold VT brand colors (navy, teal, lavender). Professional and polished, not cartoonish. Text labels and thought bubbles are encouraged.`,
+
+  // Archetype 3: Lifestyle photo with text overlay
+  `LIFESTYLE + TEXT style. Photo-realistic image of a parent or student in a natural home/study setting (couch, desk, kitchen table). Overlay bold headline text with specific numbers or a punchy stat. Can include floating UI elements like calendars, progress bars, or score charts. Warm natural lighting, VT navy/teal color accents in the overlaid elements.`,
 ];
 
 export function buildImageUserPrompt(
@@ -470,22 +485,41 @@ export function buildImageUserPrompt(
   brief: Brief,
   variantIndex: number,
 ): string {
-  const direction = VARIANT_DIRECTIONS[variantIndex] ?? VARIANT_DIRECTIONS[0];
+  // Select archetype based on a hash of the ad ID for variety across ads
+  const archetypeIndex = Math.abs(hashCode(ad.id)) % IMAGE_ARCHETYPES.length;
+  const archetype = IMAGE_ARCHETYPES[archetypeIndex];
 
-  return `## Ad Copy (the image should complement this)
-- **Primary Text:** ${ad.primaryText}
-- **Headline:** ${ad.headline}
-- **CTA:** ${ad.ctaButton}
+  const audience = brief.targetAudience === 'parent' ? 'parents of SAT students'
+    : brief.targetAudience === 'student' ? 'high school students' : 'parents and students';
 
-## Campaign Context
-- **Target Audience:** ${brief.targetAudience}
-- **Campaign Goal:** ${brief.campaignGoal}
-- **Emotional Angle:** ${brief.emotionalAngle}
+  // Extract key numbers/stats from the ad copy for text-on-image use
+  const numberMatches = ad.primaryText.match(/\d[\d,.]*/g) ?? [];
+  const keyNumbers = numberMatches.slice(0, 5).join(', ');
+
+  return `## Ad Copy Context
+- **Headline:** "${ad.headline}"
+- **Key message:** ${ad.primaryText.split(/[.!?]/)[0].trim()}
+- **Emotional angle:** ${brief.emotionalAngle}
+- **Audience:** ${audience}
+${keyNumbers ? `- **Key numbers from ad:** ${keyNumbers}` : ''}
 
 ## Creative Direction
-${direction}
+${archetype}
 
-Generate the image now. Then describe what the image shows in 1-2 sentences.`;
+IMPORTANT: Do NOT include any CTA buttons (like "Learn More", "Sign Up", "Start Now") on the image — Meta adds those separately. Do NOT include a Varsity Tutors logo.
+
+Generate the image now. Then describe what it shows in 1-2 sentences.`;
+}
+
+/** Simple string hash for deterministic archetype selection */
+function hashCode(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
 }
 
 // ── Visual Evaluator Prompts ────────────────────────────────────────

@@ -22,7 +22,7 @@ function makeAd(overrides: Partial<Ad> = {}): Ad {
     primaryText: `Ad copy ${adCounter}`,
     headline: `Headline ${adCounter}`,
     description: `Description ${adCounter}`,
-    ctaButton: 'Learn more',
+    ctaButton: 'Learn More',
     version: 0,
     metadata: {
       model: 'gemini-2.0-flash',

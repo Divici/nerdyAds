@@ -37,7 +37,7 @@ const CLEAN_AD = makeAd('bv-clean', {
     "Your child's GPA says they're capable. Their SAT score should too. Our 1-on-1 SAT tutoring identifies strategy gaps and closes them — average improvement of 200+ points.",
   headline: 'Smart Kids Deserve Smart Strategy',
   description: 'Expert SAT tutoring built for your child',
-  ctaButton: 'See How It Works',
+  ctaButton: 'Learn More',
 });
 
 // "your student" violation
@@ -46,7 +46,7 @@ const YOUR_STUDENT_AD = makeAd('bv-your-student', {
     "Is your student struggling with the SAT? Our expert tutors help your student build confidence and improve scores through personalized 1-on-1 sessions.",
   headline: 'Help Your Student Succeed',
   description: 'SAT tutoring for your student',
-  ctaButton: 'Get Started',
+  ctaButton: 'Sign Up',
 });
 
 // "SAT prep" violation
@@ -55,7 +55,7 @@ const SAT_PREP_AD = makeAd('bv-sat-prep', {
     "Looking for the best SAT prep? Our SAT prep program has helped thousands of students raise their scores. Expert SAT prep tutors available now.",
   headline: 'Top-Rated SAT Prep',
   description: 'The SAT prep your child needs',
-  ctaButton: 'Start SAT Prep',
+  ctaButton: 'Learn More',
 });
 
 // Fake urgency violation
@@ -64,7 +64,7 @@ const FAKE_URGENCY_AD = makeAd('bv-fake-urgency', {
     "Spots are filling fast! Only 3 slots left this month. Don't miss out on our exclusive SAT tutoring program. Limited availability — act now before it's too late!",
   headline: 'Spots Filling Fast — Act Now!',
   description: 'Limited spots available for SAT tutoring',
-  ctaButton: 'Claim Your Spot',
+  ctaButton: 'Sign Up',
 });
 
 // Corporate/marketing speak violation
@@ -73,7 +73,7 @@ const CORPORATE_AD = makeAd('bv-corporate', {
     "Unlock your child's full potential with our holistic approach to SAT tutoring. We leverage cutting-edge methodologies to maximize score potential and empower students to supercharge their academic journey.",
   headline: 'Unlock Potential. Maximize Scores.',
   description: 'A game-changer in SAT tutoring',
-  ctaButton: 'Transform Today',
+  ctaButton: 'Learn More',
 });
 
 describe('Brand Voice Violations Eval — evaluator detects violations', () => {

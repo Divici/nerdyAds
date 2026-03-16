@@ -126,7 +126,7 @@ describe('AdSchema backwards compatibility', () => {
     primaryText: 'Your child is smarter than their score.',
     headline: 'SAT Prep That Works',
     description: 'Expert 1-on-1 tutoring',
-    ctaButton: 'Get Started',
+    ctaButton: 'Sign Up',
     version: 0,
     metadata: makeMetadata(),
   };
