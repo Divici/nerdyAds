@@ -501,16 +501,18 @@ export function buildImageUserPrompt(
   const audience = brief.targetAudience === 'parent' ? 'parents of SAT students'
     : brief.targetAudience === 'student' ? 'high school students' : 'parents and students';
 
-  // Extract key numbers/stats from the ad copy for text-on-image use
-  const numberMatches = ad.primaryText.match(/\d[\d,.]*/g) ?? [];
-  const keyNumbers = numberMatches.slice(0, 5).join(', ');
+  // Build a short, prescriptive text line for the image that always includes "SAT"
+  const headline = ad.headline;
+  const firstSentence = ad.primaryText.split(/[.!?]/)[0].trim();
+  // Ensure SAT context is always present in suggested text
+  const satAnchor = headline.toLowerCase().includes('sat') ? headline : `SAT: ${headline}`;
 
-  return `## Ad Copy Context
-- **Headline:** "${ad.headline}"
-- **Key message:** ${ad.primaryText.split(/[.!?]/)[0].trim()}
+  return `## Ad Context
+- **Suggested text for image:** "${satAnchor}"
+- **Backup short line:** "${firstSentence}"
 - **Emotional angle:** ${brief.emotionalAngle}
 - **Audience:** ${audience}
-${keyNumbers ? `- **Key numbers from ad:** ${keyNumbers}` : ''}
+- **This is an ad for SAT tutoring** — any text on the image MUST clearly reference SAT scores, SAT tutoring, or SAT improvement. Never let the image look like a generic sports or lifestyle ad.
 
 ## Creative Direction
 ${archetype}
