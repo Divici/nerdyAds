@@ -501,23 +501,24 @@ export function buildImageUserPrompt(
   const audience = brief.targetAudience === 'parent' ? 'parents of SAT students'
     : brief.targetAudience === 'student' ? 'high school students' : 'parents and students';
 
-  // Build a short, prescriptive text line for the image that always includes "SAT"
   const headline = ad.headline;
-  const firstSentence = ad.primaryText.split(/[.!?]/)[0].trim();
-  // Ensure SAT context is always present in suggested text
   const satAnchor = headline.toLowerCase().includes('sat') ? headline : `SAT: ${headline}`;
 
-  return `## Ad Context
-- **Suggested text for image:** "${satAnchor}"
-- **Backup short line:** "${firstSentence}"
+  return `## Full Ad Copy (use this to understand the ad's message and tone)
+- **Primary Text:** ${ad.primaryText}
+- **Headline:** ${ad.headline}
+- **Description:** ${ad.description}
+
+## Image Text Guidance
+- **Suggested text to render on the image (1-2 lines max):** "${satAnchor}"
+- The image must clearly be about SAT tutoring — never a generic sports, lifestyle, or motivational ad.
 - **Emotional angle:** ${brief.emotionalAngle}
 - **Audience:** ${audience}
-- **This is an ad for SAT tutoring** — any text on the image MUST clearly reference SAT scores, SAT tutoring, or SAT improvement. Never let the image look like a generic sports or lifestyle ad.
 
 ## Creative Direction
 ${archetype}
 
-IMPORTANT: Do NOT include any CTA buttons (like "Learn More", "Sign Up", "Start Now") on the image — Meta adds those separately. Do NOT include a Varsity Tutors logo.
+IMPORTANT: Do NOT include any CTA buttons (like "Learn More", "Sign Up", "Start Now") on the image — Meta adds those separately. Do NOT include a Varsity Tutors logo. Keep text on the image to 1-2 short lines — do NOT render the full ad copy.
 
 Generate the image now. Then describe what it shows in 1-2 sentences.`;
 }
