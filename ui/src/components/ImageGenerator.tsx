@@ -1,54 +1,11 @@
 import { useEffect } from 'react';
 import { useImageGeneration } from '../hooks/useImageGeneration.ts';
-import type { Ad, AdImageResult } from '../types.ts';
+import type { Ad } from '../types.ts';
 
 interface ImageGeneratorProps {
   ad: Ad;
   runId: string;
   accepted: boolean;
-}
-
-function VariantCard({
-  variant,
-  selected,
-  confirmed,
-  onSelect,
-}: {
-  variant: AdImageResult['variants'][0];
-  selected: boolean;
-  confirmed: boolean;
-  onSelect: () => void;
-}) {
-  const imgSrc = `/api/output${variant.imagePath}`;
-
-  return (
-    <button
-      type="button"
-      onClick={onSelect}
-      className={`
-        relative rounded-lg overflow-hidden border-2 transition-all duration-200
-        ${confirmed ? 'border-green-500 ring-2 ring-green-200' : ''}
-        ${selected && !confirmed ? 'border-vt-accent ring-2 ring-vt-accent/20' : ''}
-        ${!selected && !confirmed ? 'border-gray-200 hover:border-gray-300' : ''}
-      `}
-    >
-      <img src={imgSrc} alt={variant.blurb} className="w-full aspect-square object-cover" />
-
-      {/* Selection indicator */}
-      {(selected || confirmed) && (
-        <div
-          className={`absolute top-2 right-2 w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold ${
-            confirmed ? 'bg-green-500' : 'bg-vt-accent'
-          }`}
-        >
-          {confirmed ? '✓' : variant.variantIndex + 1}
-        </div>
-      )}
-
-      {/* Blurb */}
-      <p className="text-[10px] text-gray-400 px-2 pb-2 line-clamp-2 bg-white">{variant.blurb}</p>
-    </button>
-  );
 }
 
 export function ImageGenerator({ ad, runId, accepted }: ImageGeneratorProps) {
@@ -81,7 +38,7 @@ export function ImageGenerator({ ad, runId, accepted }: ImageGeneratorProps) {
             <div className="absolute inset-0 rounded-full border-2 border-vt-accent/20" />
             <div className="absolute inset-0 rounded-full border-2 border-vt-accent border-t-transparent animate-spin" />
           </div>
-          <p className="text-xs text-vt-accent font-button">Generating images...</p>
+          <p className="text-xs text-vt-accent font-button">Generating image...</p>
           <p className="text-[10px] text-gray-400 mt-1">This may take 15-20s</p>
         </div>
       </div>
@@ -130,29 +87,26 @@ export function ImageGenerator({ ad, runId, accepted }: ImageGeneratorProps) {
 
   const isConfirmed = imageResult.confirmedVariant !== undefined;
 
-  // Show confirmed image only
+  // Show confirmed image (no badge)
   if (isConfirmed) {
     const confirmedVar = imageResult.variants[imageResult.confirmedVariant!];
     const imgSrc = `/api/output${confirmedVar.imagePath}`;
     return (
       <div className="relative">
         <img src={imgSrc} alt={confirmedVar.blurb} className="w-full aspect-square object-cover" />
-        <div className="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-          Confirmed
-        </div>
       </div>
     );
   }
 
-  // Show single variant with action buttons
+  // Show image with action buttons (no blurb, no badge)
+  const variant = imageResult.variants[0];
+  const imgSrc = `/api/output${variant.imagePath}`;
+
   return (
     <div className="bg-gray-50 p-3 space-y-3" onClick={(e) => e.stopPropagation()}>
-      <VariantCard
-        variant={imageResult.variants[0]}
-        selected
-        confirmed={false}
-        onSelect={() => {}}
-      />
+      <div className="rounded-lg overflow-hidden border-2 border-vt-accent ring-2 ring-vt-accent/20">
+        <img src={imgSrc} alt={variant.blurb} className="w-full aspect-square object-cover" />
+      </div>
 
       {/* Action buttons */}
       <div className="flex gap-2 justify-center">

@@ -468,6 +468,9 @@ export const IMAGE_GENERATOR_SYSTEM_PROMPT = `You are a creative director genera
 - Prefer showing people WITHOUT devices — focus on expressions, body language, study environments
 - Do NOT describe content that should appear on a screen — show the person's reaction instead
 
+## Style Reference
+You are provided with reference images showing Varsity Tutors' actual top-performing ads. Study their style and generate images that match this level of quality.
+
 ## Output
 Generate one image. Then write a 1-2 sentence description of what the image shows.`;
 

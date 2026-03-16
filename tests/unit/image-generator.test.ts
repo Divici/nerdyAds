@@ -19,10 +19,15 @@ vi.mock('../../src/utils/gemini-image-client.js', () => ({
   }),
 }));
 
-// Mock fs to avoid actual file writes in tests
+// Mock fs to avoid actual file I/O in tests
 vi.mock('fs/promises', () => ({
   writeFile: vi.fn().mockResolvedValue(undefined),
   mkdir: vi.fn().mockResolvedValue(undefined),
+  readFile: vi.fn().mockResolvedValue(Buffer.from('fake-image-data')),
+}));
+
+vi.mock('fs', () => ({
+  existsSync: vi.fn().mockReturnValue(true),
 }));
 
 import { callGeminiImage } from '../../src/utils/gemini-image-client.js';
