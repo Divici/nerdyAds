@@ -477,16 +477,22 @@ You are provided with reference images showing Varsity Tutors' actual top-perfor
 ## Output
 Generate one image. Then write a 1-2 sentence description of what the image shows.`;
 
-// 3 archetypes — simplified for cleaner output
+// 4 archetypes — balanced between text-only and photo styles
 const IMAGE_ARCHETYPES = [
-  // Archetype 0: Typographic — pure text + brand colors, no photos (VT #1 top performer)
-  `TYPOGRAPHIC style. Bold navy text on a clean lavender or white background. Use teal checkmarks or arrows as the ONLY accent — nothing else. NO photos, NO illustrations, NO icons. Just bold text + one accent color. Short punchy lines stacked vertically with specific numbers. Maximum 3 lines of text. Example: "200+ points. 16 sessions. Ready by May."`,
+  // Archetype 0: Typographic — pure text + brand colors (VT #1 top performer)
+  `TYPOGRAPHIC style. Bold navy text on a clean lavender or white background. Teal checkmarks as accents. NO photos. Short punchy lines stacked vertically. Maximum 5 words per line, maximum 3 lines total. Leave plenty of margin — text must NOT touch the edges of the image.`,
 
   // Archetype 1: Single person + bold text overlay
-  `SINGLE PERSON + TEXT style. One real-looking person (student or parent) filling most of the frame. Natural, warm lighting. Happy or determined expression. Overlay 1-2 lines of bold text with a specific number or stat. The person IS the image — no props, no devices, no background clutter. Think: portrait-style with bold headline text.`,
+  `SINGLE PERSON + TEXT style. One real-looking person (student or parent) filling most of the frame. Natural, warm lighting. Happy or determined expression. Overlay 1 short line of bold text (5 words max). The person IS the image — no props, no devices, no clutter.`,
 
   // Archetype 2: Bold stat on solid background
-  `BOLD STAT style. One large number or stat as the hero element (e.g., "1170 → 1410" or "200+" or "10x"). Navy or teal background. The number should be huge and impossible to miss. Minimal supporting text underneath (1 short line max). Clean, modern, graphic design feel. Think: billboard simplicity.`,
+  `BOLD STAT style. One large number or short stat as the hero element (e.g., "1170 → 1410" or "200+"). Navy background. The number should be HUGE. One short supporting line underneath (5 words max). Text must NOT overflow or touch edges — leave generous margins.`,
+
+  // Archetype 3: Parent-student moment (no text on image)
+  `PHOTO-ONLY style. A warm, candid photo of a parent and high school student together — studying, talking, or celebrating. NO text on the image at all. Natural home setting, warm lighting, genuine expressions. Focus on the emotional connection. Simple composition, no clutter.`,
+
+  // Archetype 4: Split layout — bold text top, lifestyle photo bottom
+  `SPLIT LAYOUT style. The image is divided into two zones: TOP HALF is a bold text headline (2-3 short punchy lines, large font, navy or white text on a contrasting background). BOTTOM HALF is a warm lifestyle photo of a relaxed parent or student in a natural setting (couch, kitchen table). The text and photo should feel like one cohesive ad. No devices. No clutter in the photo zone.`,
 ];
 
 export function buildImageUserPrompt(
@@ -502,7 +508,9 @@ export function buildImageUserPrompt(
     : brief.targetAudience === 'student' ? 'high school students' : 'parents and students';
 
   const headline = ad.headline;
-  const satAnchor = headline.toLowerCase().includes('sat') ? headline : `SAT: ${headline}`;
+  // Keep suggested text short (max ~30 chars) to prevent overflow
+  const shortHeadline = headline.length > 30 ? headline.split(/[:.—–\-,]/).slice(0, 1).join('').trim() : headline;
+  const satAnchor = shortHeadline.toLowerCase().includes('sat') ? shortHeadline : `SAT: ${shortHeadline}`;
 
   return `## Full Ad Copy (use this to understand the ad's message and tone)
 - **Primary Text:** ${ad.primaryText}
@@ -510,15 +518,16 @@ export function buildImageUserPrompt(
 - **Description:** ${ad.description}
 
 ## Image Text Guidance
-- **Suggested text to render on the image (1-2 lines max):** "${satAnchor}"
-- The image must clearly be about SAT tutoring — never a generic sports, lifestyle, or motivational ad.
+- **Suggested short text for image (if archetype uses text):** "${satAnchor}"
+- Any text on the image must be SHORT (max 5 words per line) and have generous margins — never touch the edges.
+- The image must clearly be about SAT tutoring.
 - **Emotional angle:** ${brief.emotionalAngle}
 - **Audience:** ${audience}
 
 ## Creative Direction
 ${archetype}
 
-IMPORTANT: Do NOT include any CTA buttons (like "Learn More", "Sign Up", "Start Now") on the image — Meta adds those separately. Do NOT include a Varsity Tutors logo. Keep text on the image to 1-2 short lines — do NOT render the full ad copy.
+IMPORTANT: Do NOT include any CTA buttons on the image — Meta adds those separately. Do NOT include a Varsity Tutors logo. If the archetype says PHOTO-ONLY, do not put any text on the image.
 
 Generate the image now. Then describe what it shows in 1-2 sentences.`;
 }

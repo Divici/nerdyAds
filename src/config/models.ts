@@ -17,7 +17,7 @@ export const MODELS = {
     maxOutputTokens: 16384,
   },
   flashImage: {
-    modelId: 'gemini-2.5-flash-image',
+    modelId: 'gemini-3-pro-image-preview',
     temperature: 0.6,
     maxOutputTokens: 8192,
   },

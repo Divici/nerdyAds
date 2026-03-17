@@ -124,8 +124,8 @@ describe('ImageGeneratorAgent', () => {
     expect(firstUserPrompt).toContain(mockAd.headline);
     expect(firstUserPrompt).toContain('parent');
     expect(firstUserPrompt).toContain('anxiety');
-    // Should include one of the 4 archetypes
-    expect(firstUserPrompt).toMatch(/TYPOGRAPHIC|BEFORE\/AFTER|ILLUSTRATED|LIFESTYLE/);
+    // Should include one of the 5 archetypes
+    expect(firstUserPrompt).toMatch(/TYPOGRAPHIC|SINGLE PERSON|BOLD STAT|PHOTO-ONLY|SPLIT LAYOUT/);
     // Should ban CTA buttons on the image
     expect(firstUserPrompt).toContain('Do NOT include any CTA buttons');
     // Should ban logo

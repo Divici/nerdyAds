@@ -59,7 +59,7 @@ describe('callGeminiImage', () => {
     expect(result.tokensIn).toBe(200);
     expect(result.tokensOut).toBe(1290);
     expect(result.costUsd).toBeGreaterThan(0);
-    expect(result.model).toContain('flash');
+    expect(result.model).toContain('image');
     expect(result.seed).toBe(42);
     expect(result.promptHash).toBeTruthy();
     expect(result.generatedAt).toBeTruthy();
