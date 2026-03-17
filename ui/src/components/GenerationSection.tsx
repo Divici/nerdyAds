@@ -76,25 +76,6 @@ function BriefDetailPreview({ brief }: { brief: Brief }) {
           <p className="text-gray-600 mt-0.5">{brief.personaPsychology}</p>
         </div>
       )}
-      {brief.sampleHooks && brief.sampleHooks.length > 0 && (
-        <div>
-          <span className="text-gray-400 text-[10px] uppercase tracking-wide">Sample Hooks</span>
-          <ul className="mt-0.5 space-y-1">
-            {brief.sampleHooks.map((hook, i) => (
-              <li key={i} className="text-gray-600 flex gap-1.5">
-                <span className="text-gray-300 select-none">•</span>
-                <span className="italic">"{hook}"</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {brief.suggestedCta && (
-        <div>
-          <span className="text-gray-400 text-[10px] uppercase tracking-wide">CTA</span>
-          <p className="text-gray-600 mt-0.5 font-medium">{brief.suggestedCta}</p>
-        </div>
-      )}
     </div>
   );
 }
