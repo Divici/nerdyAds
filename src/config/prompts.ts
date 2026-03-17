@@ -480,7 +480,7 @@ Generate one image. Then write a 1-2 sentence description of what the image show
 // 4 archetypes — balanced between text-only and photo styles
 const IMAGE_ARCHETYPES = [
   // Archetype 0: Typographic — pure text + brand colors (VT #1 top performer)
-  `TYPOGRAPHIC style. Bold navy text on a clean lavender or white background. Teal checkmarks as accents. NO photos. Short punchy lines stacked vertically. Maximum 5 words per line, maximum 3 lines total. Leave plenty of margin — text must NOT touch the edges of the image.`,
+  `TYPOGRAPHIC style. Bold navy text on a clean lavender or white background. Use teal as a creative accent — geometric shapes, underlines, color blocks, gradients, or abstract elements. NO photos. Short punchy lines stacked vertically. Maximum 5 words per line, maximum 3 lines total. Leave plenty of margin — text must NOT touch the edges of the image.`,
 
   // Archetype 1: Single person + bold text overlay
   `SINGLE PERSON + TEXT style. One real-looking person (student or parent) filling most of the frame. Natural, warm lighting. Happy or determined expression. Overlay 1 short line of bold text (5 words max). The person IS the image — no props, no devices, no clutter.`,
