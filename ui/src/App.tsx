@@ -65,13 +65,7 @@ function App() {
     setCurrentRound(d.round);
     setSkeletonCount(3);
     setPending([]);
-    if (!hasScrolledToGeneration.current) {
-      hasScrolledToGeneration.current = true;
-      // Delay to let React render skeleton cards before measuring page height
-      setTimeout(() => {
-        smoothScrollTo(document.documentElement.scrollHeight, 800);
-      }, 500);
-    }
+    hasScrolledToGeneration.current = true;
   }, []);
 
   const handleAdGenerating = useCallback((data: unknown) => {
@@ -167,6 +161,13 @@ function App() {
       setSkeletonCount(3);
       hasScrolledToGeneration.current = false;
       hasScrolledToAccepted.current = false;
+      // Scroll to bottom after 1s so skeleton cards are visible
+      setTimeout(() => {
+        if (!hasScrolledToGeneration.current) {
+          hasScrolledToGeneration.current = true;
+          smoothScrollTo(document.documentElement.scrollHeight, 800);
+        }
+      }, 1000);
       try {
         const { runId } = await startGeneration(briefId, mode);
         setActiveRunId(runId);
@@ -176,7 +177,7 @@ function App() {
         setSkeletonCount(0);
       }
     },
-    [startGeneration, mode],
+    [startGeneration, mode, smoothScrollTo],
   );
 
   return (
