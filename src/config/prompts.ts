@@ -477,23 +477,43 @@ You are provided with reference images showing Varsity Tutors' actual top-perfor
 ## Output
 Generate one image. Then write a 1-2 sentence description of what the image shows.`;
 
-// 4 archetypes — balanced between text-only and photo styles
+// 5 archetypes — text-only (proven) + scene-based photo (storyboard approach)
 const IMAGE_ARCHETYPES = [
   // Archetype 0: Typographic — pure text + brand colors (VT #1 top performer)
   `TYPOGRAPHIC style. Bold navy text on a clean lavender or white background. Use teal as a creative accent — geometric shapes, underlines, color blocks, gradients, or abstract elements. NO photos. Short punchy lines stacked vertically. Maximum 5 words per line, maximum 3 lines total. Leave plenty of margin — text must NOT touch the edges of the image.`,
 
-  // Archetype 1: Single person + bold text overlay
-  `SINGLE PERSON + TEXT style. One real-looking person (student or parent) filling most of the frame. Natural, warm lighting. Happy or determined expression. Overlay 1 short line of bold text (5 words max). The person IS the image — no props, no devices, no clutter.`,
-
-  // Archetype 2: Bold stat on solid background
+  // Archetype 1: Bold stat on solid background
   `BOLD STAT style. One large number or short stat as the hero element (e.g., "1170 → 1410" or "200+"). Navy background. The number should be HUGE. One short supporting line underneath (5 words max). Text must NOT overflow or touch edges — leave generous margins.`,
 
-  // Archetype 3: Parent-student moment (no text on image)
-  `PHOTO-ONLY style. A warm, candid photo of a parent and high school student together — studying, talking, or celebrating. NO text on the image at all. Natural home setting, warm lighting, genuine expressions. Focus on the emotional connection. Simple composition, no clutter.`,
+  // Archetype 2: The Proof Shot — person displaying tangible evidence
+  `THE PROOF SHOT. A student or parent proudly displaying tangible proof of SAT improvement. The proof should be a physical object in the scene — a score report, a paper, a letter. The key number from the ad copy should be visible on the object. Warm, natural home setting. The person's expression tells the emotional story. Below the photo, a navy bar with one bold line from the ad headline. No floating text overlays on the photo itself. No devices, no UI elements, no clutter.`,
 
-  // Archetype 4: Split layout — bold text top, lifestyle photo bottom
-  `SPLIT LAYOUT style. The image is divided into two zones: TOP HALF is a bold text headline (2-3 short punchy lines, large font, navy or white text on a contrasting background). BOTTOM HALF is a warm lifestyle photo of a relaxed parent or student in a natural setting (couch, kitchen table). The text and photo should feel like one cohesive ad. No devices. No clutter in the photo zone.`,
+  // Archetype 3: The Moment — candid emotional payoff, no text
+  `THE MOMENT. A warm, candid photo of the emotional payoff described in the ad copy — a parent and student celebrating, a student looking confident, a family moment of relief. NO text on the image at all. The photo should feel like a real snapshot, not a stock photo. Natural lighting, genuine expressions, simple home or school setting. The ad copy's headline and primary text do all the selling — the image just makes you feel it. One clear focal point, no clutter.`,
+
+  // Archetype 4: The Contrast — before/after or tension/resolution
+  `THE CONTRAST. One image that captures a before/after or tension/resolution moment. This could be a split composition, two expressions, two numbers side by side, or a single person at a turning point. The contrast should come from the ad copy's core value proposition. Keep it to 2-3 visual elements max. Bold, simple, high contrast. Any text on the image should be the specific numbers or short phrase that captures the contrast. No devices, no UI elements, no floating badges.`,
 ];
+
+/** Extract numbers, scores, and stats from ad copy for scene-based archetypes */
+function extractProofPoints(ad: Ad): string[] {
+  const allText = `${ad.primaryText} ${ad.headline} ${ad.description}`;
+  const points: string[] = [];
+
+  // Score improvements (e.g., "1170 → 1410", "from 1100 to 1350")
+  const scorePattern = /(\d{3,4})\s*(?:→|->|to)\s*(\d{3,4})/gi;
+  for (const match of allText.matchAll(scorePattern)) {
+    points.push(`${match[1]} → ${match[2]}`);
+  }
+
+  // Standalone numbers with context (e.g., "200+ points", "16 sessions", "100 points/month")
+  const statPattern = /(?:~)?(\d+\+?)\s*(points?|sessions?|hours?|weeks?|percent|%)/gi;
+  for (const match of allText.matchAll(statPattern)) {
+    points.push(`${match[1]} ${match[2]}`);
+  }
+
+  return [...new Set(points)];
+}
 
 export function buildImageUserPrompt(
   ad: Ad,
@@ -504,13 +524,16 @@ export function buildImageUserPrompt(
   const archetypeIndex = Math.abs(hashCode(ad.id)) % IMAGE_ARCHETYPES.length;
   const archetype = IMAGE_ARCHETYPES[archetypeIndex];
 
-  const audience = brief.targetAudience === 'parent' ? 'parents of SAT students'
-    : brief.targetAudience === 'student' ? 'high school students' : 'parents and students';
-
   const headline = ad.headline;
   // Keep suggested text short (max ~30 chars) to prevent overflow
   const shortHeadline = headline.length > 30 ? headline.split(/[:.—–\-,]/).slice(0, 1).join('').trim() : headline;
   const satAnchor = shortHeadline.toLowerCase().includes('sat') ? shortHeadline : `SAT: ${shortHeadline}`;
+
+  // Extract proof points for scene-based archetypes
+  const proofPoints = extractProofPoints(ad);
+  const proofSection = proofPoints.length > 0
+    ? `- **Key numbers/stats from the ad copy to feature visually:** ${proofPoints.join(', ')}\n`
+    : '';
 
   return `## Full Ad Copy (use this to understand the ad's message and tone)
 - **Primary Text:** ${ad.primaryText}
@@ -519,14 +542,14 @@ export function buildImageUserPrompt(
 
 ## Image Text Guidance
 - **Suggested short text for image (if archetype uses text):** "${satAnchor}"
-- Any text on the image must be SHORT (max 5 words per line) and have generous margins — never touch the edges.
+${proofSection}- Any text on the image must be SHORT (max 5 words per line) and have generous margins — never touch the edges.
 - The image must clearly be about SAT tutoring.
 - Only reference topics that appear in the ad copy above. Do NOT add sports, athletics, or other themes unless the ad copy explicitly mentions them.
 
 ## Creative Direction
 ${archetype}
 
-IMPORTANT: Do NOT include any CTA buttons on the image — Meta adds those separately. Do NOT include a Varsity Tutors logo. If the archetype says PHOTO-ONLY, do not put any text on the image.
+IMPORTANT: Do NOT include any CTA buttons on the image — Meta adds those separately. Do NOT include a Varsity Tutors logo. If the archetype says NO text, do not put any text on the image.
 
 Generate the image now. Then describe what it shows in 1-2 sentences.`;
 }
