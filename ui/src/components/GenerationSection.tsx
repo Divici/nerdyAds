@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, forwardRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import type { Brief, AdWithHistory, AdStatus, GenerationMode } from '../types.ts';
 import { AdCard, AdCardSkeleton } from './AdCard.tsx';
@@ -94,7 +94,7 @@ interface GenerationSectionProps {
   onModeChange: (mode: GenerationMode) => void;
 }
 
-export const GenerationSection = forwardRef<HTMLElement, GenerationSectionProps>(function GenerationSection({
+export function GenerationSection({
   briefs,
   onGenerate,
   generating,
@@ -104,7 +104,7 @@ export const GenerationSection = forwardRef<HTMLElement, GenerationSectionProps>
   skeletonCount,
   mode,
   onModeChange,
-}, ref) {
+}: GenerationSectionProps) {
   const [selectedBrief, setSelectedBrief] = useState<string>('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -134,7 +134,7 @@ export const GenerationSection = forwardRef<HTMLElement, GenerationSectionProps>
     : `All Briefs (${briefs.length})`;
 
   return (
-    <section ref={ref} className="mb-10">
+    <section className="mb-10">
       <div className="flex items-center justify-between mb-5">
         <div>
           <h2 className="text-lg font-heading font-semibold text-vt-text">Generate Ads</h2>
@@ -284,4 +284,4 @@ export const GenerationSection = forwardRef<HTMLElement, GenerationSectionProps>
       )}
     </section>
   );
-});
+}

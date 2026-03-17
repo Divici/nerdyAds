@@ -35,9 +35,24 @@ function App() {
 
   const { fetchBriefs, startGeneration } = useApi();
   const acceptedRef = useRef<HTMLDivElement>(null);
-  const generationRef = useRef<HTMLDivElement>(null);
   const hasScrolledToGeneration = useRef(false);
   const hasScrolledToAccepted = useRef(false);
+
+  /** Smooth scroll over a controlled duration (ms) */
+  const smoothScrollTo = useCallback((targetY: number, duration = 1200) => {
+    const startY = window.scrollY;
+    const diff = targetY - startY;
+    if (Math.abs(diff) < 1) return;
+    const startTime = performance.now();
+    const ease = (t: number) => t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
+    const step = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      window.scrollTo(0, startY + diff * ease(progress));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, []);
 
   // Load briefs on mount
   useEffect(() => {
@@ -53,7 +68,7 @@ function App() {
     if (!hasScrolledToGeneration.current) {
       hasScrolledToGeneration.current = true;
       setTimeout(() => {
-        generationRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        smoothScrollTo(document.documentElement.scrollHeight, 800);
       }, 100);
     }
   }, []);
@@ -80,7 +95,8 @@ function App() {
     if (!hasScrolledToAccepted.current) {
       hasScrolledToAccepted.current = true;
       setTimeout(() => {
-        acceptedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const top = acceptedRef.current?.getBoundingClientRect().top ?? 0;
+        smoothScrollTo(window.scrollY + top - 20, 1200);
       }, 300);
     }
   }, []);
@@ -179,7 +195,6 @@ function App() {
             </div>
 
             <GenerationSection
-              ref={generationRef}
               briefs={briefs}
               onGenerate={handleGenerate}
               generating={generating}
