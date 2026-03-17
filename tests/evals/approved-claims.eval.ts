@@ -35,7 +35,7 @@ describe('Approved Claims Eval — writer uses conditioned claims', () => {
   const writer = new WriterAgent();
 
   it('score claims are conditioned (not absolute guarantees)', async () => {
-    const ads = await writer.generate(BRIEF, 3);
+    const ads = await writer.generateBatch(BRIEF, 3);
 
     for (const ad of ads) {
       const combined = `${ad.primaryText} ${ad.headline} ${ad.description}`;
@@ -51,7 +51,7 @@ describe('Approved Claims Eval — writer uses conditioned claims', () => {
   }, 120_000);
 
   it('ads reference approved data points when making claims', async () => {
-    const ads = await writer.generate(BRIEF, 3);
+    const ads = await writer.generateBatch(BRIEF, 3);
     let totalApprovedRefs = 0;
 
     for (const ad of ads) {
@@ -70,7 +70,7 @@ describe('Approved Claims Eval — writer uses conditioned claims', () => {
   }, 120_000);
 
   it('does not fabricate specific statistics not in approved list', async () => {
-    const ads = await writer.generate(BRIEF, 3);
+    const ads = await writer.generateBatch(BRIEF, 3);
 
     // Pattern: specific percentages or multipliers that aren't in our approved list
     const specificStatPattern = /(\d+(?:\.\d+)?)[x×]\s|(\d{2,})%/g;

@@ -71,7 +71,7 @@ describe('Persona Alignment Eval — writer adapts to persona', () => {
   const writer = new WriterAgent();
 
   it('athlete persona ads contain recruiting/sports language', async () => {
-    const ads = await writer.generate(ATHLETE_BRIEF, 3);
+    const ads = await writer.generateBatch(ATHLETE_BRIEF, 3);
 
     let totalHits = 0;
     for (const ad of ads) {
@@ -86,7 +86,7 @@ describe('Persona Alignment Eval — writer adapts to persona', () => {
   }, 120_000);
 
   it('neurodivergent persona ads contain adapted-approach language', async () => {
-    const ads = await writer.generate(NEURODIVERGENT_BRIEF, 3);
+    const ads = await writer.generateBatch(NEURODIVERGENT_BRIEF, 3);
 
     let totalHits = 0;
     for (const ad of ads) {
@@ -100,7 +100,7 @@ describe('Persona Alignment Eval — writer adapts to persona', () => {
   }, 120_000);
 
   it('optimizer persona ads contain data/strategy language', async () => {
-    const ads = await writer.generate(OPTIMIZER_BRIEF, 3);
+    const ads = await writer.generateBatch(OPTIMIZER_BRIEF, 3);
 
     let totalHits = 0;
     for (const ad of ads) {
@@ -114,7 +114,7 @@ describe('Persona Alignment Eval — writer adapts to persona', () => {
   }, 120_000);
 
   it('cross-persona discrimination: athlete ads score higher on athlete keywords than optimizer keywords', async () => {
-    const athleteAds = await writer.generate(ATHLETE_BRIEF, 3);
+    const athleteAds = await writer.generateBatch(ATHLETE_BRIEF, 3);
 
     let athleteHits = 0;
     let optimizerHits = 0;
@@ -130,7 +130,7 @@ describe('Persona Alignment Eval — writer adapts to persona', () => {
   }, 120_000);
 
   it('persona-specific hooks influence output language', async () => {
-    const ads = await writer.generate(ATHLETE_BRIEF, 3);
+    const ads = await writer.generateBatch(ATHLETE_BRIEF, 3);
 
     // At least one ad should reference recruiting/scholarship themes from the hooks
     let foundTheme = false;

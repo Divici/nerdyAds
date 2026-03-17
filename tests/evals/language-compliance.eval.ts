@@ -48,7 +48,7 @@ describe('Language Compliance Eval — writer produces compliant output', () => 
   const writer = new WriterAgent();
 
   it('writer generates ads without banned phrases (3-ad batch)', async () => {
-    const ads = await writer.generate(BRIEF, 3);
+    const ads = await writer.generateBatch(BRIEF, 3);
 
     expect(ads.length).toBe(3);
 
@@ -66,7 +66,7 @@ describe('Language Compliance Eval — writer produces compliant output', () => 
   }, 120_000);
 
   it('writer uses "your child" instead of "your student"', async () => {
-    const ads = await writer.generate(BRIEF, 3);
+    const ads = await writer.generateBatch(BRIEF, 3);
     let foundYourChild = false;
 
     for (const ad of ads) {

@@ -38,7 +38,7 @@ describe('Hook Effectiveness Eval — first lines follow patterns', () => {
   const writer = new WriterAgent();
 
   it('first line of primary text uses a recognized hook pattern', async () => {
-    const ads = await writer.generate(BRIEF, 3);
+    const ads = await writer.generateBatch(BRIEF, 3);
     let patternsMatched = 0;
 
     for (const ad of ads) {
@@ -78,7 +78,7 @@ describe('Hook Effectiveness Eval — first lines follow patterns', () => {
       suggestedCta: 'Talk to a specialist',
     };
 
-    const ads = await writer.generate(athleteBrief, 3);
+    const ads = await writer.generateBatch(athleteBrief, 3);
 
     // Check that at least one ad's opening reflects the athletic/recruiting theme
     let themeFound = false;

@@ -29,7 +29,7 @@ describe('Digital SAT Differentiator Eval', () => {
   const writer = new WriterAgent();
 
   it('at least one ad references digital SAT or digital-era advantages', async () => {
-    const ads = await writer.generate(BRIEF, 3);
+    const ads = await writer.generateBatch(BRIEF, 3);
 
     let foundDigital = false;
     for (const ad of ads) {
@@ -50,7 +50,7 @@ describe('Digital SAT Differentiator Eval', () => {
   }, 120_000);
 
   it('does not position as "online tutoring" — reframes as digital SAT expertise', async () => {
-    const ads = await writer.generate(BRIEF, 3);
+    const ads = await writer.generateBatch(BRIEF, 3);
 
     for (const ad of ads) {
       const combined = `${ad.primaryText} ${ad.headline} ${ad.description}`.toLowerCase();
