@@ -521,8 +521,7 @@ export function buildImageUserPrompt(
 - **Suggested short text for image (if archetype uses text):** "${satAnchor}"
 - Any text on the image must be SHORT (max 5 words per line) and have generous margins — never touch the edges.
 - The image must clearly be about SAT tutoring.
-- **Emotional angle:** ${brief.emotionalAngle}
-- **Audience:** ${audience}
+- Only reference topics that appear in the ad copy above. Do NOT add sports, athletics, or other themes unless the ad copy explicitly mentions them.
 
 ## Creative Direction
 ${archetype}

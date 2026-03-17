@@ -120,10 +120,9 @@ describe('ImageGeneratorAgent', () => {
     await agent.generateVariants(mockAd, mockBrief, 'test-run');
 
     const firstUserPrompt = vi.mocked(callGeminiImage).mock.calls[0][1];
-    // Should include headline and brief context
+    // Should include ad copy context (not brief persona details)
     expect(firstUserPrompt).toContain(mockAd.headline);
-    expect(firstUserPrompt).toContain('parent');
-    expect(firstUserPrompt).toContain('anxiety');
+    expect(firstUserPrompt).toContain(mockAd.primaryText);
     // Should include one of the 5 archetypes
     expect(firstUserPrompt).toMatch(/TYPOGRAPHIC|SINGLE PERSON|BOLD STAT|PHOTO-ONLY|SPLIT LAYOUT/);
     // Should ban CTA buttons on the image
