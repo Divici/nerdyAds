@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import type { Brief, AdWithHistory, PipelineResult, Ad, AdStatus, GenerationMode } from './types.ts';
 import { useApi } from './hooks/useApi.ts';
 import { useSSE } from './hooks/useSSE.ts';
@@ -34,6 +34,10 @@ function App() {
   const [mode, setMode] = useState<GenerationMode>('quick');
 
   const { fetchBriefs, startGeneration } = useApi();
+  const acceptedRef = useRef<HTMLDivElement>(null);
+  const generationRef = useRef<HTMLDivElement>(null);
+  const hasScrolledToGeneration = useRef(false);
+  const hasScrolledToAccepted = useRef(false);
 
   // Load briefs on mount
   useEffect(() => {
@@ -46,6 +50,12 @@ function App() {
     setCurrentRound(d.round);
     setSkeletonCount(3);
     setPending([]);
+    if (!hasScrolledToGeneration.current) {
+      hasScrolledToGeneration.current = true;
+      setTimeout(() => {
+        generationRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
   }, []);
 
   const handleAdGenerating = useCallback((data: unknown) => {
@@ -67,6 +77,12 @@ function App() {
     setPending((p) => p.filter((a) => a.ad.id !== d.adWithHistory.ad.id));
     setPendingStatus((prev) => { const next = new Map(prev); next.delete(d.adWithHistory.ad.id); return next; });
     setAccepted((prev) => [...prev, d.adWithHistory]);
+    if (!hasScrolledToAccepted.current) {
+      hasScrolledToAccepted.current = true;
+      setTimeout(() => {
+        acceptedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 300);
+    }
   }, []);
 
   const handleAdRejected = useCallback((data: unknown) => {
@@ -132,6 +148,8 @@ function App() {
       setCurrentRound(0);
       setPending([]);
       setSkeletonCount(3);
+      hasScrolledToGeneration.current = false;
+      hasScrolledToAccepted.current = false;
       try {
         const { runId } = await startGeneration(briefId, mode);
         setActiveRunId(runId);
@@ -151,14 +169,17 @@ function App() {
       <main>
         {activeTab === 'campaign' && (
           <div className="max-w-7xl mx-auto px-6 py-10">
-            <AcceptedCarousel
-              ads={accepted}
-              onAdClick={setSelectedAd}
-              onViewAll={() => setViewAllOpen(true)}
-              runId={pipelineResult?.runId ?? activeRunId ?? undefined}
-            />
+            <div ref={acceptedRef}>
+              <AcceptedCarousel
+                ads={accepted}
+                onAdClick={setSelectedAd}
+                onViewAll={() => setViewAllOpen(true)}
+                runId={pipelineResult?.runId ?? activeRunId ?? undefined}
+              />
+            </div>
 
             <GenerationSection
+              ref={generationRef}
               briefs={briefs}
               onGenerate={handleGenerate}
               generating={generating}
