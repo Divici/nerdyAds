@@ -7,7 +7,7 @@ interface HeaderProps {
 function VTLogo({ className = '' }: { className?: string }) {
   return (
     <img
-      src="/vt-logo.svg"
+      src="/nerdy-logo.png"
       alt="Varsity Tutors"
       className={className}
     />

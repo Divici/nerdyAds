@@ -5,7 +5,7 @@ import { ImageGenerator } from './ImageGenerator.tsx';
 
 function VTLogoSmall() {
   return (
-    <img src="/vt-logo.svg" alt="Varsity Tutors" className="w-8 h-8" />
+    <img src="/nerdy-logo.png" alt="Varsity Tutors" className="w-8 h-8" />
   );
 }
 
