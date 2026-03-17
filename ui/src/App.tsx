@@ -67,9 +67,10 @@ function App() {
     setPending([]);
     if (!hasScrolledToGeneration.current) {
       hasScrolledToGeneration.current = true;
+      // Delay to let React render skeleton cards before measuring page height
       setTimeout(() => {
         smoothScrollTo(document.documentElement.scrollHeight, 800);
-      }, 100);
+      }, 500);
     }
   }, []);
 
