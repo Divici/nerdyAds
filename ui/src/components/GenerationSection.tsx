@@ -270,7 +270,7 @@ export function GenerationSection({
 
       {/* Card dealing area */}
       {(generating || pendingAds.length > 0) && (
-        <div ref={cardsRef} className="flex gap-4 overflow-x-auto pb-4 styled-scrollbar">
+        <div ref={cardsRef} className="flex justify-center gap-4 overflow-x-auto pb-4 styled-scrollbar">
           <AnimatePresence mode="popLayout">
             {pendingAds.map((adh, i) => (
               <AdCard key={adh.ad.id} adWithHistory={adh} index={i} status={pendingStatus.get(adh.ad.id)} />
