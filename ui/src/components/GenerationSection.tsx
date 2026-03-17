@@ -26,25 +26,75 @@ const ANGLE_LABELS: Record<string, string> = {
   curiosity: 'Curiosity',
 };
 
+function BriefBadges({ brief }: { brief: Brief }) {
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-blue-50 text-blue-600">
+        {AUDIENCE_LABELS[brief.targetAudience] ?? brief.targetAudience}
+      </span>
+      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-50 text-emerald-600">
+        {GOAL_LABELS[brief.campaignGoal] ?? brief.campaignGoal}
+      </span>
+      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-amber-50 text-amber-600">
+        {ANGLE_LABELS[brief.emotionalAngle] ?? brief.emotionalAngle}
+      </span>
+    </div>
+  );
+}
+
 function BriefPreview({ brief }: { brief: Brief }) {
   return (
-    <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+    <div className="space-y-2 text-xs">
+      <div className="font-medium text-vt-dark text-sm">{brief.persona ?? brief.id}</div>
+      <BriefBadges brief={brief} />
+      <p className="text-gray-500">{brief.offer}</p>
+      {brief.personaPsychology && (
+        <p className="text-gray-400 line-clamp-2">{brief.personaPsychology}</p>
+      )}
+    </div>
+  );
+}
+
+function BriefDetailPreview({ brief }: { brief: Brief }) {
+  return (
+    <div className="space-y-3 text-xs">
       <div>
-        <span className="text-gray-400">Audience</span>
-        <p className="text-vt-dark font-medium">{AUDIENCE_LABELS[brief.targetAudience] ?? brief.targetAudience}</p>
+        <div className="flex items-center gap-2 mb-1.5">
+          <span className="font-medium text-vt-dark text-sm">{brief.persona ?? brief.id}</span>
+          <span className="text-gray-400">·</span>
+          <span className="text-gray-400 text-xs">{ANGLE_LABELS[brief.emotionalAngle] ?? brief.emotionalAngle}</span>
+        </div>
+        <BriefBadges brief={brief} />
       </div>
       <div>
-        <span className="text-gray-400">Goal</span>
-        <p className="text-vt-dark font-medium">{GOAL_LABELS[brief.campaignGoal] ?? brief.campaignGoal}</p>
+        <span className="text-gray-400 text-[10px] uppercase tracking-wide">Offer</span>
+        <p className="text-gray-600 mt-0.5">{brief.offer}</p>
       </div>
-      <div>
-        <span className="text-gray-400">Angle</span>
-        <p className="text-vt-dark font-medium">{ANGLE_LABELS[brief.emotionalAngle] ?? brief.emotionalAngle}</p>
-      </div>
-      <div>
-        <span className="text-gray-400">Offer</span>
-        <p className="text-vt-dark font-medium truncate">{brief.offer}</p>
-      </div>
+      {brief.personaPsychology && (
+        <div>
+          <span className="text-gray-400 text-[10px] uppercase tracking-wide">Psychology</span>
+          <p className="text-gray-600 mt-0.5">{brief.personaPsychology}</p>
+        </div>
+      )}
+      {brief.sampleHooks && brief.sampleHooks.length > 0 && (
+        <div>
+          <span className="text-gray-400 text-[10px] uppercase tracking-wide">Sample Hooks</span>
+          <ul className="mt-0.5 space-y-1">
+            {brief.sampleHooks.map((hook, i) => (
+              <li key={i} className="text-gray-600 flex gap-1.5">
+                <span className="text-gray-300 select-none">•</span>
+                <span className="italic">"{hook}"</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {brief.suggestedCta && (
+        <div>
+          <span className="text-gray-400 text-[10px] uppercase tracking-wide">CTA</span>
+          <p className="text-gray-600 mt-0.5 font-medium">{brief.suggestedCta}</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -99,7 +149,7 @@ export function GenerationSection({
   const selectedBriefData = briefs.find((b) => b.id === selectedBrief);
 
   const briefButtonLabel = selectedBrief
-    ? `${AUDIENCE_LABELS[selectedBriefData?.targetAudience ?? ''] ?? selectedBriefData?.targetAudience} / ${ANGLE_LABELS[selectedBriefData?.emotionalAngle ?? ''] ?? selectedBriefData?.emotionalAngle}`
+    ? `${selectedBriefData?.persona ?? selectedBriefData?.id} — ${ANGLE_LABELS[selectedBriefData?.emotionalAngle ?? ''] ?? selectedBriefData?.emotionalAngle}`
     : `All Briefs (${briefs.length})`;
 
   return (
@@ -147,11 +197,7 @@ export function GenerationSection({
                     onClick={() => { setSelectedBrief(b.id); setDropdownOpen(false); }}
                     className={`w-full text-left px-4 py-3 hover:bg-vt-light-blue/50 transition-colors border-b border-gray-100 last:border-b-0 ${selectedBrief === b.id ? 'bg-vt-light-blue/30' : ''}`}
                   >
-                    <span className="text-sm font-medium text-vt-dark">
-                      {AUDIENCE_LABELS[b.targetAudience] ?? b.targetAudience} / {ANGLE_LABELS[b.emotionalAngle] ?? b.emotionalAngle}
-                    </span>
-                    <span className="text-xs text-gray-400 ml-2">{GOAL_LABELS[b.campaignGoal] ?? b.campaignGoal}</span>
-                    <div className="mt-1.5">
+                    <div className="mb-1.5">
                       <BriefPreview brief={b} />
                     </div>
                   </button>
@@ -228,8 +274,8 @@ export function GenerationSection({
 
         {/* Selected brief preview */}
         {selectedBriefData && (
-          <div className="mt-3 pt-3">
-            <BriefPreview brief={selectedBriefData} />
+          <div className="mt-3 pt-3 border-t border-gray-100">
+            <BriefDetailPreview brief={selectedBriefData} />
           </div>
         )}
       </div>
