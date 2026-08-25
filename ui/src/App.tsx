@@ -94,7 +94,7 @@ function App() {
         smoothScrollTo(window.scrollY + top - 20, 1200);
       }, 300);
     }
-  }, []);
+  }, [smoothScrollTo]);
 
   const handleAdRejected = useCallback((data: unknown) => {
     const d = data as { adWithHistory: AdWithHistory };

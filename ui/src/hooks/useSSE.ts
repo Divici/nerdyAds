@@ -9,7 +9,12 @@ export function useSSE(
 ) {
   const eventSourceRef = useRef<EventSource | null>(null);
   const handlersRef = useRef(handlers);
-  handlersRef.current = handlers;
+
+  // Keep the latest handlers available to the SSE listeners without
+  // re-subscribing. Runs before the connection effect below on every commit.
+  useEffect(() => {
+    handlersRef.current = handlers;
+  });
 
   useEffect(() => {
     if (!runId) return;

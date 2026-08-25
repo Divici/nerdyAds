@@ -162,7 +162,7 @@ export function InsightsTab({ accepted, rejected, pipelineResult }: InsightsTabP
             <XAxis dataKey="index" tick={{ fontSize: 11 }} label={{ value: 'Ad #', position: 'insideBottom', offset: -5, fontSize: 11 }} />
             <YAxis domain={[0, 10]} tick={{ fontSize: 11 }} />
             <Tooltip
-              formatter={(value: number) => [value.toFixed(1), 'Score']}
+              formatter={(value) => [(value as number).toFixed(1), 'Score']}
               labelFormatter={(label) => `Ad #${label}`}
             />
             <Line
@@ -170,8 +170,12 @@ export function InsightsTab({ accepted, rejected, pipelineResult }: InsightsTabP
               dataKey="score"
               stroke="#e1245a"
               strokeWidth={2}
-              dot={(props: { cx: number; cy: number; payload: { accepted: boolean } }) => {
-                const { cx, cy, payload } = props;
+              dot={(props) => {
+                const { cx, cy, payload } = props as {
+                  cx: number;
+                  cy: number;
+                  payload: { accepted: boolean };
+                };
                 return (
                   <circle
                     key={`${cx}-${cy}`}
